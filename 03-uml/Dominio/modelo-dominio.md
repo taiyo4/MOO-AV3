@@ -21,7 +21,7 @@ Não são incorporados Pagamento, ProntuarioCompleto, ListaEspera, integração 
 - [Escopo](../../02-requisitos/escopo.md) e [visão](../../02-requisitos/visao.md).
 - [Decisões](../../01-planejamento/decisoes.md) e [atores](../../02-requisitos/stakeholders-atores.md).
 
-O escopo exige UML 2.x quando aplicável (RES-004), e o [README de UML](../README.md) prevê fontes editáveis sem determinar ferramenta. Mermaid classDiagram é utilizado como representação textual editável de classes conceituais e associações. Não substitui uma validação formal de conformidade UML.
+O escopo exige UML 2.x quando aplicável (RES-004), e o [README de UML](../README.md) prevê fontes editáveis sem determinar ferramenta. Mermaid classDiagram é utilizado como representação textual editável de classes conceituais e associações. Os agrupamentos nomeados são exclusivamente visuais e não definem pacotes de software; a sintaxe de namespace requer Mermaid 11.15 ou superior, versão que não está fixada no repositório. Não substitui uma validação formal de conformidade UML.
 
 Os identificadores seguem os conceitos em português, no singular, sem acentos: Usuario corresponde a Usuário; Paciente corresponde a Cliente/Paciente. Perfil significa exclusivamente perfil de acesso. Os nomes A01–A16 identificam associações apenas neste documento; não são novos requisitos nem decisões oficiais.
 
@@ -61,49 +61,52 @@ RF-002 trata sessão autenticada, mas não exige que ela seja entidade deste mod
 Fonte: [diagrama-dominio.mmd](diagrama-dominio.mmd). O bloco abaixo reproduz a fonte para leitura em visualizadores Markdown com suporte a Mermaid. Ao revisar o modelo, manter as duas representações sincronizadas.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"background":"#ffffff","lineColor":"#3a414a","fontFamily":"Arial","primaryTextColor":"#202124"}}}%%
 classDiagram
-    direction TB
-    %% Modelo conceitual parcial. PENDENTE e uma anotacao editorial,
-    %% nao uma multiplicidade UML. Consultar modelo-dominio.md.
-    class Usuario
-    class Perfil
-    class Permissao
-    class Psicologo
-    class AreaAtuacao
-    class Paciente
-    class Vinculo
-    class Agenda
-    class Disponibilidade
-    class Agendamento
-    class Atendimento
-    class RegistroAuditoria
+    direction LR
 
-    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 possui perfil de acesso
+    %% Agrupamentos exclusivamente visuais; nao definem pacotes de software.
+    namespace Acesso["Acesso e auditoria"] {
+        class Usuario:::acesso
+        class Perfil:::acesso
+        class Permissao:::acesso
+        class RegistroAuditoria:::acesso
+    }
+    namespace Cadastros["Participantes e vinculo"] {
+        class Psicologo:::cadastro
+        class AreaAtuacao:::cadastro
+        class Paciente:::cadastro
+        class Vinculo:::cadastro
+    }
+    namespace AgendaEAtendimento["Agenda e atendimento"] {
+        class Agenda:::agenda
+        class Disponibilidade:::agenda
+        class Agendamento:::agenda
+        class Atendimento:::agenda
+    }
+
+    classDef acesso fill:#ecebff,stroke:#635dff,stroke-width:1.5px,color:#202124
+    classDef cadastro fill:#e5f3f1,stroke:#008a7a,stroke-width:1.5px,color:#202124
+    classDef agenda fill:#f2f3f5,stroke:#59636e,stroke-width:1.5px,color:#202124
+
+    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 perfil de acesso
     Perfil "PENDENTE" -- "PENDENTE" Permissao : A02 agrupa
-    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta do cadastro profissional
-    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta do cadastro de paciente
+    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta profissional
+    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta paciente
     Psicologo "PENDENTE" -- "PENDENTE" AreaAtuacao : A05 atua em
     Psicologo "1" -- "PENDENTE" Vinculo : A06 participa
     Paciente "1" -- "PENDENTE" Vinculo : A07 participa
     Psicologo "1" -- "PENDENTE" Agenda : A08 titular
     Agenda "1" -- "PENDENTE" Disponibilidade : A09 organiza
-    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 apresenta compromissos
-    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional agendado
-    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente agendado
-    Psicologo "1" -- "PENDENTE" Atendimento : A13 profissional responsavel
-    Paciente "1" -- "PENDENTE" Atendimento : A14 paciente atendido
-    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 corresponde a sessao
-    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel pela operacao
+    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 compromissos
+    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional
+    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente
+    Psicologo "1" -- "PENDENTE" Atendimento : A13 responsavel
+    Paciente "1" -- "PENDENTE" Atendimento : A14 atendido
+    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 sessao
+    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel
 
-    note "PENDENTE indica multiplicidade ainda nao definida; nao significa 1 nem 0..*. Modelo parcial para revisao."
-    note for Usuario "Conta de acesso distinta dos cadastros. Credencial protegida; nunca senha em texto puro."
-    note for Perfil "Perfil de acesso. Administrador e um papel, nao uma classe independente."
-    note for Psicologo "Cadastro profissional. Perfil profissional nao e Perfil de acesso."
-    note for AreaAtuacao "RF-016 admite uma ou mais areas; minimo durante o cadastro e compartilhamento ainda pendentes."
-    note for Vinculo "Cada vinculo identifica um psicologo e um paciente. Quantidades e encerramento pendentes."
-    note for Agendamento "Exige vinculo autorizado e horario disponivel. RN-005 impede conflitos ativos."
-    note for Atendimento "Exige vinculo autorizado entre os mesmos participantes. Cancelamento impede realizacao (RN-006)."
-    note for RegistroAuditoria "Usuario responsavel, data, hora e operacao. Cronologico e logicamente imutavel."
+    note "Multiplicidades pendentes e rastreabilidade: consultar modelo-dominio.md."
 ```
 
 ## 5. Associações e multiplicidades
@@ -200,4 +203,3 @@ Revisão conceitual desta versão:
 - A revisão não equivale à aprovação do grupo nem à validação visual por um renderizador Mermaid.
 
 Após as decisões do grupo, revisar as marcas PENDENTE, preservar a rastreabilidade e alinhar o modelo aos casos de uso do Integrante 2 e à persistência do Integrante 4.
-
