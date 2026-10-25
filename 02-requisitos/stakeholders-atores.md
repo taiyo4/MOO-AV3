@@ -38,6 +38,7 @@ Ator externo de suporte confirmado (DEC-009, 25/10/2026): **Serviço Externo de 
 - Cadastrar e gerenciar seus períodos e horários de disponibilidade na agenda;
 - Consultar sua agenda de sessões e horários marcados;
 - Cancelar agendamentos da própria agenda antes do horário marcado (DEC-011);
+- Registrar `Não compareceu` após o horário marcado, quando o agendamento não foi cancelado nem concluído (DEC-025);
 - Executar funções operacionais e profissionais autorizadas;
 - Registrar conceitualmente as sessões de atendimento realizadas;
 - Consultar o histórico permitido dos atendimentos executados.
@@ -85,7 +86,6 @@ Para fins de consistência e apoio ao **Integrante 2 (Casos de Uso e Comportamen
 ### 6.1 Serviço Externo de E-mail
 - **Situação:** `APROVADO PELO GRUPO` (DEC-009, formalizado em 25/10/2026).
 - **Descrição:** Ator externo de suporte que recebe da plataforma as solicitações de envio de e-mail de confirmação de agendamento, cancelamento de agendamento e oferta de vaga da lista de espera (RF-033).
-- **Pendência:** quem registra `Não compareceu` (`PG-03`) ainda não foi decidido; esse registro não pertence a este ator.
 
 ---
 

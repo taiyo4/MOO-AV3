@@ -124,7 +124,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Garantir que apenas atores autorizados alterem a situação do agendamento (DEC-011).
 
-**Pendências:** A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). Cancelamento pelo Administrador (`PG-10`) e cancelamento de `SOLICITADO` (`PG-01`) não foram decididos.
+**Pendências:** A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). O cancelamento pelo Administrador (`PG-10`) não foi decidido.
 
 ### RN-013 — Confirmação automática de agendamento
 
@@ -136,7 +136,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Decisão DEC-017.
 
-**Pendência:** Se existe situação persistente `SOLICITADO` anterior à confirmação (`PG-01`).
+**Observação:** Não existe situação persistente `SOLICITADO` anterior à confirmação (DEC-016).
 
 ### RN-014 — Imutabilidade lógica de auditoria
 
@@ -150,15 +150,15 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 ### RN-020 — Situações do agendamento
 
-**Regra:** O agendamento assume as situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu`. `Cancelado`, `Realizado` e `Não compareceu` são atribuídos a agendamento `Confirmado`; outras origens dependem da `PG-01`.
+**Regra:** O agendamento assume as situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu`. `SOLICITADO` não é situação persistente: o agendamento já nasce `Confirmado`. `Cancelado`, `Realizado` e `Não compareceu` somente são atribuídos a agendamento `Confirmado`. `Não compareceu` é registrado pelo Psicólogo após o horário marcado, se o agendamento não tiver sido cancelado nem concluído.
 
 **Atores/entidades envolvidos:** Agendamento.
 
 **Requisitos relacionados:** RF-026, RF-027, RF-030, RF-037.
 
-**Justificativa:** Decisão DEC-016, que alinha requisitos, máquina de estados e persistência.
+**Justificativa:** Decisões DEC-016 e DEC-025, que alinham requisitos, máquina de estados e persistência.
 
-**Pendências:** Se `SOLICITADO` é situação persistente ou etapa transitória (`PG-01`); quem registra `Não compareceu` (`PG-03`); relação entre registro de atendimento e `Realizado` (`PG-12`).
+**Pendência:** Relação entre registro de atendimento e `Realizado` (`PG-12`).
 
 ### RN-021 — Oferta de horário da lista de espera
 

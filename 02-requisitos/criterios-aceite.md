@@ -1,6 +1,6 @@
 # Critérios de Aceite
 
-Os critérios usam condições observáveis nos fluxos e artefatos de modelagem. Os comportamentos dependentes de decisão do grupo permanecem condicionados à resolução das pendências descritas nos próprios requisitos e em `PG-01` a `PG-12` (`01-planejamento/decisoes.md`).
+Os critérios usam condições observáveis nos fluxos e artefatos de modelagem. Os comportamentos dependentes de decisão do grupo permanecem condicionados à resolução das pendências descritas nos próprios requisitos e em `PG-02` e `PG-04` a `PG-12` (`01-planejamento/decisoes.md`).
 
 **Atualização de 25/10/2026:** revisados CA-RF-025, CA-RF-026, CA-RF-027 e CA-RF-030; acrescentados CA-RF-033 a CA-RF-037.
 
@@ -164,7 +164,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** o sistema processar a solicitação,  
 **então** o agendamento deverá passar a `Confirmado` sem ação manual de outro ator, sem criar conflito de horário, e o envio do e-mail de confirmação deverá ser solicitado.
 
-**Pendência:** Se existe situação `SOLICITADO` registrada antes de `Confirmado` (`PG-01`).
+**Dado** uma solicitação aceita,  
+**quando** o agendamento for criado,  
+**então** nenhuma situação `SOLICITADO` deverá ser registrada antes de `Confirmado`.
 
 ### CA-RF-027 — Cancelamento de agendamento
 
@@ -260,8 +262,14 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 
 ### CA-RF-037 — Registro de não comparecimento
 
-**Dado** um agendamento `Confirmado` cujo horário já começou,  
-**quando** o ator responsável registrar o não comparecimento,  
+**Dado** um agendamento `Confirmado` cujo horário marcado já passou,  
+**quando** o Psicólogo responsável registrar o não comparecimento,  
 **então** a situação deverá passar a `Não compareceu` e a operação deverá ser auditada.
 
-**Pendência:** Ator responsável e momento do registro (`PG-03`).
+**Dado** um agendamento `Cancelado` ou `Realizado`, ou um agendamento cujo horário ainda não passou,  
+**quando** o Psicólogo tentar registrar o não comparecimento,  
+**então** o registro deverá ser recusado.
+
+**Dado** um usuário que não é o Psicólogo responsável pelo agendamento,  
+**quando** tentar registrar o não comparecimento,  
+**então** o registro deverá ser recusado.

@@ -97,12 +97,10 @@ para acompanhar e ajustar meus horários.
 ### HU-012 — Gestão da agenda profissional
 
 Como Psicólogo,  
-quero consultar minha agenda, acompanhar os agendamentos confirmados automaticamente e cancelar agendamentos antes do horário marcado,  
+quero consultar minha agenda, acompanhar os agendamentos confirmados automaticamente, cancelar agendamentos antes do horário marcado e registrar quando o paciente não comparecer,  
 para manter minha agenda atualizada.
 
 **Requisitos relacionados:** RF-026, RF-027, RF-029, RF-037.
-
-**Pendência:** Quem registra `Não compareceu` ainda depende de decisão do grupo (`PG-03`); RF-037 só entra nesta história se o grupo atribuir o registro ao Psicólogo.
 
 ### HU-013 — Registro de sessão realizada
 

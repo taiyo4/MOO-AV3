@@ -58,7 +58,7 @@ A plataforma é composta pelos seguintes módulos principais:
 - Criação e manutenção de agendamentos;
 - Confirmação automática de agendamentos quando o horário está disponível e sem conflito (DEC-017);
 - Cancelamento de agendamentos pelo paciente titular ou pelo psicólogo, antes do horário marcado (DEC-011);
-- Controle das situações do agendamento: `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016; `SOLICITADO` pendente, `PG-01`).
+- Controle das situações do agendamento: `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016; não há situação `SOLICITADO`).
 
 ### 3.6 Atendimento
 - Registro conceitual de sessões de atendimento;
@@ -121,4 +121,4 @@ Para manter a viabilidade e controlar a complexidade da modelagem dentro dos lim
 
 ## 8. Pendências de decisão
 
-As pendências de inovação e de serviço externo foram resolvidas em 25/10/2026 (DEC-010 e DEC-009). As pendências abertas estão consolidadas em `PG-01` a `PG-12`, em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md).
+As pendências de inovação e de serviço externo foram resolvidas em 25/10/2026 (DEC-010 e DEC-009). As pendências abertas estão consolidadas em `PG-02` e `PG-04` a `PG-12`, em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md).

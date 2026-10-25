@@ -7,10 +7,9 @@ tomadas durante o desenvolvimento da AV3.
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-017 |
-| Aprovada parcialmente | DEC-016 (quatro situações aprovadas; `SOLICITADO` pendente) |
-| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-026 |
-| Pendências abertas | PG-01 a PG-12 (seção "Pendências que exigem decisão do grupo") |
+| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-025 (redação revisada) |
+| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-024, DEC-026 |
+| Pendências abertas | PG-02 e PG-04 a PG-12 (PG-01 e PG-03 resolvidas em 25/10/2026) |
 
 ## DEC-001 — Tipo de projeto
 
@@ -123,7 +122,7 @@ desde que o cancelamento ocorra **antes do horário marcado** para o início do 
 
 ## DEC-016 — Situações do agendamento
 
-**Situação:** `APROVADA PARCIALMENTE PELO GRUPO` (formalizada em 25/10/2026). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
+**Situação:** `APROVADA PELO GRUPO` (quatro situações formalizadas em 25/10/2026; `SOLICITADO` resolvido pelo grupo em 25/10/2026, `PG-01`). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
 
 **Decisão aprovada:** o agendamento assume as situações:
 
@@ -143,10 +142,12 @@ Transições que decorrem das decisões aprovadas (DEC-011, DEC-017):
 | `Confirmado` | atendimento realizado | `Realizado` | RF-030 |
 | `Confirmado` | ausência do paciente | `Não compareceu` | RF-037 |
 
+**`SOLICITADO` não é situação persistente** (decisão do grupo de 25/10/2026, opção B da `PG-01`): a solicitação é validada e, quando não há conflito, o agendamento já é criado como `Confirmado`. Se houver conflito ou o horário estiver indisponível, nenhum agendamento é criado. `SOLICITADO` não deve aparecer como estado na máquina de estados, no modelo de classes nem no banco.
+
+**Registro de `Não compareceu`:** feito pelo Psicólogo (DEC-025).
+
 **Ainda não decidido:**
 
-- se `SOLICITADO` será um estado **persistente** do agendamento ou apenas uma **etapa transitória** do fluxo de solicitação (`PG-01`). Enquanto isso não for decidido, a proposta original com `SOLICITADO` não deve ser tratada como vigente;
-- quem registra `Não compareceu` e em que momento (`PG-03`, `DEC-025`);
 - se `Cancelado`, `Realizado` e `Não compareceu` são situações finais sem reversão, como sugeria a proposta original (a regra RN-006 já impede que um agendamento cancelado seja registrado como realizado).
 
 ## DEC-017 — Confirmação automática do agendamento
@@ -158,19 +159,28 @@ O agendamento é **confirmado automaticamente** pelo sistema quando o horário s
 
 **Efeitos nos requisitos:** `RF-025`, `RF-026`, `RN-013`; a confirmação gera o envio de e-mail de `RF-033` (DEC-009).
 
-**Detalhe de modelagem não decidido pelo grupo:** a assinatura `confirmar(solicitante: Usuario)` e demais detalhes de operação continuam como proposta técnica do Integrante 2 e devem ser revistos depois de resolvida a `PG-01`.
+**Detalhe de modelagem não decidido pelo grupo:** a assinatura `confirmar(solicitante: Usuario)` e demais detalhes de operação continuam como proposta técnica do Integrante 2 e devem ser revistos para refletir que não há situação `SOLICITADO` (DEC-016).
+
+## DEC-025 — Registro de "Não compareceu" pelo Psicólogo
+
+**Situação:** `APROVADA PELO GRUPO` com redação revisada (25/10/2026, `PG-03`). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
+
+**Decisão:**  
+O **Psicólogo** registra a situação `Não compareceu` **após o horário marcado**, quando o agendamento não tiver sido cancelado nem concluído (ou seja, continua `Confirmado`).
+
+**Efeitos nos requisitos:** `RF-037`, `RN-020`, `CA-RF-037`, `HU-012`.
+
+**Não faz parte desta decisão:** a proposta original também dizia "após o término do horário" e "não há expiração automática". O grupo aprovou a redação "após o horário marcado"; o registro automático pelo sistema não foi aprovado.
 
 ---
 
 # PENDÊNCIAS QUE EXIGEM DECISÃO DO GRUPO
 
-> Itens abertos em 25/10/2026. Não devem ser tratados como aprovados em requisitos, diagramas, persistência ou pitch. Ao decidir, registrar a decisão no item de origem (DEC) e remover a pendência daqui.
+> Itens abertos em 25/10/2026. PG-01 e PG-03 foram resolvidas pelo grupo em 25/10/2026 (ver DEC-016 e DEC-025) e saíram da tabela. Não devem ser tratados como aprovados em requisitos, diagramas, persistência ou pitch. Ao decidir, registrar a decisão no item de origem (DEC) e remover a pendência daqui.
 
 | ID | Pendência | Origem | Requisitos afetados |
 |---|---|---|---|
-| PG-01 | `SOLICITADO` é estado persistente do agendamento ou apenas etapa transitória do fluxo? | DEC-016, DEC-017 | RF-025, RF-026, RN-020 |
 | PG-02 | Existe antecedência mínima para cancelar além de "antes do horário marcado"? A proposta de **2 horas não foi aprovada**. | DEC-011, DEC-012 | RF-027, RN-012 |
-| PG-03 | Quem registra `Não compareceu` (psicólogo, outro ator ou o sistema automaticamente) e a partir de quando? | DEC-016, DEC-025 | RF-037, RN-020 |
 | PG-04 | Ordem da fila da lista de espera (por exemplo, ordem de entrada ou outro critério). | DEC-010 | RF-035, RN-021 |
 | PG-05 | A vaga é oferecida a um paciente por vez ou a vários ao mesmo tempo? | DEC-010 | RF-035, RN-021 |
 | PG-06 | Prazo para o paciente aceitar a vaga oferecida e se o horário fica reservado para ele durante esse prazo. | DEC-010, DUV-005 | RF-036, RN-021 |
@@ -187,7 +197,7 @@ O agendamento é **confirmado automaticamente** pelo sistema quando o horário s
 
 > **Atenção:** o bloco abaixo **não é decisão vigente**. São propostas submetidas pelo Integrante 2 na Fase 5 (revisão do modelo de domínio), com o objetivo de destravar a Fase 6 (sequências) e a Fase 7 (persistência). Cada proposta só passa a valer quando o grupo a aprovar e quando o Integrante 1 mover a linha correspondente para o registro oficial de decisões.
 >
-> Atualização de 25/10/2026: **DEC-011**, **DEC-016** (parcialmente) e **DEC-017** foram aprovadas pelo grupo e movidas para o registro oficial acima, mantendo os números. As demais continuam como proposta.
+> Atualização de 25/10/2026: **DEC-011**, **DEC-016**, **DEC-017** e **DEC-025** foram aprovadas pelo grupo e movidas para o registro oficial acima, mantendo os números. As demais continuam como proposta.
 >
 > Numeração: as propostas **DEC-011** e **DEC-012** já são citadas nas especificações de caso de uso do Integrante 2 (`UC-027`) e por isso mantêm esses números. As demais são novas.
 >
@@ -195,7 +205,7 @@ O agendamento é **confirmado automaticamente** pelo sistema quando o horário s
 
 ## DEC-012 — Prazo de antecedência para cancelamento (proposta)
 
-> **Atualização de 25/10/2026:** o grupo **não aprovou** a antecedência mínima de 2 horas. O consenso vigente (DEC-011) é que o cancelamento pode ocorrer **antes do horário marcado**. Se haverá algum prazo mínimo adicional continua em aberto (`PG-02`). As referências a `SOLICITADO` dependem da `PG-01`.
+> **Atualização de 25/10/2026:** o grupo **não aprovou** a antecedência mínima de 2 horas. O consenso vigente (DEC-011) é que o cancelamento pode ocorrer **antes do horário marcado**. Se haverá algum prazo mínimo adicional continua em aberto (`PG-02`). As referências a `SOLICITADO` estão superadas: o grupo decidiu que essa situação não é persistente (DEC-016).
 
 **Proposta original (não aprovada):** O cancelamento só é aceito quando o agendamento está em situação `SOLICITADO` ou `CONFIRMADO` **e** faltam no mínimo **2 horas** para o início do horário. Após o início, o compromisso só pode ser encerrado como `REALIZADO` ou `NAO_COMPARECEU`.
 
@@ -279,7 +289,7 @@ O agendamento é **confirmado automaticamente** pelo sistema quando o horário s
 
 ## DEC-023 — Registro de atendimento referencia o agendamento (proposta)
 
-> **Atualização de 25/10/2026:** depende da `PG-01` (a proposta cita `CONFIRMADO` como situação de origem) e da `PG-12`.
+> **Atualização de 25/10/2026:** com `SOLICITADO` fora das situações (DEC-016), `CONFIRMADO` é a única origem possível do atendimento. A proposta continua dependendo da `PG-12`.
 
 **Proposta:** O `Atendimento` referencia o `Agendamento` do qual decorre (A15, `1` para `0..1`). O registro só é permitido para agendamento em situação `CONFIRMADO`, e o atendimento é criado quando o agendamento passa a `REALIZADO`.
 
@@ -292,16 +302,6 @@ O agendamento é **confirmado automaticamente** pelo sistema quando o horário s
 **Proposta:** O registro de auditoria é disparado por um **serviço de aplicação** após cada operação auditável, e não por dependência estrutural das entidades. O conteúdo mínimo do registro é: responsável, data, hora, operação, **situação anterior** e **nova situação** quando a operação alterou uma situação.
 
 **Justificativa:** Fecha a pendência PC-12 do Integrante 3 (colaborações) e a INC-07 do Integrante 4 (situação anterior/nova), e mantém RN-009 e RN-014 verificáveis sem acoplar todas as classes ao `RegistroAuditoria`.
-
-**Situação:** aguardando aprovação do grupo.
-
-## DEC-025 — "Não compareceu" é registrado manualmente (proposta)
-
-> **Atualização de 25/10/2026:** a situação `Não compareceu` foi aprovada (DEC-016), mas **quem a registra e quando continua sem decisão** (`PG-03`). Esta proposta não deve ser tratada como aprovada.
-
-**Proposta:** A situação `NAO_COMPARECEU` é registrada manualmente pelo **psicólogo**, após o término do horário. Não há expiração automática.
-
-**Justificativa:** Fecha a pendência "DEC-5" citada em `UC-027`. A alternativa automática exigiria um mecanismo de temporização, que traria complexidade (e risco) sem regra aprovada.
 
 **Situação:** aguardando aprovação do grupo.
 

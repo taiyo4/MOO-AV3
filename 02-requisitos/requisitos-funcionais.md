@@ -412,7 +412,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-021, RF-024, RF-026.
 
-**Observações:** Confirmação automática aprovada em DEC-017. Se a solicitação será registrada com a situação persistente `SOLICITADO` antes da confirmação ou se é apenas uma etapa transitória do fluxo depende de decisão do grupo (`PG-01`).
+**Observações:** Confirmação automática aprovada em DEC-017. A solicitação não é registrada como situação própria: `SOLICITADO` não é persistente, e o agendamento já nasce `Confirmado` (DEC-016).
 
 ### RF-026 — Confirmar agendamento automaticamente
 
@@ -428,7 +428,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-025, RF-033.
 
-**Observações:** Decisão DEC-017. A existência de uma situação anterior `SOLICITADO` depende da `PG-01`. A assinatura da operação nos modelos é proposta técnica do Integrante 2 e não decisão do grupo.
+**Observações:** Decisão DEC-017. Não há situação anterior a `Confirmado` (DEC-016). A assinatura da operação nos modelos é proposta técnica do Integrante 2 e não decisão do grupo.
 
 ### RF-027 — Cancelar agendamento
 
@@ -444,7 +444,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-025, RF-026, RF-032, RF-033.
 
-**Observações:** Decisão DEC-011. A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). Também estão pendentes o cancelamento pelo Administrador (`PG-10`), se o cancelamento pelo Psicólogo gera oferta à lista de espera (`PG-09`) e se `SOLICITADO` também é cancelável (`PG-01`).
+**Observações:** Decisão DEC-011. A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). Também estão pendentes o cancelamento pelo Administrador (`PG-10`), e se o cancelamento pelo Psicólogo gera oferta à lista de espera (`PG-09`).
 
 ### RF-028 — Consultar os próprios agendamentos
 
@@ -480,19 +480,19 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 ### RF-037 — Registrar não comparecimento
 
-**Descrição:** O sistema deverá permitir registrar que o Cliente/Paciente não compareceu a um agendamento confirmado, alterando sua situação para `Não compareceu`.
+**Descrição:** O sistema deverá permitir que o Psicólogo registre que o Cliente/Paciente não compareceu a um agendamento confirmado, alterando sua situação para `Não compareceu`.
 
-**Ator(es):** `PENDENTE DE DECISÃO DO GRUPO` (`PG-03`).
+**Ator(es):** Psicólogo (agendamento da própria agenda).
 
 **Prioridade:** Média.
 
-**Pré-condições:** O agendamento deve estar na situação `Confirmado` e o horário marcado deve ter começado; o momento exato a partir do qual o registro é permitido depende da `PG-03`.
+**Pré-condições:** O Psicólogo deve estar autenticado e ser o responsável pelo agendamento; o horário marcado já deve ter passado; o agendamento deve continuar `Confirmado`, ou seja, não pode ter sido cancelado nem concluído.
 
 **Pós-condições:** A situação do agendamento deverá ser `Não compareceu` e a alteração deverá ser auditada (RF-032).
 
 **Dependências:** RF-026, RF-029, RF-032.
 
-**Observações:** Situação aprovada em DEC-016. Numerado em 25/10/2026, após RF-033 a RF-036, para preservar a numeração existente. A proposta DEC-025 (registro manual pelo Psicólogo) não foi aprovada.
+**Observações:** Situação aprovada em DEC-016 e responsável aprovado em DEC-025. Numerado em 25/10/2026, após RF-033 a RF-036, para preservar a numeração existente. O registro automático pelo sistema não foi aprovado.
 
 ## 6. Atendimento
 

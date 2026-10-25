@@ -2,7 +2,7 @@
 
 Esta matriz conecta cada requisito funcional às regras de negócio aplicáveis, ator, caso de uso futuro e critério de aceite. Os nomes `UC-FUT-*` são identificadores de trabalho para o Integrante 2 confirmar ou substituir; não representam casos de uso ou diagramas já elaborados. Onde não há regra específica, usa-se RNF aplicável ou indica-se “—”.
 
-**Atualização de 25/10/2026:** linhas RF-025 a RF-027 e RF-030 revisadas; linhas RF-033 a RF-037 acrescentadas; colunas de história de usuário e decisão incluídas. Pendências do grupo usam os identificadores `PG-xx` de `01-planejamento/decisoes.md`.
+**Atualização de 25/10/2026:** linhas RF-025 a RF-027 e RF-030 revisadas; linhas RF-033 a RF-037 acrescentadas; colunas de história de usuário e decisão incluídas. Linhas RF-025, RF-026 e RF-037 atualizadas após a resolução de PG-01 e PG-03. Pendências do grupo usam os identificadores `PG-xx` de `01-planejamento/decisoes.md`.
 
 | Requisito | Regra relacionada | Ator | Caso de uso futuro | Critério de aceite | História | Decisão | Status |
 |---|---|---|---|---|---|---|---|
@@ -30,8 +30,8 @@ Esta matriz conecta cada requisito funcional às regras de negócio aplicáveis,
 | RF-022 | RN-004, RNF-005 | Cliente/Paciente | UC-FUT-022 — Consultar próprio cadastro | CA-RF-022 | HU-008 | DEC-006 | Para revisão |
 | RF-023 | RN-011 | Psicólogo | UC-FUT-023 — Cadastrar disponibilidade | CA-RF-023 | HU-009 | — | Para revisão |
 | RF-024 | RN-010, RN-004 | Cliente/Paciente | UC-FUT-024 — Consultar horários disponíveis | CA-RF-024 | HU-010 | DEC-006 | Para revisão |
-| RF-025 | RN-005, RN-010, RN-013 | Cliente/Paciente | UC-FUT-025 — Solicitar agendamento | CA-RF-025 | HU-010 | DEC-017 | Para revisão; `PG-01` |
-| RF-026 | RN-005, RN-013, RN-020, RN-022 | Sistema (automático) | UC-FUT-026 — Confirmar agendamento automaticamente | CA-RF-026 | HU-010, HU-012 | DEC-017, DEC-016 | Para revisão; `PG-01` |
+| RF-025 | RN-005, RN-010, RN-013 | Cliente/Paciente | UC-FUT-025 — Solicitar agendamento | CA-RF-025 | HU-010 | DEC-016, DEC-017 | Para revisão |
+| RF-026 | RN-005, RN-013, RN-020, RN-022 | Sistema (automático) | UC-FUT-026 — Confirmar agendamento automaticamente | CA-RF-026 | HU-010, HU-012 | DEC-017, DEC-016 | Para revisão |
 | RF-027 | RN-006, RN-009, RN-012, RN-020, RN-022 | Cliente/Paciente, Psicólogo | UC-FUT-027 — Cancelar agendamento | CA-RF-027 | HU-011, HU-012 | DEC-011, DEC-016 | Para revisão; `PG-02`, `PG-09`, `PG-10` |
 | RF-028 | RN-004, RNF-005 | Cliente/Paciente | UC-FUT-028 — Consultar próprios agendamentos | CA-RF-028 | HU-011 | DEC-006 | Para revisão |
 | RF-029 | RN-003, RN-011 | Psicólogo | UC-FUT-029 — Consultar agenda própria | CA-RF-029 | HU-012 | — | Para revisão |
@@ -42,15 +42,13 @@ Esta matriz conecta cada requisito funcional às regras de negócio aplicáveis,
 | RF-034 | RN-003, RN-021 | Cliente/Paciente | UC-FUT-034 — Entrar na lista de espera | CA-RF-034 | HU-015 | DEC-010 | Para revisão; `PG-08` |
 | RF-035 | RN-012, RN-021, RN-022 | Sistema; Serviço Externo de E-mail | UC-FUT-035 — Ofertar horário liberado | CA-RF-035 | HU-015 | DEC-010 | Para revisão; `PG-04`, `PG-05`, `PG-07`, `PG-09` |
 | RF-036 | RN-005, RN-013, RN-021 | Cliente/Paciente | UC-FUT-036 — Responder à oferta de vaga | CA-RF-036 | HU-015 | DEC-010, DEC-017 | Para revisão; `PG-06`, `PG-07` |
-| RF-037 | RN-009, RN-020 | Pendente de decisão do grupo | UC-FUT-037 — Registrar não comparecimento | CA-RF-037 | — | DEC-016 | Pendente de decisão do grupo; `PG-03` |
+| RF-037 | RN-009, RN-020 | Psicólogo | UC-FUT-037 — Registrar não comparecimento | CA-RF-037 | HU-012 | DEC-016, DEC-025 | Para revisão |
 
 ## Pendências para fechar a rastreabilidade
 
 - Integrante 2 deve confirmar nomes, fronteiras e atores dos casos de uso futuros. A matriz da Fase 5 já propõe `UC-033` (notificar por e-mail) e um único `UC-034` (encaixe em lista de espera); este último cobriria RF-034 a RF-036 e precisa ser conciliado com a convenção `UC-0RF` proposta em DEC-026.
 - RF-021 não possui história de usuário própria (lacuna anterior a esta revisão).
-- `SOLICITADO` persistente ou transitório (`PG-01`) afeta RF-025, RF-026 e RN-020.
 - Antecedência mínima de cancelamento (`PG-02`): a regra de 2 horas não foi aprovada.
-- Ator e momento do registro de `Não compareceu` (`PG-03`) bloqueiam o ator de RF-037.
 - Parâmetros da lista de espera (`PG-04` a `PG-09`) afetam RF-034 a RF-036 e RN-021.
 - Cancelamento pelo Administrador (`PG-10`), falha de envio de e-mail (`PG-11`) e relação entre atendimento e `Realizado` (`PG-12`).
 - Grupo deve selecionar quais eventos não administrativos também serão auditáveis (RF-032/RN-009).
