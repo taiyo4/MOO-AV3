@@ -14,7 +14,7 @@ A plataforma é composta pelos seguintes módulos principais:
 5. **Agenda**
 6. **Atendimento**
 7. **Auditoria**
-8. **Inovação** (Pendente de definição pelo grupo)
+8. **Inovação** — lista de espera inteligente (DEC-010)
 
 ## 3. Funcionalidades gerais por módulo
 
@@ -50,14 +50,15 @@ A plataforma é composta pelos seguintes módulos principais:
 - Consulta de horários e faixas de disponibilidade do psicólogo vinculado;
 - Solicitação de agendamentos;
 - Consulta aos próprios agendamentos;
-- Cancelamento de agendamentos próprios (respeitando regras estabelecidas).
+- Cancelamento de agendamentos próprios antes do horário marcado (DEC-011);
+- Entrada na lista de espera e resposta a ofertas de vaga (DEC-010).
 
 ### 3.5 Agenda
 - Configuração de faixas e regras de disponibilidade dos profissionais;
 - Criação e manutenção de agendamentos;
-- Confirmação de agendamentos;
-- Cancelamento de agendamentos;
-- Controle dos estados/situação do agendamento (ex.: agendado, confirmado, cancelado, realizado).
+- Confirmação automática de agendamentos quando o horário está disponível e sem conflito (DEC-017);
+- Cancelamento de agendamentos pelo paciente titular ou pelo psicólogo, antes do horário marcado (DEC-011);
+- Controle das situações do agendamento: `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016; `SOLICITADO` pendente, `PG-01`).
 
 ### 3.6 Atendimento
 - Registro conceitual de sessões de atendimento;
@@ -72,10 +73,7 @@ A plataforma é composta pelos seguintes módulos principais:
 - Suporte a consultas administrativas para fins de conformidade e segurança.
 
 ### 3.8 Inovação
-```text
-PENDENTE DE DECISÃO DO GRUPO
-```
-A funcionalidade de inovação será definida em momento oportuno pelo grupo e posteriormente incorporada aos requisitos, modelos, persistência e apresentação do projeto.
+**Lista de espera inteligente** (DEC-010, aprovada em 25/10/2026): quando um agendamento for cancelado, o horário liberado poderá ser oferecido a outro paciente que aguarda na lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). Requisitos: RF-034 a RF-036. Ordem da fila, prazo de aceite e tratamento de recusa ou ausência de resposta continuam pendentes (`PG-04` a `PG-09`).
 
 ## 4. Fora do escopo
 
@@ -100,7 +98,7 @@ Para manter a viabilidade e controlar a complexidade da modelagem dentro dos lim
 
 ### 5.2 O que é externo ao sistema (Fronteiras externas)
 - Navegadores e dispositivos de acesso utilizados pelos usuários finais;
-- Serviço Externo de E-mail/Notificação (caso seja confirmada a sua utilização);
+- Serviço Externo de E-mail, para confirmações, cancelamentos e ofertas de vaga (DEC-009, RF-033);
 - Sistemas de cobrança, bancos ou operadoras (descartados pelo escopo negativo).
 
 ## 6. Premissas
@@ -123,10 +121,4 @@ Para manter a viabilidade e controlar a complexidade da modelagem dentro dos lim
 
 ## 8. Pendências de decisão
 
-1. **Funcionalidade de Inovação:**
-   - Status: `PENDENTE DE DECISÃO DO GRUPO`
-   - Descrição: O grupo definirá a funcionalidade inovadora a ser modelada antes do fechamento dos requisitos funcionais.
-
-2. **Serviço Externo de E-mail/Notificação:**
-   - Status: `PENDENTE DE DECISÃO DO GRUPO`
-   - Descrição: Avaliação se a plataforma contará com ator externo para disparo de mensagens ou se a notificação será tratada apenas internamente.
+As pendências de inovação e de serviço externo foram resolvidas em 25/10/2026 (DEC-010 e DEC-009). As pendências abertas estão consolidadas em `PG-01` a `PG-12`, em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md).

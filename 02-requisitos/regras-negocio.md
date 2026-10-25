@@ -2,6 +2,8 @@
 
 As regras formalizam restrições operacionais identificadas no escopo e nas decisões. Regras sem parâmetros definidos estão marcadas como pendentes e não devem ser tratadas como decisão já aprovada.
 
+**Atualização de 25/10/2026:** RN-012 e RN-013 foram revisadas conforme DEC-011 e DEC-017, e foram acrescentadas RN-020 a RN-022 (DEC-009, DEC-010 e DEC-016). Os identificadores **RN-015 a RN-019 não foram usados** aqui porque já identificam propostas técnicas do Integrante 4 em `04-persistencia/analises/`, ainda não incorporadas; reutilizá-los geraria referências ambíguas.
+
 ### RN-001 — Bloqueio de autenticação
 
 **Regra:** Usuários bloqueados não podem autenticar-se.
@@ -48,7 +50,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Atores/entidades envolvidos:** Psicólogo, disponibilidade, agendamento.
 
-**Requisitos relacionados:** RF-023, RF-025, RF-026.
+**Requisitos relacionados:** RF-023, RF-025, RF-026, RF-036.
 
 **Justificativa:** Evitar conflitos na agenda.
 
@@ -88,7 +90,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Atores/entidades envolvidos:** Usuário, situação cadastral, agendamento, auditoria.
 
-**Requisitos relacionados:** RF-020, RF-027, RF-032.
+**Requisitos relacionados:** RF-020, RF-026, RF-027, RF-032, RF-037.
 
 **Justificativa:** Permitir identificar operações relevantes e seus responsáveis.
 
@@ -114,27 +116,27 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 ### RN-012 — Permissão para cancelamento
 
-**Regra:** O cancelamento deve respeitar as permissões do ator responsável e as condições de cancelamento aprovadas pelo grupo.
+**Regra:** Um agendamento na situação `Confirmado` somente pode ser cancelado pelo Cliente/Paciente titular ou pelo Psicólogo responsável pelo agendamento, e somente antes do horário marcado. O cancelamento libera o horário.
 
-**Atores/entidades envolvidos:** Cliente/Paciente, Psicólogo, Administrador, agendamento.
+**Atores/entidades envolvidos:** Cliente/Paciente, Psicólogo, agendamento, disponibilidade.
 
-**Requisitos relacionados:** RF-027.
+**Requisitos relacionados:** RF-027, RF-035.
 
-**Justificativa:** Garantir que apenas atores autorizados alterem a situação do agendamento.
+**Justificativa:** Garantir que apenas atores autorizados alterem a situação do agendamento (DEC-011).
 
-**Pendência:** Definir prazo de antecedência, situações canceláveis e se Psicólogo e/ou Administrador podem cancelar.
+**Pendências:** A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). Cancelamento pelo Administrador (`PG-10`) e cancelamento de `SOLICITADO` (`PG-01`) não foram decididos.
 
-### RN-013 — Confirmação de agendamento
+### RN-013 — Confirmação automática de agendamento
 
-**Regra:** A confirmação deve ocorrer por ator ou mecanismo autorizado, segundo fluxo aprovado pelo grupo.
+**Regra:** O agendamento é confirmado automaticamente pelo sistema quando o horário estiver disponível e não houver conflito de agenda; não há aprovação manual por outro ator. Sem disponibilidade ou com conflito, o agendamento não é confirmado.
 
-**Atores/entidades envolvidos:** Agendamento; ator responsável pendente.
+**Atores/entidades envolvidos:** Sistema, Cliente/Paciente, agendamento, disponibilidade.
 
-**Requisitos relacionados:** RF-025, RF-026.
+**Requisitos relacionados:** RF-025, RF-026, RF-036.
 
-**Justificativa:** A Fase 2 prevê confirmação, mas não identifica o responsável nem define confirmação automática.
+**Justificativa:** Decisão DEC-017.
 
-**Pendência:** Definir ator responsável, estados anteriores/posteriores e efeito sobre disponibilidade.
+**Pendência:** Se existe situação persistente `SOLICITADO` anterior à confirmação (`PG-01`).
 
 ### RN-014 — Imutabilidade lógica de auditoria
 
@@ -145,3 +147,39 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 **Requisitos relacionados:** RF-013, RF-032.
 
 **Justificativa:** Preservar confiabilidade da trilha operacional, conforme escopo.
+
+### RN-020 — Situações do agendamento
+
+**Regra:** O agendamento assume as situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu`. `Cancelado`, `Realizado` e `Não compareceu` são atribuídos a agendamento `Confirmado`; outras origens dependem da `PG-01`.
+
+**Atores/entidades envolvidos:** Agendamento.
+
+**Requisitos relacionados:** RF-026, RF-027, RF-030, RF-037.
+
+**Justificativa:** Decisão DEC-016, que alinha requisitos, máquina de estados e persistência.
+
+**Pendências:** Se `SOLICITADO` é situação persistente ou etapa transitória (`PG-01`); quem registra `Não compareceu` (`PG-03`); relação entre registro de atendimento e `Realizado` (`PG-12`).
+
+### RN-021 — Oferta de horário da lista de espera
+
+**Regra:** Um horário liberado por cancelamento pode ser oferecido a paciente da lista de espera do mesmo Psicólogo, desde que o paciente possua vínculo autorizado com ele. A oferta só se converte em agendamento se o paciente aceitar e o horário continuar disponível e sem conflito no momento do aceite (RN-005, RN-013).
+
+**Atores/entidades envolvidos:** Cliente/Paciente, Psicólogo, lista de espera, disponibilidade, agendamento.
+
+**Requisitos relacionados:** RF-027, RF-034, RF-035, RF-036.
+
+**Justificativa:** Decisão DEC-010.
+
+**Pendências:** Ordem da fila (`PG-04`), número de pacientes que recebem a oferta (`PG-05`), prazo de aceite e reserva durante o prazo (`PG-06`), recusa ou ausência de resposta (`PG-07`), abrangência da entrada (`PG-08`) e oferta após cancelamento pelo Psicólogo (`PG-09`).
+
+### RN-022 — Eventos notificados por e-mail
+
+**Regra:** A confirmação de agendamento, o cancelamento de agendamento e a oferta de vaga da lista de espera devem gerar solicitação de envio de e-mail ao Serviço Externo de E-mail. A mensagem não deve conter senhas nem informações clínicas.
+
+**Atores/entidades envolvidos:** Sistema, Serviço Externo de E-mail, Cliente/Paciente, Psicólogo.
+
+**Requisitos relacionados:** RF-026, RF-027, RF-033, RF-035.
+
+**Justificativa:** Decisão DEC-009.
+
+**Pendência:** Efeito de falha no envio sobre a operação de origem (`PG-11`).

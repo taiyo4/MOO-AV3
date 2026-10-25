@@ -17,4 +17,7 @@ Este documento padroniza os principais termos e conceitos do domínio da **Plata
 | **Atendimento** | Registro conceitual de uma atividade ou sessão profissional realizada pelo psicólogo. |
 | **Auditoria** | Registro cronológico, seguro e rastreável de operações relevantes realizadas no sistema. |
 | **Serviço Externo** | Sistema externo utilizado pela plataforma para alguma integração (ex.: envio de mensagens). |
-| **Notificação** | Comunicação enviada ao usuário sobre evento relevante do sistema. |
+| **Notificação** | Comunicação enviada ao usuário sobre evento relevante do sistema; no escopo atual, e-mail de confirmação, cancelamento ou oferta de vaga (DEC-009). |
+| **Lista de espera** | Registro de pacientes interessados em horário com um psicólogo, usado para oferecer horários liberados por cancelamento (DEC-010). |
+| **Oferta de vaga** | Proposta, enviada a um paciente da lista de espera, de ocupar um horário liberado; só gera agendamento se aceita e se o horário continuar disponível. |
+| **Situação do agendamento** | `Confirmado`, `Cancelado`, `Realizado` ou `Não compareceu` (DEC-016). |

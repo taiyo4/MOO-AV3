@@ -3,6 +3,15 @@
 Este arquivo será utilizado para registrar decisões relevantes
 tomadas durante o desenvolvimento da AV3.
 
+## Situação das decisões (atualizada em 25/10/2026)
+
+| Situação | Decisões |
+|---|---|
+| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-017 |
+| Aprovada parcialmente | DEC-016 (quatro situações aprovadas; `SOLICITADO` pendente) |
+| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-026 |
+| Pendências abertas | PG-01 a PG-12 (seção "Pendências que exigem decisão do grupo") |
+
 ## DEC-001 — Tipo de projeto
 
 O trabalho consiste na modelagem orientada a objetos de uma
@@ -63,21 +72,114 @@ Permanecerão explicitamente fora do escopo do projeto: pagamentos, faturamento,
 **Justificativa:**  
 Limitar a amplitude do projeto para assegurar profundidade e rigor metodológico na modelagem orientada a objetos dos módulos essenciais.
 
-## DEC-009 — Status do Serviço Externo de Notificação
+## DEC-009 — Serviço Externo de E-mail
+
+**Situação:** `APROVADA PELO GRUPO` (consenso registrado por mensagem; formalizada em 25/10/2026).
 
 **Decisão:**  
-O uso de um Serviço Externo de E-mail/Notificação como ator externo permanece registrado como `PENDENTE DE DECISÃO DO GRUPO`.
+A plataforma utilizará um **Serviço Externo de E-mail** como ator externo de suporte para enviar mensagens aos usuários nos seguintes eventos:
 
-**Justificativa:**  
-A definição do canal de disparo externo ou tratamento interno de avisos será deliberada em conjunto pelo grupo antes da consolidação dos casos de uso.
+- confirmação de agendamento;
+- cancelamento de agendamento;
+- oferta de vaga da lista de espera (DEC-010).
 
-## DEC-010 — Status da Funcionalidade de Inovação
+**Efeitos nos requisitos:** o envio passa a ser especificado em `RF-033`; as regras correspondentes estão em `RN-022`.
+
+**Fora desta decisão:** o envio de e-mail em outros eventos (por exemplo, `Realizado` ou `Não compareceu`) e o tratamento de falha no envio não foram decididos (ver `PG-11`).
+
+**Histórico:** substitui o registro anterior "`PENDENTE DE DECISÃO DO GRUPO`".
+
+## DEC-010 — Funcionalidade de Inovação: lista de espera inteligente
+
+**Situação:** `APROVADA PELO GRUPO` (consenso registrado por mensagem; formalizada em 25/10/2026). Parâmetros operacionais pendentes.
 
 **Decisão:**  
-A funcionalidade de inovação permanece registrada como `PENDENTE DE DECISÃO DO GRUPO`.
+A funcionalidade de inovação será uma **lista de espera inteligente**: quando um agendamento for cancelado, o horário liberado **poderá** ser oferecido a outro paciente que aguarda na lista de espera. A oferta é comunicada por e-mail (DEC-009).
 
-**Justificativa:**  
-A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe para posterior integração nos requisitos, modelos UML, persistência e pitch.
+**Efeitos nos requisitos:** `RF-034`, `RF-035` e `RF-036`; regra `RN-021`.
+
+**Pontos ainda não decididos pelo grupo:** ordem da fila (`PG-04`), quantos pacientes recebem a oferta ao mesmo tempo (`PG-05`), prazo para aceitar a vaga (`PG-06`), tratamento de recusa ou ausência de resposta (`PG-07`), abrangência da entrada na lista (`PG-08`) e se o cancelamento feito pelo psicólogo também gera oferta (`PG-09`). Nenhum desses parâmetros deve ser tratado como aprovado nos modelos.
+
+**Histórico:** substitui o registro anterior "`PENDENTE DE DECISÃO DO GRUPO`".
+
+## DEC-011 — Atores autorizados para cancelar um agendamento
+
+**Situação:** `APROVADA PELO GRUPO` com redação revisada (formalizada em 25/10/2026). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
+
+**Decisão:**  
+O cancelamento (`RF-027`, `RN-012`) pode ser feito:
+
+- pelo **Cliente/Paciente** titular do agendamento;
+- pelo **Psicólogo** responsável pelo agendamento;
+
+desde que o cancelamento ocorra **antes do horário marcado** para o início do atendimento.
+
+**Não aprovado nesta decisão:**
+
+- antecedência mínima de duas horas ou qualquer outro prazo mínimo (ver `DEC-012` e `PG-02`);
+- cancelamento pelo Administrador, inclusive em operação corretiva, que constava da proposta original (ver `PG-10`).
+
+**Justificativa:** Coerente com DEC-006 (autoatendimento limitado do paciente) e com RN-003 (o profissional só atua sobre pacientes vinculados).
+
+## DEC-016 — Situações do agendamento
+
+**Situação:** `APROVADA PARCIALMENTE PELO GRUPO` (formalizada em 25/10/2026). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
+
+**Decisão aprovada:** o agendamento assume as situações:
+
+| Situação | Identificador técnico sugerido nos modelos |
+|---|---|
+| Confirmado | `CONFIRMADO` |
+| Cancelado | `CANCELADO` |
+| Realizado | `REALIZADO` |
+| Não compareceu | `NAO_COMPARECEU` |
+
+Transições que decorrem das decisões aprovadas (DEC-011, DEC-017):
+
+| De | Evento | Para | Base |
+|---|---|---|---|
+| — | solicitação aceita automaticamente | `Confirmado` | DEC-017 |
+| `Confirmado` | cancelamento antes do horário, pelo paciente ou psicólogo | `Cancelado` | DEC-011 |
+| `Confirmado` | atendimento realizado | `Realizado` | RF-030 |
+| `Confirmado` | ausência do paciente | `Não compareceu` | RF-037 |
+
+**Ainda não decidido:**
+
+- se `SOLICITADO` será um estado **persistente** do agendamento ou apenas uma **etapa transitória** do fluxo de solicitação (`PG-01`). Enquanto isso não for decidido, a proposta original com `SOLICITADO` não deve ser tratada como vigente;
+- quem registra `Não compareceu` e em que momento (`PG-03`, `DEC-025`);
+- se `Cancelado`, `Realizado` e `Não compareceu` são situações finais sem reversão, como sugeria a proposta original (a regra RN-006 já impede que um agendamento cancelado seja registrado como realizado).
+
+## DEC-017 — Confirmação automática do agendamento
+
+**Situação:** `APROVADA PELO GRUPO` (formalizada em 25/10/2026). Originalmente submetida como proposta pelo Integrante 2 na Fase 5.
+
+**Decisão:**  
+O agendamento é **confirmado automaticamente** pelo sistema quando o horário solicitado estiver disponível e não houver conflito de agenda. Não há aprovação manual por outro ator. Se o horário não estiver disponível ou houver conflito, a solicitação não é confirmada (RN-005, RN-010).
+
+**Efeitos nos requisitos:** `RF-025`, `RF-026`, `RN-013`; a confirmação gera o envio de e-mail de `RF-033` (DEC-009).
+
+**Detalhe de modelagem não decidido pelo grupo:** a assinatura `confirmar(solicitante: Usuario)` e demais detalhes de operação continuam como proposta técnica do Integrante 2 e devem ser revistos depois de resolvida a `PG-01`.
+
+---
+
+# PENDÊNCIAS QUE EXIGEM DECISÃO DO GRUPO
+
+> Itens abertos em 25/10/2026. Não devem ser tratados como aprovados em requisitos, diagramas, persistência ou pitch. Ao decidir, registrar a decisão no item de origem (DEC) e remover a pendência daqui.
+
+| ID | Pendência | Origem | Requisitos afetados |
+|---|---|---|---|
+| PG-01 | `SOLICITADO` é estado persistente do agendamento ou apenas etapa transitória do fluxo? | DEC-016, DEC-017 | RF-025, RF-026, RN-020 |
+| PG-02 | Existe antecedência mínima para cancelar além de "antes do horário marcado"? A proposta de **2 horas não foi aprovada**. | DEC-011, DEC-012 | RF-027, RN-012 |
+| PG-03 | Quem registra `Não compareceu` (psicólogo, outro ator ou o sistema automaticamente) e a partir de quando? | DEC-016, DEC-025 | RF-037, RN-020 |
+| PG-04 | Ordem da fila da lista de espera (por exemplo, ordem de entrada ou outro critério). | DEC-010 | RF-035, RN-021 |
+| PG-05 | A vaga é oferecida a um paciente por vez ou a vários ao mesmo tempo? | DEC-010 | RF-035, RN-021 |
+| PG-06 | Prazo para o paciente aceitar a vaga oferecida e se o horário fica reservado para ele durante esse prazo. | DEC-010, DUV-005 | RF-036, RN-021 |
+| PG-07 | Tratamento de recusa ou ausência de resposta dentro do prazo. | DEC-010, DUV-005 | RF-035, RF-036, RN-021 |
+| PG-08 | Abrangência da entrada na lista: por psicólogo, por faixa de horário ou por horário específico; se o paciente pode consultar a posição e sair da lista. | DEC-010 | RF-034 |
+| PG-09 | O cancelamento feito pelo psicólogo também libera o horário para a lista de espera? | DEC-010, DEC-011 | RF-027, RF-035, RN-021 |
+| PG-10 | O Administrador pode cancelar agendamentos (por exemplo, em operação corretiva)? | DEC-011 | RF-027, RN-012 |
+| PG-11 | Efeito de falha no envio de e-mail sobre a operação que o originou. | DEC-009 | RF-033, RN-022 |
+| PG-12 | Relação entre o registro do atendimento e a situação `Realizado` (proposta DEC-023). | DEC-016, DEC-023 | RF-030, RN-020 |
 
 ---
 
@@ -85,23 +187,17 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 > **Atenção:** o bloco abaixo **não é decisão vigente**. São propostas submetidas pelo Integrante 2 na Fase 5 (revisão do modelo de domínio), com o objetivo de destravar a Fase 6 (sequências) e a Fase 7 (persistência). Cada proposta só passa a valer quando o grupo a aprovar e quando o Integrante 1 mover a linha correspondente para o registro oficial de decisões.
 >
+> Atualização de 25/10/2026: **DEC-011**, **DEC-016** (parcialmente) e **DEC-017** foram aprovadas pelo grupo e movidas para o registro oficial acima, mantendo os números. As demais continuam como proposta.
+>
 > Numeração: as propostas **DEC-011** e **DEC-012** já são citadas nas especificações de caso de uso do Integrante 2 (`UC-027`) e por isso mantêm esses números. As demais são novas.
 >
 > Base completa: [`01-planejamento/revisoes/FASE5-REV-I2-revisao-modelo-dominio.md`](revisoes/FASE5-REV-I2-revisao-modelo-dominio.md) e [`06-rastreabilidade/matriz-rastreabilidade-fase5.md`](../06-rastreabilidade/matriz-rastreabilidade-fase5.md).
 
-## DEC-011 — Atores autorizados para cancelar um agendamento (proposta)
-
-**Proposta:** O cancelamento (RF-027, RN-012) pode ser solicitado pelo **paciente** titular do agendamento e pelo **psicólogo** vinculado. O administrador só cancela em operação corretiva, e sempre com motivo registrado em auditoria.
-
-**Justificativa:** Coerente com DEC-006 (acesso do paciente limitado, mas com autoatendimento de agenda) e com RN-003 (o profissional só atua sobre pacientes vinculados). Evita que a operação fique sem ator definido, como está hoje em `UC-027`.
-
-**Efeito no modelo:** assinatura `Agendamento.cancelar(solicitante: Usuario, motivo: Texto)` com guarda de autorização; a autorização é verificável na própria operação.
-
-**Situação:** aguardando aprovação do grupo.
-
 ## DEC-012 — Prazo de antecedência para cancelamento (proposta)
 
-**Proposta:** O cancelamento só é aceito quando o agendamento está em situação `SOLICITADO` ou `CONFIRMADO` **e** faltam no mínimo **2 horas** para o início do horário. Após o início, o compromisso só pode ser encerrado como `REALIZADO` ou `NAO_COMPARECEU`.
+> **Atualização de 25/10/2026:** o grupo **não aprovou** a antecedência mínima de 2 horas. O consenso vigente (DEC-011) é que o cancelamento pode ocorrer **antes do horário marcado**. Se haverá algum prazo mínimo adicional continua em aberto (`PG-02`). As referências a `SOLICITADO` dependem da `PG-01`.
+
+**Proposta original (não aprovada):** O cancelamento só é aceito quando o agendamento está em situação `SOLICITADO` ou `CONFIRMADO` **e** faltam no mínimo **2 horas** para o início do horário. Após o início, o compromisso só pode ser encerrado como `REALIZADO` ou `NAO_COMPARECEU`.
 
 **Justificativa:** Fecha a pendência citada em `UC-027` ("prazo de antecedência mínimo para cancelar — ainda sem definição do grupo") e materializa a guarda `podeSerCancelado()`.
 
@@ -109,7 +205,7 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 **Alternativa a discutir:** 4 horas ou 24 horas, ou valor definido por faixa de horário.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** prazo de 2 horas não aprovado; existência de prazo mínimo pendente (`PG-02`).
 
 ## DEC-013 — Situações da conta de usuário (proposta)
 
@@ -134,32 +230,6 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 **Justificativa:** Fecha parcialmente a DUV-003 e a pendência P-12 do Integrante 4, e torna verificável a restrição de acesso ao longo do tempo.
 
 **Ponto de atenção:** a alternativa "cancelar automaticamente os agendamentos futuros" é mais simples de implementar, mas retira decisão do profissional — o grupo precisa escolher.
-
-**Situação:** aguardando aprovação do grupo.
-
-## DEC-016 — Situações e transições do agendamento (proposta)
-
-**Proposta:** `Agendamento.situacao` assume `SOLICITADO`, `CONFIRMADO`, `REALIZADO`, `CANCELADO` e `NAO_COMPARECEU`, com as transições:
-
-| De | Evento | Para |
-|---|---|---|
-| — | `solicitar` | `SOLICITADO` |
-| `SOLICITADO` | `confirmar` | `CONFIRMADO` |
-| `CONFIRMADO` | `concluir` | `REALIZADO` |
-| `CONFIRMADO` | `registrarFalta` | `NAO_COMPARECEU` |
-| `SOLICITADO` / `CONFIRMADO` | `cancelar` | `CANCELADO` |
-
-`solicitar`, `confirmar` e `cancelar` ocupam o horário (RN-005, RN-010). `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` são terminais, e `CANCELADO` não admite atendimento (RN-006).
-
-**Justificativa:** Usa exatamente a nomenclatura do plano §5.4 ("Solicitado → Confirmado → Realizado; saídas para Cancelado e Não compareceu"), de modo que domínio, casos de uso, máquina de estados (EST-001) e banco (`agendamento.status`) usem os mesmos nomes.
-
-**Situação:** aguardando aprovação do grupo.
-
-## DEC-017 — Mecanismo da confirmação do agendamento (proposta)
-
-**Proposta:** A confirmação do agendamento é **automática**, disparada pelo sistema no mesmo fluxo da solicitação, sem aprovação manual de outro ator — exatamente como já escrito em `UC-025`. A regra RN-013 é satisfeita por **mecanismo autorizado**, e a assinatura `confirmar(solicitante: Usuario)` fica completa, com o solicitante identificando quem originou a solicitação.
-
-**Justificativa:** O horário só aparece para o paciente porque o profissional já o liberou; um passo de aprovação manual duplicaria a regra RN-011. Fecha a pendência P-01 do Integrante 4 e a pendência PC-07 do Integrante 3.
 
 **Situação:** aguardando aprovação do grupo.
 
@@ -199,13 +269,17 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 ## DEC-022 — Notificação por e-mail como fronteira de aplicação (proposta)
 
+> **Atualização de 25/10/2026:** a DEC-009 foi aprovada e o requisito foi numerado como `RF-033`. A condição "enquanto o grupo não decidir" deixou de existir. Continua como proposta apenas a forma de modelagem (interface de fronteira, sem classe de domínio e sem tabela).
+
 **Proposta:** Enquanto o grupo não decidir a DEC-009, a notificação é modelada como **fronteira de aplicação** (interface `ServicoEnvioMensagem`), sem classe de domínio e sem tabela. Se a DEC-009 for aprovada, o Integrante 1 deve numerar o requisito correspondente (RF-033) e a notificação passa a aparecer no diagrama de componentes da Fase 7.
 
 **Justificativa:** O plano §6.1 penaliza elementos órfãos; criar a classe `Notificacao` sem requisito seria um órfão. A include UC "Notificar paciente por e-mail" já existe e hoje não tem responsável modelada (achado R5-12).
 
-**Situação:** aguardando aprovação do grupo (vinculada à DEC-009).
+**Situação:** forma de modelagem aguardando aprovação do grupo (DEC-009 já aprovada).
 
 ## DEC-023 — Registro de atendimento referencia o agendamento (proposta)
+
+> **Atualização de 25/10/2026:** depende da `PG-01` (a proposta cita `CONFIRMADO` como situação de origem) e da `PG-12`.
 
 **Proposta:** O `Atendimento` referencia o `Agendamento` do qual decorre (A15, `1` para `0..1`). O registro só é permitido para agendamento em situação `CONFIRMADO`, e o atendimento é criado quando o agendamento passa a `REALIZADO`.
 
@@ -222,6 +296,8 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 **Situação:** aguardando aprovação do grupo.
 
 ## DEC-025 — "Não compareceu" é registrado manualmente (proposta)
+
+> **Atualização de 25/10/2026:** a situação `Não compareceu` foi aprovada (DEC-016), mas **quem a registra e quando continua sem decisão** (`PG-03`). Esta proposta não deve ser tratada como aprovada.
 
 **Proposta:** A situação `NAO_COMPARECEU` é registrada manualmente pelo **psicólogo**, após o término do horário. Não há expiração automática.
 
