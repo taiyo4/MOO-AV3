@@ -17,7 +17,7 @@
 | `03-uml/Atividade/` | ATV-001 | `.drawio.xml` + `.mmd` | sim | OK |
 | `03-uml/Estados/` | EST-001 | `.drawio.xml` + `.mmd` | sim | OK |
 
-Total: 18 fontes editáveis (`.mmd` e `.drawio.xml`) e 11 PDFs. Não há PNG ou SVG; o PDF é a exportação adotada.
+Total: 20 fontes editáveis (`.mmd` e `.drawio.xml`) e 12 PDFs. Não há PNG ou SVG; o PDF é a exportação adotada.
 
 ## 2. Lacunas
 
