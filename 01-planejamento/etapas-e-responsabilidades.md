@@ -42,7 +42,7 @@ Depois de cada correção, o Integrante 5 confirma na tabela de controle de acha
 
 ## 3. Fases restantes
 
-Janelas conforme o plano: Fase 7 de 09 a 13/11, Fase 8 de 14 a 18/11, Fase 9 de 19 a 24/11. Congelar novas funcionalidades em 19/11. Entrega em 24/11/2026.
+**Atenção às datas:** `cronograma.md` (Fase 7 de 03 a 09/11, Fase 8 de 10 a 16/11, Fase 9 de 17 a 23/11) e o PDF do plano de execução (janelas abaixo) diferem; vale uma só. Janelas conforme o PDF: Fase 7 de 09 a 13/11, Fase 8 de 14 a 18/11, Fase 9 de 19 a 24/11. Congelar novas funcionalidades em 19/11. Entrega em 24/11/2026.
 
 ### Fase 7 — Arquitetura e persistência (09 a 13/11)
 

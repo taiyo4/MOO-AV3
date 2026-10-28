@@ -88,12 +88,12 @@ Texto pronto para as seções 21 a 24 do dossiê: `07-dossie/secoes/fase6-secao-
 As pastas `Atividade`, `Comunicação`, `Estados` e `Sequências` **não estão mais
 vazias**: os seis diagramas comportamentais da Fase 6 já foram entregues.
 
-O que segue **depende de decisão do grupo** e não é bloqueio de entrega, mas de
-fechamento:
+O grupo decidiu as pendências em 28/10/2026 (DEC-009 a DEC-030). O que falta
+é **propagar** essas decisões aos diagramas; a lista, com dono, está em
+[`../01-planejamento/etapas-e-responsabilidades.md`](../01-planejamento/etapas-e-responsabilidades.md).
 
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
-| Multiplicidades `PENDENTE` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades (a exclusividade de horário é citada por RN/RF) | grupo + Integrante 3 |
-| Incorporação das operações `OP-01…OP-22` e das situações §6 da Fase 5 pelo Integrante 3 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto | Integrante 3 |
-| DEC-009 (canal de notificação), DEC-010 (inovação/"encaixe"), DEC-012 (prazo e ator do cancelamento) | notificação é fronteira externa condicional; a sequência do "encaixe" não foi produzida (lacuna registrada) | grupo |
-| P-01 (mecanismo da confirmação), P-02 (prazo), P-05 (modelo do horário) | as guardas `[slot livre]` e `[prazo]` e a reserva de slot ficam sem valor fechado | grupo |
+| Multiplicidades `PENDENTE` e situações no diagrama de classes oficial | decisões DEC-013 a DEC-021 e DEC-030 ainda não incorporadas | Integrante 3 |
+| `SOLICITADO` em EST-001 e SEQ-002; guarda `[prazo]`; notificação condicional | contrariam DEC-016, DEC-011/028 e DEC-009/029 | Integrante 2 |
+| Lista de espera (RF-034 a RF-036) e não comparecimento (RF-037) sem caso de uso e sem diagrama | parâmetros da fila decididos na DEC-027 | Integrante 2 (comportamento) e 3 (classes) |

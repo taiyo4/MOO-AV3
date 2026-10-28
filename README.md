@@ -12,8 +12,8 @@ O produto é um **dossiê de modelagem** completo e rastreável — requisitos, 
 | 2 — Visão, escopo e contexto | até 14/09 | Concluída |
 | 3 — Requisitos | 15/09–28/09 | Concluída; baseline atualizada com as decisões de 25/10/2026 |
 | 4 — Casos de uso | 29/09–05/10 | Concluída; casos de uso para RF-028 e RF-033 a RF-037 pendentes |
-| 5 — Modelo OO | 06/10–19/10 | Entregue; diagrama de classes oficial com multiplicidades pendentes e proposta v2 em avaliação |
-| 6 — Comportamento | 20/10–02/11 | **Em andamento** — seis diagramas entregues; propagar DEC-016 (sem `SOLICITADO`) e modelar a lista de espera |
+| 5 — Modelo OO | 06/10–19/10 | Entregue; proposta v2 do Integrante 2 removida em 28/10/2026; falta fechar multiplicidades e incorporar DEC-013 a DEC-030 no diagrama oficial (Integrante 3) |
+| 6 — Comportamento | 20/10–02/11 | **Em andamento** — seis diagramas entregues; propagar DEC-016 (sem `SOLICITADO`) e DEC-027 a DEC-030 e modelar a lista de espera (Integrante 2) |
 | 7 — Arquitetura e persistência | 03/11–09/11 | A iniciar |
 | 8 — Qualidade e rastreabilidade | 10/11–16/11 | Plano de qualidade preliminar pronto |
 | 9 — Consolidação e pitch | 17/11–23/11 | Dossiê v0.6 montado; roteiro preliminar do pitch |

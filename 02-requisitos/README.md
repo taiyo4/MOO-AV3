@@ -2,7 +2,7 @@
 
 ## Objetivo e fase
 
-Esta pasta reúne a especificação verificável e rastreável dos requisitos da Plataforma para Psicólogos. O projeto está na **Fase 3 — levantamento e especificação de requisitos**. Esta fase não inclui diagramas comportamentais, modelo de classes, persistência ou implementação.
+Esta pasta reúne a especificação verificável e rastreável dos requisitos da Plataforma para Psicólogos. A baseline foi criada na Fase 3 e atualizada em 25/10/2026 e em 28/10/2026 (DEC-009 a DEC-030; nenhuma pendência PG aberta). O projeto está na **Fase 6**; os diagramas, o modelo de classes e a persistência estão em `03-uml/` e `04-persistencia/`.
 
 ## Documentos de visão e escopo
 
@@ -32,4 +32,4 @@ Esta pasta reúne a especificação verificável e rastreável dos requisitos da
 
 ## Status da revisão
 
-Os documentos iniciais da Fase 3 foram preparados para revisão. A revisão cruzada pelos Integrantes 2 a 6 e a validação do grupo continuam pendentes; portanto, os requisitos ainda não estão marcados como aprovados ou estáveis.
+A revisão de qualidade dos requisitos (Integrante 5, achados Q3-01 a Q3-11) está em `05-qualidade/analises/fase-03-verificacao-requisitos.md`. Os achados ainda abertos dependem do Integrante 1. O que falta para cada integrante está em `01-planejamento/etapas-e-responsabilidades.md`.
