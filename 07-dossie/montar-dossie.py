@@ -76,16 +76,16 @@ NOTAS_INTEGRACAO = {
     ],
     19: [
         "Na proposta CLS-001 v2 (retirada em 28/10/2026) e no oficial, conforme o caso, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).",
-        "A guarda de `podeSerCancelado()` (\"situação atual + prazo\") deve ser lida como **\"antes do horário marcado\"** (DEC-011); o prazo de 2 horas não foi aprovado (PG-02).",
-        "Atributos e tipos ainda incompletos nas duas versões do diagrama (Q5-08).",
+        "A guarda de `podeSerCancelado()` (\"situação atual + prazo\") deve ser lida como **\"antes do horário marcado\"** (DEC-011); o prazo de 2 horas não foi adotado e não há antecedência mínima (DEC-028, 28/10/2026).",
+        "Atributos e tipos ainda incompletos no diagrama (Q5-08).",
     ],
     20: [
         "O objeto de notificação é descrito \"enquanto DEC-009 não for decidida\"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (proposta DEC-022).",
     ],
     21: [
         "A SEQ-002 mostra o agendamento criado como `SOLICITADO` e depois confirmado; pela **DEC-016** o agendamento já nasce `Confirmado` (Q6-01).",
-        "As referências a **DEC-009 (pendente)** e **DEC-012 (pendente)** estão superadas: DEC-009 foi aprovada; o cancelamento vale \"antes do horário marcado\" (DEC-011), e só a antecedência adicional continua pendente (PG-02).",
-        "A sequência da lista de espera (SEQ-004) ainda não existe; com a DEC-010 aprovada, ela deixou de estar bloqueada (Q6-05).",
+        "As referências a **DEC-009 (pendente)** e **DEC-012 (pendente)** estão superadas: DEC-009 foi aprovada; o cancelamento vale \"antes do horário marcado\" (DEC-011), e a DEC-028 (28/10/2026) confirma que não há antecedência adicional.",
+        "A sequência da lista de espera (SEQ-004) ainda não existe; com a DEC-010 aprovada e os parâmetros da fila decididos (DEC-027, 28/10/2026), ela deixou de estar bloqueada (Q6-05).",
     ],
     22: [
         "A notificação aparece como fronteira **condicional**; desde a DEC-009 ela é obrigatória para confirmação, cancelamento e oferta de vaga (Q6-04).",

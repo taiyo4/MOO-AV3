@@ -116,7 +116,7 @@ Problemas identificados (`02-requisitos/visao.md` §2):
 
 **Agenda (decisões de 25/10/2026):** confirmação automática quando o horário está disponível e sem conflito (DEC-017); cancelamento pelo paciente titular ou pelo psicólogo antes do horário marcado (DEC-011); situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016) — `SOLICITADO` **não** é situação persistente; `Não compareceu` registrado pelo Psicólogo após o horário marcado (DEC-025).
 
-**Inovação:** o horário liberado por cancelamento pode ser oferecido a paciente da lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). A oferta só vira agendamento se o paciente aceitar e o horário continuar disponível (RN-021). Ordem da fila, prazo de aceite, recusa ou ausência de resposta e abrangência da entrada **continuam pendentes** (PG-04 a PG-09).
+**Inovação:** o horário liberado por cancelamento pode ser oferecido a paciente da lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). A oferta só vira agendamento se o paciente aceitar e o horário continuar disponível (RN-021). Parâmetros aprovados em 28/10/2026 (DEC-027): fila por ordem de entrada, uma oferta por vez, prazo de aceite curto e configurável com o horário reservado ao paciente, recusa ou ausência de resposta passa a oferta ao próximo, entrada por Psicólogo e horário específico, e o cancelamento do Psicólogo também gera oferta.
 
 **Fronteira:** interno — entidades, serviços, regras, interfaces com os atores autenticados, autenticação/autorização e persistência relacional; externo — navegadores e dispositivos dos usuários e o Serviço Externo de E-mail.
 
@@ -189,13 +189,14 @@ Fonte: `02-requisitos/glossario.md`.
 
 ## 10. Decisões do projeto
 
-O registro oficial está em `01-planejamento/decisoes.md`. Situação em 25/10/2026:
+O registro oficial está em `01-planejamento/decisoes.md`. Situação em 28/10/2026:
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-025 (redação revisada) |
-| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-024, DEC-026 |
-| Pendências abertas | PG-02 e PG-04 a PG-12 |
+| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
+| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Pendências abertas | nenhuma (PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 | Decisão aprovada | Conteúdo |
 |---|---|
@@ -209,8 +210,12 @@ O registro oficial está em `01-planejamento/decisoes.md`. Situação em 25/10/2
 | DEC-016 | Situações `Confirmado`, `Cancelado`, `Realizado`, `Não compareceu`; `SOLICITADO` não é persistente |
 | DEC-017 | Confirmação automática quando o horário está disponível e sem conflito |
 | DEC-025 | Psicólogo registra `Não compareceu` após o horário marcado |
+| DEC-027 | Parâmetros da lista de espera |
+| DEC-028 | Sem antecedência mínima para cancelar; o Administrador não cancela |
+| DEC-029 | Falha no envio de e-mail não desfaz a operação |
+| DEC-030 | Registro do atendimento leva o agendamento a `Realizado` |
 
-**Não aprovado:** antecedência mínima de duas horas para cancelar; cancelamento pelo Administrador (PG-10); registro automático de `Não compareceu`; parâmetros da fila (PG-04 a PG-09).
+**Não adotado:** antecedência mínima de duas horas (DEC-012); registro automático de `Não compareceu`.
 
 ---
 
@@ -508,8 +513,8 @@ Cada um dos 32 requisitos funcionais tem ao menos um conceito do modelo associad
 
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
 > - Na proposta CLS-001 v2 (retirada em 28/10/2026) e no oficial, conforme o caso, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).
-> - A guarda de `podeSerCancelado()` ("situação atual + prazo") deve ser lida como **"antes do horário marcado"** (DEC-011); o prazo de 2 horas não foi aprovado (PG-02).
-> - Atributos e tipos ainda incompletos nas duas versões do diagrama (Q5-08).
+> - A guarda de `podeSerCancelado()` ("situação atual + prazo") deve ser lida como **"antes do horário marcado"** (DEC-011); o prazo de 2 horas não foi adotado e não há antecedência mínima (DEC-028, 28/10/2026).
+> - Atributos e tipos ainda incompletos no diagrama (Q5-08).
 
 ### 19.1 Identificação e objetivo
 
@@ -612,8 +617,8 @@ Cada objeto corresponde a uma linha (ou a um conjunto de linhas) do modelo relac
 
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
 > - A SEQ-002 mostra o agendamento criado como `SOLICITADO` e depois confirmado; pela **DEC-016** o agendamento já nasce `Confirmado` (Q6-01).
-> - As referências a **DEC-009 (pendente)** e **DEC-012 (pendente)** estão superadas: DEC-009 foi aprovada; o cancelamento vale "antes do horário marcado" (DEC-011), e só a antecedência adicional continua pendente (PG-02).
-> - A sequência da lista de espera (SEQ-004) ainda não existe; com a DEC-010 aprovada, ela deixou de estar bloqueada (Q6-05).
+> - As referências a **DEC-009 (pendente)** e **DEC-012 (pendente)** estão superadas: DEC-009 foi aprovada; o cancelamento vale "antes do horário marcado" (DEC-011), e a DEC-028 (28/10/2026) confirma que não há antecedência adicional.
+> - A sequência da lista de espera (SEQ-004) ainda não existe; com a DEC-010 aprovada e os parâmetros da fila decididos (DEC-027, 28/10/2026), ela deixou de estar bloqueada (Q6-05).
 
 ### 21.1 Identificação e objetivo
 
@@ -1056,10 +1061,7 @@ Divergências abertas de maior impacto (precisam ser fechadas antes da Fase 7):
 
 Limitações conhecidas até a Fase 6 (a revisar na Fase 9):
 
-- parâmetros da lista de espera não decididos (PG-04 a PG-09);
-- efeito de falha no envio de e-mail não decidido (PG-11);
-- relação entre registro de atendimento e situação `Realizado` em proposta (PG-12, DEC-023);
-- antecedência mínima de cancelamento além de "antes do horário" não decidida (PG-02);
+- decisões de 28/10/2026 (DEC-027 a DEC-030) ainda não propagadas aos diagramas, à persistência e às seções 18 a 24;
 - RNF-010 sem métrica de desempenho;
 - o modelo não cobre prontuário clínico, pagamentos nem teleconsulta, por decisão de escopo (DEC-008).
 

@@ -440,11 +440,13 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Pré-condições:** O solicitante deve estar autenticado e ser o Cliente/Paciente titular ou o Psicólogo do agendamento; o agendamento deve estar na situação `Confirmado`; o horário marcado ainda não deve ter começado.
 
-**Pós-condições:** A situação do agendamento deverá ser alterada para `Cancelado`, o horário deverá ser liberado, a alteração deverá ser auditada (RF-032), o e-mail de cancelamento deverá ser solicitado (RF-033) e o horário liberado poderá ser oferecido à lista de espera (RF-035). O agendamento cancelado não poderá ser registrado como atendimento realizado.
+**Pós-condições:** A situação do agendamento deverá ser alterada para `Cancelado`, o horário deverá ser liberado, a alteração deverá ser auditada (RF-032), o e-mail de cancelamento deverá ser solicitado (RF-033) e o horário liberado deverá ser oferecido à lista de espera (RF-035), inclusive quando o cancelamento for do Psicólogo (DEC-027). O agendamento cancelado não poderá ser registrado como atendimento realizado.
 
 **Dependências:** RF-025, RF-026, RF-032, RF-033.
 
-**Observações:** Decisão DEC-011. A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). Também estão pendentes o cancelamento pelo Administrador (`PG-10`), e se o cancelamento pelo Psicólogo gera oferta à lista de espera (`PG-09`).
+**Observações:** Não há antecedência mínima além de "antes do horário marcado", e o Administrador não cancela agendamentos (DEC-028).
+
+**Observações:** Decisão DEC-011. Não há antecedência mínima além de "antes do horário marcado", e o Administrador não cancela (DEC-028). Também estão pendentes o cancelamento pelo Administrador (`PG-10`), e se o cancelamento pelo Psicólogo gera oferta à lista de espera (`PG-09`).
 
 ### RF-028 — Consultar os próprios agendamentos
 
@@ -510,7 +512,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-017, RF-021, RF-029.
 
-**Observações:** Registro conceitual não significa prontuário clínico completo; não incluir conteúdo clínico aprofundado. A situação `Realizado` foi aprovada (DEC-016); a relação entre este registro e a mudança do agendamento para `Realizado` é a proposta DEC-023, ainda não aprovada (`PG-12`).
+**Observações:** Registro conceitual não significa prontuário clínico completo; não incluir conteúdo clínico aprofundado. A situação `Realizado` foi aprovada (DEC-016); o registro só é permitido para agendamento `Confirmado` e, ao registrar, o agendamento passa a `Realizado` (DEC-030).
 
 ### RF-031 — Consultar histórico permitido de atendimentos
 
@@ -562,11 +564,11 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-026, RF-027, RF-035.
 
-**Observações:** Decisão DEC-009. Envio em outros eventos não foi decidido. O efeito de falha no envio sobre a operação de origem está pendente (`PG-11`).
+**Observações:** Decisão DEC-009. Envio em outros eventos não foi decidido. A falha no envio não desfaz a operação de origem; é registrada na auditoria e o envio pode ser repetido (DEC-029).
 
 ## 9. Inovação — Lista de espera inteligente
 
-**Status do módulo:** aprovado pelo grupo (DEC-010). Os parâmetros operacionais da fila continuam pendentes (`PG-04` a `PG-09`) e não devem ser presumidos nos modelos.
+**Status do módulo:** aprovado pelo grupo (DEC-010). Os parâmetros da fila foram decididos em 28/10/2026 (DEC-027).
 
 ### RF-034 — Entrar na lista de espera
 
@@ -582,7 +584,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-001, RF-021.
 
-**Observações:** Pendentes: abrangência da entrada (por psicólogo, faixa de horário ou horário específico), consulta da posição e saída voluntária da lista (`PG-08`).
+**Observações:** A entrada é por Psicólogo e horário específico; o paciente pode consultar a própria posição e sair da lista (DEC-027).
 
 ### RF-035 — Ofertar horário liberado à lista de espera
 
@@ -598,7 +600,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-027, RF-033, RF-034.
 
-**Observações:** Pendentes: ordem da fila (`PG-04`), oferta a um ou a vários pacientes ao mesmo tempo (`PG-05`), tratamento de recusa ou ausência de resposta (`PG-07`), se o horário fica reservado durante o prazo de aceite (`PG-06`) e se o cancelamento pelo Psicólogo também gera oferta (`PG-09`).
+**Observações:** Fila por ordem de entrada; oferta a um paciente por vez; o cancelamento feito pelo Psicólogo também gera oferta (DEC-027).
 
 ### RF-036 — Responder à oferta de vaga
 
@@ -614,4 +616,4 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-026, RF-035.
 
-**Observações:** Pendentes: prazo para aceitar (`PG-06`) e o que ocorre após recusa ou ausência de resposta (`PG-07`).
+**Observações:** O prazo para aceitar é curto e configurável, e o horário fica reservado ao paciente durante o prazo. Em caso de recusa ou ausência de resposta, o paciente perde a vez e a oferta passa ao próximo da fila; se ninguém aceitar, o horário volta a ficar livre (DEC-027).

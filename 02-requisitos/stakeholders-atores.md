@@ -48,7 +48,7 @@ Ator externo de suporte confirmado (DEC-009, 25/10/2026): **Serviço Externo de 
 - Consultar faixas de horários disponíveis do psicólogo vinculado;
 - Solicitar agendamentos de sessões;
 - Consultar o status e o histórico dos próprios agendamentos;
-- Cancelar agendamentos próprios antes do horário marcado (DEC-011; antecedência mínima adicional pendente, `PG-02`);
+- Cancelar agendamentos próprios antes do horário marcado (DEC-011; sem antecedência mínima adicional, DEC-028);
 - Entrar na lista de espera do psicólogo vinculado e responder a ofertas de vaga (DEC-010);
 - Consultar unicamente as informações e dados disponibilizados ao seu próprio usuário.
 

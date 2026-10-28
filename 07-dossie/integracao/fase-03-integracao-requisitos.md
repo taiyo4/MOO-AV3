@@ -24,7 +24,7 @@
 |---|---|
 | Quantidades no dossiê = quantidades na baseline | **OK** — 37 RF, 12 RNF, 17 RN, 37 CA, 16 HU |
 | IDs reservados documentados (RN-015 a RN-019) | **OK** — nota na seção 14 |
-| Pendências citadas como pendências (PG-02, PG-04 a PG-12) | **OK** — seções 6 e 10 |
+| Pendências citadas como pendências (PG-02, PG-04 a PG-12) | **OK** em 25/10/2026; resolvidas em 28/10/2026 (DEC-027 a DEC-030) e seções atualizadas |
 | Documentos de outras pastas usam a mesma numeração | **Divergente** (INT-06) |
 
 ## 3. Achados de integração

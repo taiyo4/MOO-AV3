@@ -32,23 +32,21 @@ Esta matriz conecta cada requisito funcional às regras de negócio aplicáveis,
 | RF-024 | RN-010, RN-004 | Cliente/Paciente | UC-FUT-024 — Consultar horários disponíveis | CA-RF-024 | HU-010 | DEC-006 | Para revisão |
 | RF-025 | RN-005, RN-010, RN-013 | Cliente/Paciente | UC-FUT-025 — Solicitar agendamento | CA-RF-025 | HU-010 | DEC-016, DEC-017 | Para revisão |
 | RF-026 | RN-005, RN-013, RN-020, RN-022 | Sistema (automático) | UC-FUT-026 — Confirmar agendamento automaticamente | CA-RF-026 | HU-010, HU-012 | DEC-017, DEC-016 | Para revisão |
-| RF-027 | RN-006, RN-009, RN-012, RN-020, RN-022 | Cliente/Paciente, Psicólogo | UC-FUT-027 — Cancelar agendamento | CA-RF-027 | HU-011, HU-012 | DEC-011, DEC-016 | Para revisão; `PG-02`, `PG-09`, `PG-10` |
+| RF-027 | RN-006, RN-009, RN-012, RN-020, RN-022 | Cliente/Paciente, Psicólogo | UC-FUT-027 — Cancelar agendamento | CA-RF-027 | HU-011, HU-012 | DEC-011, DEC-016, DEC-028 | Para revisão; pendências resolvidas em 28/10/2026 |
 | RF-028 | RN-004, RNF-005 | Cliente/Paciente | UC-FUT-028 — Consultar próprios agendamentos | CA-RF-028 | HU-011 | DEC-006 | Para revisão |
 | RF-029 | RN-003, RN-011 | Psicólogo | UC-FUT-029 — Consultar agenda própria | CA-RF-029 | HU-012 | — | Para revisão |
-| RF-030 | RN-006, RN-007, RN-020 | Psicólogo | UC-FUT-030 — Registrar atendimento realizado | CA-RF-030 | HU-013 | DEC-016 | Para revisão; `PG-12` |
+| RF-030 | RN-006, RN-007, RN-020 | Psicólogo | UC-FUT-030 — Registrar atendimento realizado | CA-RF-030 | HU-013 | DEC-016, DEC-030 | Para revisão; pendências resolvidas em 28/10/2026 |
 | RF-031 | RN-003, RN-007 | Psicólogo | UC-FUT-031 — Consultar histórico permitido | CA-RF-031 | HU-013 | — | Para revisão |
 | RF-032 | RN-009, RN-014, RNF-004 | Sistema, decorrente de ação dos atores | UC-FUT-032 — Registrar evento de auditoria | CA-RF-032 | HU-014 | — | Para revisão |
-| RF-033 | RN-022 | Sistema; Serviço Externo de E-mail | UC-FUT-033 — Enviar notificação por e-mail | CA-RF-033 | HU-016 | DEC-009 | Para revisão; `PG-11` |
-| RF-034 | RN-003, RN-021 | Cliente/Paciente | UC-FUT-034 — Entrar na lista de espera | CA-RF-034 | HU-015 | DEC-010 | Para revisão; `PG-08` |
-| RF-035 | RN-012, RN-021, RN-022 | Sistema; Serviço Externo de E-mail | UC-FUT-035 — Ofertar horário liberado | CA-RF-035 | HU-015 | DEC-010 | Para revisão; `PG-04`, `PG-05`, `PG-07`, `PG-09` |
-| RF-036 | RN-005, RN-013, RN-021 | Cliente/Paciente | UC-FUT-036 — Responder à oferta de vaga | CA-RF-036 | HU-015 | DEC-010, DEC-017 | Para revisão; `PG-06`, `PG-07` |
+| RF-033 | RN-022 | Sistema; Serviço Externo de E-mail | UC-FUT-033 — Enviar notificação por e-mail | CA-RF-033 | HU-016 | DEC-009, DEC-029 | Para revisão; pendências resolvidas em 28/10/2026 |
+| RF-034 | RN-003, RN-021 | Cliente/Paciente | UC-FUT-034 — Entrar na lista de espera | CA-RF-034 | HU-015 | DEC-010, DEC-027 | Para revisão; pendências resolvidas em 28/10/2026 |
+| RF-035 | RN-012, RN-021, RN-022 | Sistema; Serviço Externo de E-mail | UC-FUT-035 — Ofertar horário liberado | CA-RF-035 | HU-015 | DEC-010, DEC-027 | Para revisão; pendências resolvidas em 28/10/2026 |
+| RF-036 | RN-005, RN-013, RN-021 | Cliente/Paciente | UC-FUT-036 — Responder à oferta de vaga | CA-RF-036 | HU-015 | DEC-010, DEC-017, DEC-027 | Para revisão; pendências resolvidas em 28/10/2026 |
 | RF-037 | RN-009, RN-020 | Psicólogo | UC-FUT-037 — Registrar não comparecimento | CA-RF-037 | HU-012 | DEC-016, DEC-025 | Para revisão |
 
 ## Pendências para fechar a rastreabilidade
 
 - Integrante 2 deve confirmar nomes, fronteiras e atores dos casos de uso futuros. A matriz da Fase 5 já propõe `UC-033` (notificar por e-mail) e um único `UC-034` (encaixe em lista de espera); este último cobriria RF-034 a RF-036 e precisa ser conciliado com a convenção `UC-0RF` proposta em DEC-026.
 - RF-021 não possui história de usuário própria (lacuna anterior a esta revisão).
-- Antecedência mínima de cancelamento (`PG-02`): a regra de 2 horas não foi aprovada.
-- Parâmetros da lista de espera (`PG-04` a `PG-09`) afetam RF-034 a RF-036 e RN-021.
-- Cancelamento pelo Administrador (`PG-10`), falha de envio de e-mail (`PG-11`) e relação entre atendimento e `Realizado` (`PG-12`).
+- Todas as pendências do grupo foram resolvidas em 28/10/2026: DEC-027 (lista de espera, `PG-04` a `PG-09`), DEC-028 (cancelamento, `PG-02` e `PG-10`), DEC-029 (falha de e-mail, `PG-11`) e DEC-030 (atendimento e `Realizado`, `PG-12`). Falta propagar aos diagramas (ver `01-planejamento/`).
 - Grupo deve selecionar quais eventos não administrativos também serão auditáveis (RF-032/RN-009).

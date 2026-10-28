@@ -57,7 +57,7 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 |---|---|---|---|---|---|
 | CQ-CON-01 | Maturidade | Todo estado do ciclo do agendamento tem evento de entrada e toda transição tem evento | 100% | EST-001 | **Atende** na forma (rever após Q6-01) |
 | CQ-CON-02 | Tolerância a falhas | Exceções dos casos críticos aparecem nos diagramas de sequência | 100% das exceções de UC-001, UC-025, UC-027 | SEQ-001/002/003 | **Atende** |
-| CQ-CON-03 | Tolerância a falhas | Falha de envio de e-mail tem efeito definido | Decisão registrada | `PG-11` | **Pendente de decisão do grupo** |
+| CQ-CON-03 | Tolerância a falhas | Falha de envio de e-mail tem efeito definido | Decisão registrada | DEC-029 (28/10/2026) | **Atende** (decisão registrada; falta propagar aos diagramas) |
 | CQ-CON-04 | Integridade dos dados | FKs e restrições respeitam as multiplicidades (RNF-007) | 100% das associações com FK/restrição correspondente | DER (Fase 7) | **Não medível ainda** — multiplicidades oficiais `PENDENTE` (Q5-01) |
 | CQ-CON-05 | Integridade sob concorrência | Dois agendamentos ativos nunca ocupam o mesmo horário (RN-005) | Restrição de unicidade + revalidação na confirmação | SEQ-002 (revalidação); DER (Fase 7) | **Parcial** (Q3-09) |
 
@@ -104,10 +104,10 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 
 | Situação | Quantidade de critérios |
 |---|---|
-| Atende (inclui "atende como proposta" e "atende na forma") | 18 |
+| Atende (inclui "atende como proposta" e "atende na forma") | 19 |
 | Parcial | 2 |
 | Não atende | 6 |
-| Pendente de decisão do grupo, em andamento ou não medível ainda | 5 |
+| Pendente de decisão do grupo, em andamento ou não medível ainda | 4 |
 | **Total** | **31** |
 
 Os seis "Não atende" têm três causas: **decisões aprovadas ainda não propagadas aos diagramas** (CQ-ADE-04, CQ-MAN-04, CQ-COM-02), **casos de uso faltando para os requisitos novos, inclusive a inovação** (CQ-ADE-02, CQ-ADE-03) e **prevenção de erro sem requisito** (CQ-INT-01). As duas primeiras são o foco recomendado antes da Fase 7.

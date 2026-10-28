@@ -111,10 +111,7 @@ Divergências abertas de maior impacto (precisam ser fechadas antes da Fase 7):
 
 Limitações conhecidas até a Fase 6 (a revisar na Fase 9):
 
-- parâmetros da lista de espera não decididos (PG-04 a PG-09);
-- efeito de falha no envio de e-mail não decidido (PG-11);
-- relação entre registro de atendimento e situação `Realizado` em proposta (PG-12, DEC-023);
-- antecedência mínima de cancelamento além de "antes do horário" não decidida (PG-02);
+- decisões de 28/10/2026 (DEC-027 a DEC-030) ainda não propagadas aos diagramas, à persistência e às seções 18 a 24;
 - RNF-010 sem métrica de desempenho;
 - o modelo não cobre prontuário clínico, pagamentos nem teleconsulta, por decisão de escopo (DEC-008).
 

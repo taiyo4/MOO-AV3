@@ -42,7 +42,7 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 | Integrante 2 | Q2-01 a Q2-03, Q3-05, Q4-01 a Q4-07, Q4-09, Q4-10, Q5-02, Q5-03, Q5-06, Q5-07, Q5-10, Q6-01 a Q6-07 |
 | Integrante 3 | Q5-01, Q5-03, Q5-04, Q5-05, Q5-08, Q5-09, Q5-10, Q6-07 |
 | Integrante 4 | Q3-02, Q3-11, Q5-05, Q5-08 |
-| Grupo | Q3-03, Q4-08, Q5-01 e as pendências PG-02, PG-04 a PG-12 de `decisoes.md` |
+| Grupo | Q3-03, Q4-08, Q5-01 (as pendências PG-02 e PG-04 a PG-12 foram resolvidas em 28/10/2026, DEC-027 a DEC-030; as análises das Fases 1 a 6 descrevem o estado anterior a essa data) |
 
 ## Convenções
 

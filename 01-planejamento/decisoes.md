@@ -3,13 +3,14 @@
 Este arquivo será utilizado para registrar decisões relevantes
 tomadas durante o desenvolvimento da AV3.
 
-## Situação das decisões (atualizada em 25/10/2026)
+## Situação das decisões (atualizada em 28/10/2026)
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-025 (redação revisada) |
-| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-024, DEC-026 |
-| Pendências abertas | PG-02 e PG-04 a PG-12 (PG-01 e PG-03 resolvidas em 25/10/2026) |
+| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
+| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Pendências abertas | nenhuma (PG-01 e PG-03 resolvidas em 25/10/2026; PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 ## DEC-001 — Tipo de projeto
 
@@ -84,7 +85,7 @@ A plataforma utilizará um **Serviço Externo de E-mail** como ator externo de s
 
 **Efeitos nos requisitos:** o envio passa a ser especificado em `RF-033`; as regras correspondentes estão em `RN-022`.
 
-**Fora desta decisão:** o envio de e-mail em outros eventos (por exemplo, `Realizado` ou `Não compareceu`) e o tratamento de falha no envio não foram decididos (ver `PG-11`).
+**Fora desta decisão:** o envio de e-mail em outros eventos (por exemplo, `Realizado` ou `Não compareceu`) e o tratamento de falha no envio foi decidido em 28/10/2026 (DEC-029, `PG-11`).
 
 **Histórico:** substitui o registro anterior "`PENDENTE DE DECISÃO DO GRUPO`".
 
@@ -97,7 +98,7 @@ A funcionalidade de inovação será uma **lista de espera inteligente**: quando
 
 **Efeitos nos requisitos:** `RF-034`, `RF-035` e `RF-036`; regra `RN-021`.
 
-**Pontos ainda não decididos pelo grupo:** ordem da fila (`PG-04`), quantos pacientes recebem a oferta ao mesmo tempo (`PG-05`), prazo para aceitar a vaga (`PG-06`), tratamento de recusa ou ausência de resposta (`PG-07`), abrangência da entrada na lista (`PG-08`) e se o cancelamento feito pelo psicólogo também gera oferta (`PG-09`). Nenhum desses parâmetros deve ser tratado como aprovado nos modelos.
+**Pontos decididos em 28/10/2026 (DEC-027), antes pendentes:** ordem da fila (`PG-04`), quantos pacientes recebem a oferta ao mesmo tempo (`PG-05`), prazo para aceitar a vaga (`PG-06`), tratamento de recusa ou ausência de resposta (`PG-07`), abrangência da entrada na lista (`PG-08`) e se o cancelamento feito pelo psicólogo também gera oferta (`PG-09`). Ver a DEC-027 para os valores aprovados.
 
 **Histórico:** substitui o registro anterior "`PENDENTE DE DECISÃO DO GRUPO`".
 
@@ -113,10 +114,10 @@ O cancelamento (`RF-027`, `RN-012`) pode ser feito:
 
 desde que o cancelamento ocorra **antes do horário marcado** para o início do atendimento.
 
-**Não aprovado nesta decisão:**
+**Não aprovado nesta decisão (resolvido depois na DEC-028, 28/10/2026):**
 
-- antecedência mínima de duas horas ou qualquer outro prazo mínimo (ver `DEC-012` e `PG-02`);
-- cancelamento pelo Administrador, inclusive em operação corretiva, que constava da proposta original (ver `PG-10`).
+- antecedência mínima de duas horas ou qualquer outro prazo mínimo (`PG-02`): não há prazo mínimo;
+- cancelamento pelo Administrador (`PG-10`): o Administrador não cancela.
 
 **Justificativa:** Coerente com DEC-006 (autoatendimento limitado do paciente) e com RN-003 (o profissional só atua sobre pacientes vinculados).
 
@@ -172,24 +173,57 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Não faz parte desta decisão:** a proposta original também dizia "após o término do horário" e "não há expiração automática". O grupo aprovou a redação "após o horário marcado"; o registro automático pelo sistema não foi aprovado.
 
+## DEC-027 — Parâmetros da lista de espera inteligente
+
+**Situação:** `APROVADA PELO GRUPO` (28/10/2026, resolve `PG-04` a `PG-09`). Complementa a DEC-010.
+
+**Decisão:**
+
+- **Ordem da fila (`PG-04`):** por ordem de entrada (o primeiro a entrar é o primeiro a receber a oferta).
+- **Oferta (`PG-05`):** a vaga é oferecida a **um paciente por vez**.
+- **Prazo (`PG-06`):** o paciente tem um prazo para aceitar. O prazo é **curto e configurável**; o valor numérico não é fixado no modelo. Durante o prazo o horário fica **reservado** para esse paciente.
+- **Recusa ou ausência de resposta (`PG-07`):** o paciente perde a vez e a oferta passa ao próximo da fila. Se ninguém aceitar, o horário volta a ficar livre para agendamento normal.
+- **Abrangência (`PG-08`):** a entrada é por **Psicólogo e horário específico**. O paciente pode consultar a própria posição e sair da lista.
+- **Cancelamento pelo Psicólogo (`PG-09`):** também libera o horário para a lista de espera.
+
+**Efeitos nos requisitos:** `RF-027`, `RF-034`, `RF-035`, `RF-036`, `RN-021`, `CA-RF-034` a `CA-RF-036`.
+
+## DEC-028 — Cancelamento: sem antecedência mínima e sem cancelamento pelo Administrador
+
+**Situação:** `APROVADA PELO GRUPO` (28/10/2026, resolve `PG-02` e `PG-10`). Complementa a DEC-011.
+
+**Decisão:**
+
+- Não há antecedência mínima além de "antes do horário marcado" (`PG-02`). A proposta de 2 horas (`DEC-012`) **não é adotada**.
+- O **Administrador não cancela** agendamentos (`PG-10`). Cancelam apenas o Cliente/Paciente titular e o Psicólogo responsável.
+
+**Efeitos nos requisitos:** `RF-027`, `RN-012`, `CA-RF-027`.
+
+## DEC-029 — Falha no envio de e-mail não desfaz a operação
+
+**Situação:** `APROVADA PELO GRUPO` (28/10/2026, resolve `PG-11`). Complementa a DEC-009.
+
+**Decisão:** a falha no envio do e-mail **não desfaz** a operação que a originou (agendar, cancelar, ofertar). A falha é **registrada na auditoria** e o envio pode ser **repetido**.
+
+**Efeitos nos requisitos:** `RF-033`, `RN-022`, `CA-RF-033`.
+
+## DEC-030 — Registro do atendimento e situação `Realizado`
+
+**Situação:** `APROVADA PELO GRUPO` (28/10/2026, resolve `PG-12`). Aprova a proposta DEC-023.
+
+**Decisão:** o registro do atendimento só é permitido para agendamento na situação `Confirmado`; ao registrar, o agendamento passa a `Realizado`. O atendimento referencia o agendamento de que decorre.
+
+**Efeitos nos requisitos:** `RF-030`, `RN-020`.
+
 ---
 
 # PENDÊNCIAS QUE EXIGEM DECISÃO DO GRUPO
 
-> Itens abertos em 25/10/2026. PG-01 e PG-03 foram resolvidas pelo grupo em 25/10/2026 (ver DEC-016 e DEC-025) e saíram da tabela. Não devem ser tratados como aprovados em requisitos, diagramas, persistência ou pitch. Ao decidir, registrar a decisão no item de origem (DEC) e remover a pendência daqui.
+> **Em 28/10/2026 o grupo resolveu PG-02 e PG-04 a PG-12** (DEC-027 a DEC-030). Histórico: itens abertos em 25/10/2026. PG-01 e PG-03 foram resolvidas pelo grupo em 25/10/2026 (ver DEC-016 e DEC-025) e saíram da tabela. Não devem ser tratados como aprovados em requisitos, diagramas, persistência ou pitch. Ao decidir, registrar a decisão no item de origem (DEC) e remover a pendência daqui.
 
 | ID | Pendência | Origem | Requisitos afetados |
 |---|---|---|---|
-| PG-02 | Existe antecedência mínima para cancelar além de "antes do horário marcado"? A proposta de **2 horas não foi aprovada**. | DEC-011, DEC-012 | RF-027, RN-012 |
-| PG-04 | Ordem da fila da lista de espera (por exemplo, ordem de entrada ou outro critério). | DEC-010 | RF-035, RN-021 |
-| PG-05 | A vaga é oferecida a um paciente por vez ou a vários ao mesmo tempo? | DEC-010 | RF-035, RN-021 |
-| PG-06 | Prazo para o paciente aceitar a vaga oferecida e se o horário fica reservado para ele durante esse prazo. | DEC-010, DUV-005 | RF-036, RN-021 |
-| PG-07 | Tratamento de recusa ou ausência de resposta dentro do prazo. | DEC-010, DUV-005 | RF-035, RF-036, RN-021 |
-| PG-08 | Abrangência da entrada na lista: por psicólogo, por faixa de horário ou por horário específico; se o paciente pode consultar a posição e sair da lista. | DEC-010 | RF-034 |
-| PG-09 | O cancelamento feito pelo psicólogo também libera o horário para a lista de espera? | DEC-010, DEC-011 | RF-027, RF-035, RN-021 |
-| PG-10 | O Administrador pode cancelar agendamentos (por exemplo, em operação corretiva)? | DEC-011 | RF-027, RN-012 |
-| PG-11 | Efeito de falha no envio de e-mail sobre a operação que o originou. | DEC-009 | RF-033, RN-022 |
-| PG-12 | Relação entre o registro do atendimento e a situação `Realizado` (proposta DEC-023). | DEC-016, DEC-023 | RF-030, RN-020 |
+| — | Nenhuma pendência aberta em 28/10/2026. | — | — |
 
 ---
 
@@ -215,7 +249,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Alternativa a discutir:** 4 horas ou 24 horas, ou valor definido por faixa de horário.
 
-**Situação:** prazo de 2 horas não aprovado; existência de prazo mínimo pendente (`PG-02`).
+**Situação:** não adotada. Em 28/10/2026 o grupo decidiu que não há antecedência mínima (DEC-028, `PG-02`).
 
 ## DEC-013 — Situações da conta de usuário (proposta)
 
@@ -223,7 +257,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Alinha o modelo ao dicionário de dados do plano §10.2 (`status` = ATIVO, BLOQUEADO, INATIVO) e dá significado operacional a RF-005/RF-006.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-014 — Situações cadastrais do paciente (proposta)
 
@@ -231,7 +265,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** RF-020 exige "alterar a situação do cliente/paciente", mas o modelo não tinha valores definidos (pendência PC-05).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-015 — Situação e temporalidade do vínculo (proposta)
 
@@ -241,7 +275,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Ponto de atenção:** a alternativa "cancelar automaticamente os agendamentos futuros" é mais simples de implementar, mas retira decisão do profissional — o grupo precisa escolher.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-018 — Modelo de tempo da disponibilidade (proposta)
 
@@ -267,7 +301,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Coerente com a análise do Integrante 4 (P-07) e com a decisão de modelagem OO-16 do Integrante 3. Evita inflar o domínio com conceito técnico e sem regra de negócio própria.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-021 — Conta de acesso opcional para os cadastros (proposta)
 
@@ -275,7 +309,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Fecha a INC-12/P-11 do Integrante 4 e preserva a distinção entre conta de acesso e cadastro (RF-014, RF-018, DEC-006).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-022 — Notificação por e-mail como fronteira de aplicação (proposta)
 
@@ -287,15 +321,15 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Situação:** forma de modelagem aguardando aprovação do grupo (DEC-009 já aprovada).
 
-## DEC-023 — Registro de atendimento referencia o agendamento (proposta)
+## DEC-023 — Registro de atendimento referencia o agendamento (aprovada em 28/10/2026 como DEC-030)
 
-> **Atualização de 25/10/2026:** com `SOLICITADO` fora das situações (DEC-016), `CONFIRMADO` é a única origem possível do atendimento. A proposta continua dependendo da `PG-12`.
+> **Atualização de 25/10/2026:** com `SOLICITADO` fora das situações (DEC-016), `CONFIRMADO` é a única origem possível do atendimento. A proposta foi aprovada em 28/10/2026 como DEC-030 (`PG-12`).
 
 **Proposta:** O `Atendimento` referencia o `Agendamento` do qual decorre (A15, `1` para `0..1`). O registro só é permitido para agendamento em situação `CONFIRMADO`, e o atendimento é criado quando o agendamento passa a `REALIZADO`.
 
 **Justificativa:** Torna verificáveis "sessão válida da agenda" (RF-030) e "agendamento cancelado não pode ser registrado como realizado" (RN-006), fechando a pendência PC-08 do Integrante 3 e a INC-09 do Integrante 4.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-024 — Colaboração de auditoria e conteúdo mínimo (proposta)
 
@@ -303,7 +337,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Fecha a pendência PC-12 do Integrante 3 (colaborações) e a INC-07 do Integrante 4 (situação anterior/nova), e mantém RN-009 e RN-014 verificáveis sem acoplar todas as classes ao `RegistroAuditoria`.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
 ## DEC-026 — Convenção de numeração de casos de uso e de testes (proposta)
 
@@ -311,5 +345,5 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Torna a [matriz de rastreabilidade](../06-rastreabilidade/matriz-rastreabilidade-fase5.md) auditável linha a linha e elimina a interpretação manual dos vínculos (achados R5-16 e R5-17).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 

@@ -92,7 +92,7 @@ para acompanhar e ajustar meus horários.
 
 **Requisitos relacionados:** RF-027, RF-028.
 
-**Pendência:** Existência de antecedência mínima além de "antes do horário" (`PG-02`); a regra de 2 horas não foi aprovada.
+**Decisão:** não há antecedência mínima além de "antes do horário" e o Administrador não cancela (DEC-028).
 
 ### HU-012 — Gestão da agenda profissional
 
@@ -126,7 +126,7 @@ para conseguir atendimento mais cedo quando não houver horário disponível.
 
 **Requisitos relacionados:** RF-034, RF-035, RF-036.
 
-**Pendências:** Ordem da fila, oferta individual ou simultânea, prazo de aceite, recusa ou ausência de resposta e abrangência da entrada (`PG-04` a `PG-09`).
+**Parâmetros da fila:** DEC-027.
 
 ### HU-016 — Avisos por e-mail
 
@@ -136,4 +136,4 @@ para saber das mudanças na agenda sem precisar acessar a plataforma.
 
 **Requisitos relacionados:** RF-033.
 
-**Pendência:** Tratamento de falha no envio (`PG-11`).
+**Falha no envio:** DEC-029.

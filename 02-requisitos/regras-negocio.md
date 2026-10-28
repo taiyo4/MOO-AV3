@@ -124,7 +124,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Garantir que apenas atores autorizados alterem a situação do agendamento (DEC-011).
 
-**Pendências:** A antecedência mínima de 2 horas **não foi aprovada**; a existência de outro prazo mínimo está pendente (`PG-02`). O cancelamento pelo Administrador (`PG-10`) não foi decidido.
+**Decisão complementar (DEC-028):** não há antecedência mínima além de "antes do horário marcado" e o Administrador não cancela agendamentos.
 
 ### RN-013 — Confirmação automática de agendamento
 
@@ -158,7 +158,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Decisões DEC-016 e DEC-025, que alinham requisitos, máquina de estados e persistência.
 
-**Pendência:** Relação entre registro de atendimento e `Realizado` (`PG-12`).
+**Decisão complementar (DEC-030):** o registro só é permitido para agendamento `Confirmado` e leva o agendamento a `Realizado`.
 
 ### RN-021 — Oferta de horário da lista de espera
 
@@ -170,7 +170,7 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Decisão DEC-010.
 
-**Pendências:** Ordem da fila (`PG-04`), número de pacientes que recebem a oferta (`PG-05`), prazo de aceite e reserva durante o prazo (`PG-06`), recusa ou ausência de resposta (`PG-07`), abrangência da entrada (`PG-08`) e oferta após cancelamento pelo Psicólogo (`PG-09`).
+**Parâmetros (DEC-027):** fila por ordem de entrada; uma oferta por vez; prazo de aceite curto e configurável, com o horário reservado ao paciente; recusa ou ausência de resposta passa a oferta ao próximo; se ninguém aceitar, o horário volta a ficar livre; entrada por Psicólogo e horário específico; o cancelamento do Psicólogo também gera oferta.
 
 ### RN-022 — Eventos notificados por e-mail
 
@@ -182,4 +182,4 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Decisão DEC-009.
 
-**Pendência:** Efeito de falha no envio sobre a operação de origem (`PG-11`).
+**Falha no envio (DEC-029):** não desfaz a operação de origem; é registrada na auditoria e o envio pode ser repetido.

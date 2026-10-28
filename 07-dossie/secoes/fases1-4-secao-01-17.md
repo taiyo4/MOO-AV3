@@ -65,7 +65,7 @@ Problemas identificados (`02-requisitos/visao.md` §2):
 
 **Agenda (decisões de 25/10/2026):** confirmação automática quando o horário está disponível e sem conflito (DEC-017); cancelamento pelo paciente titular ou pelo psicólogo antes do horário marcado (DEC-011); situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016) — `SOLICITADO` **não** é situação persistente; `Não compareceu` registrado pelo Psicólogo após o horário marcado (DEC-025).
 
-**Inovação:** o horário liberado por cancelamento pode ser oferecido a paciente da lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). A oferta só vira agendamento se o paciente aceitar e o horário continuar disponível (RN-021). Ordem da fila, prazo de aceite, recusa ou ausência de resposta e abrangência da entrada **continuam pendentes** (PG-04 a PG-09).
+**Inovação:** o horário liberado por cancelamento pode ser oferecido a paciente da lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). A oferta só vira agendamento se o paciente aceitar e o horário continuar disponível (RN-021). Parâmetros aprovados em 28/10/2026 (DEC-027): fila por ordem de entrada, uma oferta por vez, prazo de aceite curto e configurável com o horário reservado ao paciente, recusa ou ausência de resposta passa a oferta ao próximo, entrada por Psicólogo e horário específico, e o cancelamento do Psicólogo também gera oferta.
 
 **Fronteira:** interno — entidades, serviços, regras, interfaces com os atores autenticados, autenticação/autorização e persistência relacional; externo — navegadores e dispositivos dos usuários e o Serviço Externo de E-mail.
 
@@ -112,13 +112,14 @@ Fonte: `02-requisitos/glossario.md`.
 
 ## 10. Decisões do projeto
 
-O registro oficial está em `01-planejamento/decisoes.md`. Situação em 25/10/2026:
+O registro oficial está em `01-planejamento/decisoes.md`. Situação em 28/10/2026:
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-025 (redação revisada) |
-| Propostas aguardando o grupo | DEC-012 (prazo de 2 horas **não aprovado**), DEC-013, DEC-014, DEC-015, DEC-018 a DEC-024, DEC-026 |
-| Pendências abertas | PG-02 e PG-04 a PG-12 |
+| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
+| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Pendências abertas | nenhuma (PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 | Decisão aprovada | Conteúdo |
 |---|---|
@@ -132,8 +133,12 @@ O registro oficial está em `01-planejamento/decisoes.md`. Situação em 25/10/2
 | DEC-016 | Situações `Confirmado`, `Cancelado`, `Realizado`, `Não compareceu`; `SOLICITADO` não é persistente |
 | DEC-017 | Confirmação automática quando o horário está disponível e sem conflito |
 | DEC-025 | Psicólogo registra `Não compareceu` após o horário marcado |
+| DEC-027 | Parâmetros da lista de espera |
+| DEC-028 | Sem antecedência mínima para cancelar; o Administrador não cancela |
+| DEC-029 | Falha no envio de e-mail não desfaz a operação |
+| DEC-030 | Registro do atendimento leva o agendamento a `Realizado` |
 
-**Não aprovado:** antecedência mínima de duas horas para cancelar; cancelamento pelo Administrador (PG-10); registro automático de `Não compareceu`; parâmetros da fila (PG-04 a PG-09).
+**Não adotado:** antecedência mínima de duas horas (DEC-012); registro automático de `Não compareceu`.
 
 ## 11. Diagrama de contexto
 

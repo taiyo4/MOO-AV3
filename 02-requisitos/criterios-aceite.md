@@ -182,7 +182,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** solicitar o cancelamento,  
 **então** o cancelamento deverá ser recusado.
 
-**Pendências:** Antecedência mínima além de "antes do horário" (`PG-02`; a regra de 2 horas não foi aprovada) e cancelamento pelo Administrador (`PG-10`).
+**Dado** o Administrador,  
+**quando** solicitar o cancelamento de um agendamento,  
+**então** o cancelamento deverá ser recusado. Não há antecedência mínima além de "antes do horário marcado" (DEC-028).
 
 ### CA-RF-028 — Consulta dos próprios agendamentos
 
@@ -202,7 +204,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** registrar a realização do atendimento,  
 **então** o registro deverá associar Psicólogo e Cliente/Paciente válidos e não deverá representar prontuário completo.
 
-**Pendência:** Relação entre o registro e a situação `Realizado` do agendamento (`PG-12`).
+**Dado** um agendamento `Confirmado`,  
+**quando** o Psicólogo registrar o atendimento,  
+**então** o agendamento deverá passar a `Realizado`; para agendamento em outra situação, o registro deverá ser recusado (DEC-030).
 
 ### CA-RF-031 — Consulta de histórico permitido
 
@@ -222,7 +226,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** a operação for concluída,  
 **então** o sistema deverá solicitar ao Serviço Externo de E-mail o envio da mensagem correspondente aos envolvidos, sem incluir senhas ou informações clínicas.
 
-**Pendência:** Comportamento em caso de falha no envio (`PG-11`).
+**Dado** uma falha no envio do e-mail,  
+**quando** a operação de origem já tiver sido concluída,  
+**então** a operação deverá ser mantida, a falha deverá ser registrada na auditoria e o envio poderá ser repetido (DEC-029).
 
 ### CA-RF-034 — Entrada na lista de espera
 
@@ -234,7 +240,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** solicitar entrada na lista de espera desse Psicólogo,  
 **então** a entrada deverá ser recusada.
 
-**Pendência:** Abrangência da entrada, consulta da posição e saída da lista (`PG-08`).
+**Dado** um Cliente/Paciente na lista de espera,  
+**quando** consultar a lista ou solicitar a saída,  
+**então** o sistema deverá informar a sua posição e remover a entrada, respectivamente. A entrada é por Psicólogo e horário específico (DEC-027).
 
 ### CA-RF-035 — Oferta de horário liberado
 
@@ -242,7 +250,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** o horário for liberado,  
 **então** o sistema poderá registrar a oferta e solicitar o envio do e-mail de oferta, sem criar agendamento confirmado apenas pela oferta.
 
-**Pendências:** Ordem da fila (`PG-04`), oferta individual ou simultânea (`PG-05`) e cancelamento pelo Psicólogo (`PG-09`).
+**Dado** vários pacientes na lista para o horário liberado,  
+**quando** a oferta for feita,  
+**então** ela deverá ir a um paciente por vez, na ordem de entrada, inclusive quando o cancelamento for do Psicólogo (DEC-027).
 
 ### CA-RF-036 — Resposta à oferta de vaga
 
@@ -258,7 +268,9 @@ Os critérios usam condições observáveis nos fluxos e artefatos de modelagem.
 **quando** recusar a oferta,  
 **então** a recusa deverá ser registrada.
 
-**Pendências:** Prazo de aceite (`PG-06`) e encaminhamento após recusa ou ausência de resposta (`PG-07`).
+**Dado** uma oferta sem resposta dentro do prazo, ou recusada,  
+**quando** o prazo terminar ou a recusa for registrada,  
+**então** o paciente deverá perder a vez e a oferta deverá passar ao próximo da fila; se ninguém aceitar, o horário voltará a ficar livre (DEC-027).
 
 ### CA-RF-037 — Registro de não comparecimento
 

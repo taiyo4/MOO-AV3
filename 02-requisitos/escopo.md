@@ -73,7 +73,7 @@ A plataforma é composta pelos seguintes módulos principais:
 - Suporte a consultas administrativas para fins de conformidade e segurança.
 
 ### 3.8 Inovação
-**Lista de espera inteligente** (DEC-010, aprovada em 25/10/2026): quando um agendamento for cancelado, o horário liberado poderá ser oferecido a outro paciente que aguarda na lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). Requisitos: RF-034 a RF-036. Ordem da fila, prazo de aceite e tratamento de recusa ou ausência de resposta continuam pendentes (`PG-04` a `PG-09`).
+**Lista de espera inteligente** (DEC-010, aprovada em 25/10/2026): quando um agendamento for cancelado, o horário liberado poderá ser oferecido a outro paciente que aguarda na lista de espera do mesmo psicólogo, com aviso por e-mail (DEC-009). Requisitos: RF-034 a RF-036. Os parâmetros da fila foram decididos em 28/10/2026 (DEC-027).
 
 ## 4. Fora do escopo
 
@@ -121,4 +121,4 @@ Para manter a viabilidade e controlar a complexidade da modelagem dentro dos lim
 
 ## 8. Pendências de decisão
 
-As pendências de inovação e de serviço externo foram resolvidas em 25/10/2026 (DEC-010 e DEC-009). As pendências abertas estão consolidadas em `PG-02` e `PG-04` a `PG-12`, em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md).
+As pendências de inovação e de serviço externo foram resolvidas em 25/10/2026 (DEC-010 e DEC-009). Em 28/10/2026 o grupo resolveu as pendências restantes (`PG-02` e `PG-04` a `PG-12`; DEC-027 a DEC-030), registradas em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md).

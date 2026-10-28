@@ -22,9 +22,9 @@ Esta pasta reúne a especificação verificável e rastreável dos requisitos da
 
 ## Pendências e limites
 
-- **Inovação:** lista de espera inteligente aprovada (DEC-010), especificada em RF-034 a RF-036 e RN-021; parâmetros da fila pendentes (`PG-04` a `PG-09`).
+- **Inovação:** lista de espera inteligente aprovada (DEC-010), especificada em RF-034 a RF-036 e RN-021; parâmetros da fila aprovados em 28/10/2026 (DEC-027).
 - **Serviço Externo de E-mail:** aprovado (DEC-009), especificado em RF-033 e RN-022.
-- **Agendamento:** confirmação automática (DEC-017), cancelamento por paciente e psicólogo antes do horário (DEC-011) e situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016) aprovados; `SOLICITADO` não é persistente (DEC-016) e o Psicólogo registra `Não compareceu` após o horário marcado (DEC-025). Pendente: antecedência mínima (`PG-02`; 2 horas não aprovado).
+- **Agendamento:** confirmação automática (DEC-017), cancelamento por paciente e psicólogo antes do horário (DEC-011) e situações `Confirmado`, `Cancelado`, `Realizado` e `Não compareceu` (DEC-016) aprovados; `SOLICITADO` não é persistente (DEC-016) e o Psicólogo registra `Não compareceu` após o horário marcado (DEC-025). Em 28/10/2026: sem antecedência mínima e sem cancelamento pelo Administrador (DEC-028); falha de e-mail não desfaz a operação (DEC-029); registro do atendimento leva o agendamento a `Realizado` (DEC-030).
 - **Numeração:** RF-001 a RF-037, RN-001 a RN-014 e RN-020 a RN-022. RN-015 a RN-019 estão reservados para propostas do Integrante 4 ainda não incorporadas.
 - **Atendente:** fora do escopo atual.
 - **Fora do escopo:** pagamentos, faturamento, convênios, emissão fiscal, teleconsulta, prescrição, prontuário clínico completo, cobrança e integração financeira.
