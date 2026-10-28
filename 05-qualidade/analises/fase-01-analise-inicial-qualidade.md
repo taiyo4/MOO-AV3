@@ -84,6 +84,20 @@ Critérios adotados desde a Fase 1 e aplicados nas revisões das fases seguintes
 | RQ-04 | Entrada tardia de integrantes e concentração de trabalho | Falta de revisão cruzada; risco ao relatório de funções | Registro de processo com situação real e melhoria proposta |
 | RQ-05 | RNF sem métrica | Critério não verificável | Plano de qualidade propõe métrica ou critério de inspeção |
 
+## 6.1 Como a revisão, as evidências e as melhorias são registradas
+
+O plano de execução pede que a Fase 1 defina esse registro. Fluxo adotado:
+
+| Passo | Quem | Registro |
+|---|---|---|
+| 1. Revisão do artefato de uma fase | Integrante 5 | Documento `analises/fase-0N-*.md`, com achados `Q<fase>-<nn>`, responsável sugerido e critério violado (DOD-Qnn ou barema) |
+| 2. Correção | Responsável pelo artefato (nunca o Integrante 5 nem o 6, que não corrigem em silêncio) | Commit do responsável citando o achado (`Q5-02`) |
+| 3. Confirmação | Integrante 5 | Coluna "Situação" da tabela de controle de achados (`Aberto`, `Corrigido`, `Justificado`) em cada análise |
+| 4. Evidência de processo | Integrante 5 | Linha da fase em `registro-processo.md` §1, com o commit |
+| 5. Melhoria | Integrante 5 | Coluna "Melhoria proposta" do quadro de processo e lições aprendidas |
+
+Gate de qualidade: fase só é dada como fechada pelo Integrante 5 quando não há achado crítico `Aberto` sem justificativa registrada.
+
 ## 7. Situação ao final da Fase 1
 
 - Papel compreendido e frentes de trabalho definidas.

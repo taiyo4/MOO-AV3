@@ -83,6 +83,31 @@ Caminhos redundantes são aceitáveis (facilitam consulta), mas sem restrição 
 | Diagrama de objetos com dados fictícios (DEC-005) | **OK** — `CONTA-FICTICIA-*`, `FAIXA-FICTICIA-*` |
 | OBJ-002 coerente com DEC-016 | **OK** nos objetos mostrados (`REALIZADO`, `CANCELADO`); o objeto de notificação ainda é descrito "enquanto DEC-009 não for decidida" (texto desatualizado) |
 
+## 5.1 Responsabilidades duplicadas e conferência das justificativas OO/SOLID com o modelo real
+
+O plano de execução pede ao Integrante 5 que identifique classes onipotentes, herança injustificada e **responsabilidades duplicadas**, e que confira se as **justificativas OO/SOLID correspondem ao modelo real** (Fase 5, Integrante 5). Classes onipotentes e herança injustificada: nenhuma (ver §3 e OO-01/OO-02). O restante:
+
+**Responsabilidades duplicadas na proposta CLS-001 v2**
+
+| Duplicação | Classe | Observação |
+|---|---|---|
+| `adicionarDisponibilidade(disponibilidade, solicitante)` e `cadastrarDisponibilidade(periodo, solicitante) : Disponibilidade` [OP-10] | `Agenda` | Dois caminhos para RF-023: um recebe a instância pronta, o outro cria a partir do período. Manter só o segundo |
+| `estaAutorizado()` e `estaAtivo()` [OP-22] | `Vinculo` | Mesmo conceito (RN-003) com dois nomes. Manter um e documentar o critério |
+| `solicitar` e `confirmar` [OP-13] | `Agendamento` | Com DEC-016/017 o agendamento nasce `Confirmado`; `confirmar` como operação separada sugere um estado intermediário que não existe (Q6-07) |
+| `cadastrar` / `consultarCadastros` repetidos em `Usuario`, `Psicologo` e `Paciente` [OP-03 a OP-08] | três classes | Padrão repetido, não duplicação de regra; aceitável, mas uma entidade que "se cadastra" a si mesma esconde a responsabilidade de criação. Avaliar mover para serviço de aplicação |
+
+**Justificativas da seção 27 do dossiê × modelo real**
+
+| Afirmação do texto | Existe no modelo? | Conclusão |
+|---|---|---|
+| SRP — `Agendamento`, `RegistroAuditoria` e `Vinculo` com responsabilidade única | Sim | **Confere**; corrigir o ciclo citado (Q5-07) |
+| OCP — novos papéis entram como `Perfil`/`Permissao`; novas áreas no catálogo `AreaAtuacao` | Sim | **Confere** |
+| LSP — "toda operação de estado de `Agendamento` recebe o ator solicitante" | Não há hierarquia de herança; o texto descreve um contrato de parâmetros, não substituição de subtipos | **Não confere como LSP**. Dizer que o princípio não se aplica ao domínio (sem herança) e só valeria para as futuras implementações da interface de notificação |
+| ISP — "permissões granulares" | Granularidade de permissão é autorização (RNF-002), não segregação de interfaces | **Não confere como ISP**. Evidência melhor: serviços de aplicação separados (`ServicoAgenda`, `ServicoAuditoria`, `ServicoNotificacao`), cada um com a interface mínima que o cliente usa |
+| DIP e polimorfismo — interface `ServicoEnvioMensagem` com implementações "serviço de e-mail, registro interno" | A fronteira se chama `ServicoNotificacao` (AP-04) nas sequências, na comunicação e na matriz da Fase 6; `ServicoEnvioMensagem` não aparece em nenhum diagrama; "registro interno" não consta de nenhum requisito (DEC-009 fala só de e-mail) | **Não confere**: padronizar o nome e retirar a implementação "registro interno" |
+| Composição `Agendamento`–`Atendimento` | Não desenhada | **Não confere** (Q5-03) |
+| Encapsulamento — situação só muda por operações controladas | Sim na v2 (`confirmar`, `cancelar`, `concluir`, `registrarFalta`, todas com solicitante) | **Confere** |
+
 ## 6. Achados
 
 | ID | Achado | Responsável sugerido |
@@ -93,9 +118,11 @@ Caminhos redundantes são aceitáveis (facilitam consulta), mas sem restrição 
 | Q5-04 | Caminhos redundantes (A10/A11 e A13/A14/A15) sem restrição de consistência | Integrante 3 |
 | Q5-05 | Lista de espera (DEC-010, RF-034 a RF-036) sem classe no domínio — ex.: `EntradaListaEspera` e `OfertaVaga`, com atributos dependentes de PG-04 a PG-08 marcados como pendentes | Integrante 3 (com Integrante 4 para persistência) |
 | Q5-06 | Texto das seções 18 a 20 e do OBJ-002 cita DEC-009 como pendente | Integrante 2 |
+| Q5-09 | Responsabilidades duplicadas na v2: `Agenda.adicionarDisponibilidade`/`cadastrarDisponibilidade` e `Vinculo.estaAutorizado`/`estaAtivo` (§5.1) | Integrante 3 |
+| Q5-10 | Justificativas de LSP, ISP, DIP e polimorfismo na seção 27 não correspondem ao modelo: LSP sem herança, ISP confundido com permissões, interface `ServicoEnvioMensagem` com outro nome nos diagramas (`ServicoNotificacao`) e implementação "registro interno" sem requisito (§5.1) | Integrante 2 (texto) + Integrante 3 |
 | Q5-07 | Seção 27 (SRP) descreve o ciclo "solicitado → confirmado → realizado/cancelado"; deve ser "confirmado → realizado / cancelado / não compareceu" | Integrante 2 |
 | Q5-08 | Atributos ausentes e sem tipo nas duas versões do diagrama (2 de 13 tipados); o barema §8 exige "atributos, … tipos". Sugestão: tipos conceituais (`Texto`, `Data`, `Hora`, `DataHora`, `Booleano` e as enumerações) sem tipos técnicos, coerentes com OO-06 e com o dicionário de dados da Fase 7 | Integrante 3 (com Integrante 4) |
 
 ## 7. Situação ao final da Fase 5
 
-O modelo tem **boa coesão e encapsulamento** e nenhuma classe onipotente. As não conformidades de qualidade são de **completude** (multiplicidades no oficial, atributos e tipos nas duas versões, lista de espera ausente) e de **coerência** (enumeração com `SOLICITADO`, composição citada e não desenhada). Revisão cruzada da Fase 5 **registrada**; aprovação do grupo continua pendente.
+O modelo tem **boa coesão e encapsulamento** e nenhuma classe onipotente. As não conformidades de qualidade são de **completude** (multiplicidades no oficial, atributos e tipos nas duas versões, lista de espera ausente) e de **coerência** (enumeração com `SOLICITADO`, composição citada e não desenhada). Revisão cruzada da Fase 5 **registrada** (inclui responsabilidades duplicadas e conferência OO/SOLID, §5.1); aprovação do grupo continua pendente.

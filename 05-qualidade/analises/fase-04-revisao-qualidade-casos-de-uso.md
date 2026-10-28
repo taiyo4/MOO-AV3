@@ -74,6 +74,17 @@ Os seis requisitos sem caso de uso foram numerados em 25/10/2026, depois da Fase
 | UC-027 pré-condição "situação cancelável" | RN-012: somente `Confirmado` e antes do horário | **Impreciso** — deve citar `Confirmado` e o horário |
 | "Notificar por e-mail" só para confirmação | DEC-009 / RN-022: confirmação, cancelamento e oferta de vaga | **Incompleto** — falta o «include» a partir do cancelamento e da oferta |
 
+## 6.1 Autorização, prevenção de erro e recuperação nos casos de uso
+
+O plano de execução pede que a revisão da Fase 4 cubra exceções, prevenção de erro, autorização e recuperação.
+
+| Aspecto | Evidência nas especificações | Resultado |
+|---|---|---|
+| Autorização | Pré-condição ou exceção de permissão em UC-001 (E2 conta bloqueada), UC-021 (administrador), UC-027 (ator titular), "Consultar auditoria" E1 (RN-008), "Atender pacientes vinculados" E1 (RN-003), "Gerenciar usuários" E2 (RNF-002) | **OK** |
+| Prevenção de erro | Validação de dados inválidos (E1 em gerenciar usuários e cadastros); validação de disponibilidade antes de agendar (UC-025). Nenhum caso pede **confirmação explícita** antes de ação irreversível (cancelar, aceitar vaga) | **Parcial** — ver Q3-08 |
+| Recuperação | Nenhum caso diz o que o usuário pode fazer depois de uma recusa (por exemplo: escolher outro horário depois de E1 de UC-025; entrar na lista de espera quando não há horários, A1) | **Ausente** — Q4-09 |
+| Coerência regras × fluxos | RN-001 a RN-014 citadas nos casos; RN-006 e RN-012 em UC-027; RN-009 presente apenas por `«include»` de auditoria | **OK**; RN-013 deveria ser citada em UC-025 (hoje cita RN-005 e RN-010) — Q4-10 |
+
 ## 7. Achados
 
 | ID | Achado | Responsável sugerido |
@@ -85,6 +96,8 @@ Os seis requisitos sem caso de uso foram numerados em 25/10/2026, depois da Fase
 | Q4-05 | Serviço Externo de E-mail ausente do diagrama de casos de uso | Integrante 2 |
 | Q4-06 | UC-025 e UC-027 citam pendências já resolvidas (DEC-4, DEC-5, DEC-012) | Integrante 2 |
 | Q4-07 | Fluxos alternativos rasos nos casos "demais" (1 de 6 tem alternativo) — reduz a evidência de confiabilidade e capacidade de interação | Integrante 2 |
+| Q4-09 | Casos sem fluxo de recuperação após recusa (UC-025 E1; UC-025 A1 poderia levar à lista de espera, DEC-010) | Integrante 2 |
+| Q4-10 | UC-025 não cita RN-013 (confirmação automática), apesar de descrevê-la | Integrante 2 |
 | Q4-08 | Casos "demais" sem identificador; a matriz depende de inferência (R5-17, DEC-026) | Grupo (DEC-026) |
 
 ## 8. Situação ao final da Fase 4

@@ -83,6 +83,22 @@ Motivo: uma única matriz é o que o barema pede ("matriz de rastreabilidade nã
 | Q6-06 | Revisão da Fase 6 e matriz da Fase 6 ainda citam DEC-009/DEC-010/DEC-012 como pendentes (LAC-01 a LAC-07) | Integrante 2 |
 | Q6-07 | `confirmar` como passo separado de `solicitar` sugere estado intermediário; com DEC-016, recomenda-se uma única operação de criação confirmada (ex.: `Agendamento.criarConfirmado`) ou nota explícita de que `confirmar` ocorre na mesma transação | Integrante 2 + Integrante 3 |
 
+## 6.1 Controle de correção dos achados (gate de qualidade)
+
+O plano de execução pede que o Integrante 5 registre as não conformidades **e confirme a correção**. Situação em 28/10/2026, medida sobre os arquivos do repositório:
+
+| Achado | Situação | Como será confirmado |
+|---|---|---|
+| Q6-01 | **Aberto** — `SOLICITADO` ainda no EST-001 e na SEQ-002 | `grep SOLICITADO` em `03-uml/` sem ocorrência fora de notas históricas |
+| Q6-02 | **Aberto** | Guarda `[antes do horário marcado]` em EST-001, SEQ-003, ATV-001 |
+| Q6-03 | **Aberto** | Guarda `[após o horário marcado]` e ator Psicólogo em T6 |
+| Q6-04 | **Aberto** | Notificação sem marca de "condicional" nos quatro diagramas |
+| Q6-05 | **Aberto** | Existência de SEQ-004 e da oferta na ATV-001 |
+| Q6-06 | **Aberto** | Revisão e matriz sem DEC-009/010/012 como pendentes |
+| Q6-07 | **Aberto** | `confirmar` integrado à criação ou nota explícita |
+
+Gate: a Fase 6 só será dada como fechada pelo Integrante 5 quando Q6-01 a Q6-05 estiverem corrigidos ou justificados pelo grupo. Esta tabela deve ser atualizada a cada correção, com o commit do responsável.
+
 ## 7. Situação ao final da Fase 6
 
 A Fase 6 atende às exigências **formais** do barema (quantidade, tipos de diagrama, fontes editáveis, mensagens com origem). A qualidade de **conteúdo** depende de propagar as decisões de 25/10/2026 (Q6-01 a Q6-04) e de modelar a inovação (Q6-05). Revisão cruzada da Fase 6 **registrada**; aprovação do grupo continua pendente.

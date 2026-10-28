@@ -14,8 +14,8 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 | [Análise inicial de qualidade](analises/fase-01-analise-inicial-qualidade.md) | Fase 1 — Organização | Papel, normas (atuais × retiradas), critérios mínimos DOD-Q01 a DOD-Q08, riscos RQ-01 a RQ-05 | Concluída |
 | [Visão, escopo e contexto](analises/fase-02-qualidade-visao-escopo-contexto.md) | Fase 2 — Concepção | Elementos do documento de visão, coerência entre artefatos, seleção preliminar das características ISO/IEC 25010 e contexto de uso ISO/IEC 25019 | Concluída · achados Q2-01 a Q2-05 |
 | [Verificação dos requisitos](analises/fase-03-verificacao-requisitos.md) | Fase 3 — Requisitos | ISO/IEC/IEEE 29148: cobertura, ambiguidade, verificabilidade, CA, RNF × ISO/IEC 25010 | Concluída · achados Q3-01 a Q3-11 |
-| [Qualidade dos casos de uso](analises/fase-04-revisao-qualidade-casos-de-uso.md) | Fase 4 — Casos de uso | Completude das especificações, cobertura de RF, `include`/`extend`/generalização, coerência com decisões de 25/10 | Concluída · achados Q4-01 a Q4-08 |
-| [Revisão cruzada do modelo de domínio](analises/fase-05-revisao-cruzada-modelo-dominio.md) | Fase 5 — Modelo OO | Exigências do barema para classes, manutenibilidade, resposta ao R5-15 (composição), segurança estrutural | Concluída · achados Q5-01 a Q5-08 |
+| [Qualidade dos casos de uso](analises/fase-04-revisao-qualidade-casos-de-uso.md) | Fase 4 — Casos de uso | Completude das especificações, cobertura de RF, `include`/`extend`/generalização, coerência com decisões de 25/10 | Concluída · achados Q4-01 a Q4-10 |
+| [Revisão cruzada do modelo de domínio](analises/fase-05-revisao-cruzada-modelo-dominio.md) | Fase 5 — Modelo OO | Exigências do barema para classes, manutenibilidade, resposta ao R5-15 (composição), segurança estrutural | Concluída · achados Q5-01 a Q5-10 |
 | [Revisão cruzada comportamental](analises/fase-06-revisao-cruzada-comportamental.md) | Fase 6 — Comportamento | Exigências do barema, conformidade com DEC-009/010/011/016/017/025, confiabilidade e segurança, decisão sobre a matriz da Fase 6 | Concluída · achados Q6-01 a Q6-07 |
 
 ## Documentos transversais
@@ -39,8 +39,8 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 | Responsável | Achados |
 |---|---|
 | Integrante 1 | Q2-04, Q2-05, Q3-01, Q3-02, Q3-04, Q3-06 a Q3-10 |
-| Integrante 2 | Q2-01 a Q2-03, Q3-05, Q4-01 a Q4-07, Q5-02, Q5-03, Q5-06, Q5-07, Q6-01 a Q6-07 |
-| Integrante 3 | Q5-01, Q5-03, Q5-04, Q5-05, Q5-08, Q6-07 |
+| Integrante 2 | Q2-01 a Q2-03, Q3-05, Q4-01 a Q4-07, Q4-09, Q4-10, Q5-02, Q5-03, Q5-06, Q5-07, Q5-10, Q6-01 a Q6-07 |
+| Integrante 3 | Q5-01, Q5-03, Q5-04, Q5-05, Q5-08, Q5-09, Q5-10, Q6-07 |
 | Integrante 4 | Q3-02, Q3-11, Q5-05, Q5-08 |
 | Grupo | Q3-03, Q4-08, Q5-01 e as pendências PG-02, PG-04 a PG-12 de `decisoes.md` |
 
