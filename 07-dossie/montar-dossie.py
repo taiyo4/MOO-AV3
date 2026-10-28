@@ -71,11 +71,11 @@ NOTAS_INTEGRACAO = {
     18: [
         "O texto cita **RF-001 a RF-032**; desde 25/10/2026 a baseline vai até **RF-037** (RF-033 e-mail, RF-034 a RF-036 lista de espera, RF-037 não comparecimento).",
         "A linha \"Notificação e sessão fora do domínio\" trata **DEC-009 como pendente**; ela foi aprovada em 25/10/2026.",
-        "As multiplicidades \"fechadas na Fase 5\" são da **proposta CLS-001 v2**; o diagrama oficial do Integrante 3 ainda tem `PENDENTE` (Q5-01, INT-09).",
+        "As multiplicidades \"fechadas na Fase 5\" eram da proposta CLS-001 v2 (retirada do repositório em 28/10/2026); o diagrama oficial do Integrante 3 ainda tem `PENDENTE` (Q5-01, INT-09).",
         "A lista de espera (DEC-010) ainda não tem conceito no domínio (Q5-05).",
     ],
     19: [
-        "Na proposta CLS-001 v2, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).",
+        "Na proposta CLS-001 v2 (retirada em 28/10/2026) e no oficial, conforme o caso, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).",
         "A guarda de `podeSerCancelado()` (\"situação atual + prazo\") deve ser lida como **\"antes do horário marcado\"** (DEC-011); o prazo de 2 horas não foi aprovado (PG-02).",
         "Atributos e tipos ainda incompletos nas duas versões do diagrama (Q5-08).",
     ],
@@ -100,7 +100,7 @@ NOTAS_INTEGRACAO = {
         "Se `Cancelado`, `Realizado` e `Não compareceu` são finais sem reversão continua **não decidido** pelo grupo (DEC-016, \"Ainda não decidido\").",
     ],
     27: [
-        "O texto afirma que `Agendamento`–`Atendimento` \"foi modelada como composição\", mas nem o diagrama oficial (OO-03) nem a proposta v2 desenham composição. Recomendação do Integrante 5: manter associação `1`–`0..1` e, se o grupo quiser evidenciar composição, usar `Agenda` ◆— `Disponibilidade` (Q5-03).",
+        "O texto afirma que `Agendamento`–`Atendimento` \"foi modelada como composição\", mas nem o diagrama oficial (OO-03) nem a proposta v2 (retirada) desenhavam composição. Recomendação do Integrante 5: manter associação `1`–`0..1` e, se o grupo quiser evidenciar composição, usar `Agenda` ◆— `Disponibilidade` (Q5-03).",
         "No SRP, o ciclo do agendamento é \"Confirmado → Realizado / Cancelado / Não compareceu\" (DEC-016), sem `SOLICITADO` (Q5-07).",
     ],
 }

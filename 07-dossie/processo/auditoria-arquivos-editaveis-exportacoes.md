@@ -10,14 +10,14 @@
 | `03-uml/Contexto/` | Contexto | `.drawio.xml` | sim (2 PDFs) | Dois PDFs: `diagrama-contexto.pdf` e `Diagrama de contexto fase 2.pdf`. Confirmar com o autor qual vale (INT-nn a abrir) |
 | `03-uml/Casos de uso/` | UC-001 | `.drawio.xml` | sim | PDF chama-se "Cópia de Diagrama…" e o nome tem espaços; sugerir renomear (autor do artefato) |
 | `03-uml/Dominio/` | Domínio | `.drawio.xml` + `.mmd` | sim | OK |
-| `03-uml/Classes/` | Classes v1 e v2 | `.drawio.xml` + `.mmd` (os dois) | sim (os dois) | Dois diagramas concorrentes (ver INT da Fase 5) |
-| `03-uml/Objetos/` | Objetos v1 e v2 | `.drawio.xml` + `.mmd` (os dois) | sim (os dois) | OK |
+| `03-uml/Classes/` | Classes | `.drawio.xml` + `.mmd` | sim | OK. A proposta v2 do Integrante 2 foi removida em 28/10/2026 por decisão do Integrante 1 |
+| `03-uml/Objetos/` | Objetos | `.drawio.xml` + `.mmd` | sim | OK. A proposta v2 foi removida junto com a de classes |
 | `03-uml/Sequências/` | SEQ-001, 002, 003 | `.drawio.xml` + `.mmd` | sim | OK |
 | `03-uml/Comunicação/` | COM-001 | `.drawio.xml` + `.mmd` | sim | OK |
 | `03-uml/Atividade/` | ATV-001 | `.drawio.xml` + `.mmd` | sim | OK |
 | `03-uml/Estados/` | EST-001 | `.drawio.xml` + `.mmd` | sim | OK |
 
-Total: 24 fontes editáveis (`.mmd` e `.drawio.xml`) e 14 PDFs. Não há PNG ou SVG; o PDF é a exportação adotada.
+Total: 18 fontes editáveis (`.mmd` e `.drawio.xml`) e 11 PDFs. Não há PNG ou SVG; o PDF é a exportação adotada.
 
 ## 2. Lacunas
 

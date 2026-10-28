@@ -427,7 +427,7 @@ Casos de uso "demais": Gerenciar usuários e permissões (RF-003 a RF-010) · Ge
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
 > - O texto cita **RF-001 a RF-032**; desde 25/10/2026 a baseline vai até **RF-037** (RF-033 e-mail, RF-034 a RF-036 lista de espera, RF-037 não comparecimento).
 > - A linha "Notificação e sessão fora do domínio" trata **DEC-009 como pendente**; ela foi aprovada em 25/10/2026.
-> - As multiplicidades "fechadas na Fase 5" são da **proposta CLS-001 v2**; o diagrama oficial do Integrante 3 ainda tem `PENDENTE` (Q5-01, INT-09).
+> - As multiplicidades "fechadas na Fase 5" eram da proposta CLS-001 v2 (retirada do repositório em 28/10/2026); o diagrama oficial do Integrante 3 ainda tem `PENDENTE` (Q5-01, INT-09).
 > - A lista de espera (DEC-010) ainda não tem conceito no domínio (Q5-05).
 
 ### 18.1 Objetivo
@@ -507,7 +507,7 @@ Cada um dos 32 requisitos funcionais tem ao menos um conceito do modelo associad
 ## 19. Diagrama de classes
 
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - Na proposta CLS-001 v2, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).
+> - Na proposta CLS-001 v2 (retirada em 28/10/2026) e no oficial, conforme o caso, o enumerado `SituacaoAgendamento` ainda contém `SOLICITADO`; pela **DEC-016** os valores são apenas `CONFIRMADO`, `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` (Q5-02).
 > - A guarda de `podeSerCancelado()` ("situação atual + prazo") deve ser lida como **"antes do horário marcado"** (DEC-011); o prazo de 2 horas não foi aprovado (PG-02).
 > - Atributos e tipos ainda incompletos nas duas versões do diagrama (Q5-08).
 
@@ -561,7 +561,6 @@ O diagrama é a origem do mapeamento classe ↔ tabela: cada uma das doze classe
 - Versão para publicação no dossiê: `03-uml/Classes/diagrama-classes.pdf`
 - Especificação de classes: `03-uml/Classes/especificacao-classes.md`
 - Decisões de modelagem OO: `03-uml/Classes/decisoes-modelagem.md`
-- Proposta de fechamento das multiplicidades e das situações (Fase 5): `03-uml/Classes/proposta-I2-diagrama-classes-v2.mmd`, com `proposta-I2-diagrama-classes-v2.drawio.xml` e `proposta-I2-diagrama-classes-v2.pdf`
 
 ---
 
@@ -602,10 +601,10 @@ Cada objeto corresponde a uma linha (ou a um conjunto de linhas) do modelo relac
 
 ### 20.6 Arquivos
 
-- Fontes editáveis (Mermaid): `03-uml/Objetos/diagrama-objetos.mmd` (OBJ-001) e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.mmd` (OBJ-002)
-- Fontes editáveis no diagrams.net: `03-uml/Objetos/diagrama-objetos.drawio.xml` e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.drawio.xml`
-- Versões para publicação no dossiê: `03-uml/Objetos/diagrama-objetos.pdf` e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.pdf`
-- Especificações: `03-uml/Objetos/especificacao-objetos.md` e `03-uml/Objetos/proposta-I2-especificacao-objetos-v2.md`
+- Fontes editáveis (Mermaid): `03-uml/Objetos/diagrama-objetos.mmd` (OBJ-001). O cenário OBJ-002 foi retirado em 28/10/2026 junto com a proposta de classes v2 (decisão do Integrante 1); a descrição dele acima permanece como texto até o Integrante 3 decidir se o incorpora ao OBJ-001
+- Fontes editáveis no diagrams.net: `03-uml/Objetos/diagrama-objetos.drawio.xml`
+- Versões para publicação no dossiê: `03-uml/Objetos/diagrama-objetos.pdf`
+- Especificações: `03-uml/Objetos/especificacao-objetos.md`
 
 ---
 
@@ -923,7 +922,7 @@ Condições para fechar sem divergência (achados de integração e de qualidade
 ## 27. Princípios OO e SOLID
 
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O texto afirma que `Agendamento`–`Atendimento` "foi modelada como composição", mas nem o diagrama oficial (OO-03) nem a proposta v2 desenham composição. Recomendação do Integrante 5: manter associação `1`–`0..1` e, se o grupo quiser evidenciar composição, usar `Agenda` ◆— `Disponibilidade` (Q5-03).
+> - O texto afirma que `Agendamento`–`Atendimento` "foi modelada como composição", mas nem o diagrama oficial (OO-03) nem a proposta v2 (retirada) desenhavam composição. Recomendação do Integrante 5: manter associação `1`–`0..1` e, se o grupo quiser evidenciar composição, usar `Agenda` ◆— `Disponibilidade` (Q5-03).
 > - No SRP, o ciclo do agendamento é "Confirmado → Realizado / Cancelado / Não compareceu" (DEC-016), sem `SOLICITADO` (Q5-07).
 
 ### 27.1 Objetivo
