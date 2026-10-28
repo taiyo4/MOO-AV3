@@ -80,7 +80,7 @@ NOTAS_INTEGRACAO = {
         "Atributos e tipos ainda incompletos no diagrama (Q5-08).",
     ],
     20: [
-        "O objeto de notificação é descrito \"enquanto DEC-009 não for decidida\"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (proposta DEC-022).",
+        "O objeto de notificação é descrito \"enquanto DEC-009 não for decidida\"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (DEC-022, aprovada em 28/10/2026).",
     ],
     21: [
         "A SEQ-002 mostra o agendamento criado como `SOLICITADO` e depois confirmado; pela **DEC-016** o agendamento já nasce `Confirmado` (Q6-01).",

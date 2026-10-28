@@ -478,7 +478,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-023, RF-025.
 
-**Observações:** Não concede acesso a agendas de outros Psicólogos.
+**Observações:** Não concede acesso a agendas de outros Psicólogos. Agendamento futuro cujo vínculo foi encerrado permanece na agenda marcado como "paciente sem vínculo ativo", para o Psicólogo cancelar ou manter (DEC-015).
 
 ### RF-037 — Registrar não comparecimento
 
@@ -564,7 +564,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-plane
 
 **Dependências:** RF-026, RF-027, RF-035.
 
-**Observações:** Decisão DEC-009. Envio em outros eventos não foi decidido. A falha no envio não desfaz a operação de origem; é registrada na auditoria e o envio pode ser repetido (DEC-029).
+**Observações:** Decisão DEC-009. Envio em outros eventos não foi decidido. A falha no envio não desfaz a operação de origem; é registrada na auditoria e o envio pode ser repetido (DEC-029). O envio é uma interface de fronteira, `ServicoEnvioMensagem` (DEC-022).
 
 ## 9. Inovação — Lista de espera inteligente
 

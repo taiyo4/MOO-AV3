@@ -116,9 +116,9 @@ O registro oficial está em `01-planejamento/decisoes.md`. Situação em 28/10/2
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Aprovadas | DEC-001 a DEC-011, DEC-013 a DEC-030, exceto DEC-012 (DEC-011 e DEC-025 com redação revisada; DEC-013 a DEC-015, DEC-018 a DEC-024 e DEC-026 a DEC-030 aprovadas em 28/10/2026) |
 | Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
-| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Propostas aguardando o grupo | nenhuma |
 | Pendências abertas | nenhuma (PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 | Decisão aprovada | Conteúdo |

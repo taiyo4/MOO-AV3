@@ -7,9 +7,9 @@ tomadas durante o desenvolvimento da AV3.
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Aprovadas | DEC-001 a DEC-011 (DEC-011 e DEC-025 com redação revisada), DEC-013 a DEC-024 (exceto DEC-012), DEC-016, DEC-017, DEC-025 a DEC-030 (DEC-013 a DEC-015, DEC-018 a DEC-022, DEC-024 e DEC-026 a DEC-030 em 28/10/2026) |
 | Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
-| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Propostas aguardando o grupo | nenhuma |
 | Pendências abertas | nenhuma (PG-01 e PG-03 resolvidas em 25/10/2026; PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 ## DEC-001 — Tipo de projeto
@@ -251,33 +251,31 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Situação:** não adotada. Em 28/10/2026 o grupo decidiu que não há antecedência mínima (DEC-028, `PG-02`).
 
-## DEC-013 — Situações da conta de usuário (proposta)
+## DEC-013 — Situações da conta de usuário (aprovada em 28/10/2026)
 
 **Proposta:** `Usuario.situacaoConta` assume os valores `ATIVO`, `BLOQUEADO` e `INATIVO`. Apenas `ATIVO` permite autenticação (RN-001); `BLOQUEADO` recusa mesmo com credencial correta; `INATIVO` representa conta desativada sem penalidade.
 
 **Justificativa:** Alinha o modelo ao dicionário de dados do plano §10.2 (`status` = ATIVO, BLOQUEADO, INATIVO) e dá significado operacional a RF-005/RF-006.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-014 — Situações cadastrais do paciente (proposta)
+## DEC-014 — Situações cadastrais do paciente (aprovada em 28/10/2026)
 
 **Proposta:** `Paciente.situacaoCadastral` assume `ATIVO`, `SUSPENSO` e `INATIVO`, com transição livre entre si, sempre por administrador autorizado e com registro em auditoria (RN-009).
 
 **Justificativa:** RF-020 exige "alterar a situação do cliente/paciente", mas o modelo não tinha valores definidos (pendência PC-05).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-015 — Situação e temporalidade do vínculo (proposta)
+## DEC-015 — Situação e temporalidade do vínculo (aprovada em 28/10/2026)
 
-**Proposta:** `Vinculo` passa a ter `situacao` (`ATIVO`, `ENCERRADO`), `dataInicio` e `dataFim`. Ao encerrar, o vínculo deixa de autorizar o acesso do profissional ao paciente (RN-003, RN-007). Agendamentos futuros já marcados **não** são cancelados automaticamente: o sistema **alerta** o profissional para reagendar.
+**Decisão:** `Vinculo` passa a ter `situacao` (`ATIVO`, `ENCERRADO`), `dataInicio` e `dataFim`. Ao encerrar, o vínculo deixa de autorizar o acesso do profissional ao paciente (RN-003, RN-007). Os agendamentos futuros já marcados **não** são cancelados automaticamente: eles aparecem na agenda do Psicólogo (RF-029) como "paciente sem vínculo ativo", para ele cancelar ou manter. O alerta é só essa marcação na agenda; não há e-mail novo (DEC-009 prevê e-mail apenas em confirmação, cancelamento e oferta de vaga).
 
 **Justificativa:** Fecha parcialmente a DUV-003 e a pendência P-12 do Integrante 4, e torna verificável a restrição de acesso ao longo do tempo.
 
-**Ponto de atenção:** a alternativa "cancelar automaticamente os agendamentos futuros" é mais simples de implementar, mas retira decisão do profissional — o grupo precisa escolher.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-**Situação:** aguardando aprovação do grupo.
-
-## DEC-018 — Modelo de tempo da disponibilidade (proposta)
+## DEC-018 — Modelo de tempo da disponibilidade (aprovada em 28/10/2026)
 
 **Proposta:** O horário liberado pelo profissional é um **slot discreto** (data, hora de início e duração fixa), e não um intervalo contínuo livre. Cada `Disponibilidade` corresponde a um horário ofertado e consultável.
 
@@ -285,41 +283,39 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Efeito no modelo:** habilita a associação condicional `Disponibilidade` → `Agendamento` e o índice de exclusividade no banco.
 
-**Situação:** aguardando aprovação do grupo (pendência P-05 do Integrante 4).
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-019 — Cardinalidade entre usuário e perfil (proposta)
+## DEC-019 — Cardinalidade entre usuário e perfil (aprovada em 28/10/2026)
 
 **Proposta:** Cada conta de acesso tem **no máximo um** perfil (`Usuario "0..1" — Perfil "1"`); toda conta que autentica possui exatamente um perfil. Um perfil pode ser compartilhado por várias contas.
 
 **Justificativa:** Resolve a INC-01 do Integrante 4. O caminho de verificação de autorização (RF-001, RNF-002) fica simples e o N:N já previsto pelo plano §10.1 permanece apenas entre `Perfil` e `Permissao`.
 
-**Situação:** aguardando aprovação do grupo (pendência P-06 do Integrante 4).
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-020 — Sessão fora do modelo de domínio (proposta)
+## DEC-020 — Sessão fora do modelo de domínio (aprovada em 28/10/2026)
 
 **Proposta:** A sessão autenticada (RF-002) **não** é entidade do modelo de domínio. É estado volátil de aplicação, tratado por um serviço de autenticação; no diagrama de classes aparece apenas como serviço, e nas sequências como objeto de fronteira.
 
 **Justificativa:** Coerente com a análise do Integrante 4 (P-07) e com a decisão de modelagem OO-16 do Integrante 3. Evita inflar o domínio com conceito técnico e sem regra de negócio própria.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-021 — Conta de acesso opcional para os cadastros (proposta)
+## DEC-021 — Conta de acesso opcional para os cadastros (aprovada em 28/10/2026)
 
 **Proposta:** A relação entre `Usuario` e os cadastros `Psicologo` e `Paciente` é de `0..1` para `0..1`: o cadastro pode existir sem conta (registros importados, cadastros em_regularização) e uma conta atende a no máximo um cadastro de cada tipo.
 
 **Justificativa:** Fecha a INC-12/P-11 do Integrante 4 e preserva a distinção entre conta de acesso e cadastro (RF-014, RF-018, DEC-006).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-022 — Notificação por e-mail como fronteira de aplicação (proposta)
+## DEC-022 — Notificação por e-mail como fronteira de aplicação (aprovada em 28/10/2026)
 
-> **Atualização de 25/10/2026:** a DEC-009 foi aprovada e o requisito foi numerado como `RF-033`. A condição "enquanto o grupo não decidir" deixou de existir. Continua como proposta apenas a forma de modelagem (interface de fronteira, sem classe de domínio e sem tabela).
-
-**Proposta:** Enquanto o grupo não decidir a DEC-009, a notificação é modelada como **fronteira de aplicação** (interface `ServicoEnvioMensagem`), sem classe de domínio e sem tabela. Se a DEC-009 for aprovada, o Integrante 1 deve numerar o requisito correspondente (RF-033) e a notificação passa a aparecer no diagrama de componentes da Fase 7.
+**Decisão:** o envio de e-mail (RF-033, DEC-009) é uma **interface de fronteira** chamada `ServicoEnvioMensagem`, ligada ao ator Serviço Externo de E-mail. Não existe classe de domínio nem tabela de notificação. A falha no envio é registrada na auditoria (DEC-029). `ServicoEnvioMensagem` é o único nome a usar nas classes, nas sequências e no diagrama de componentes da Fase 7; `ServicoNotificacao` deixa de ser usado.
 
 **Justificativa:** O plano §6.1 penaliza elementos órfãos; criar a classe `Notificacao` sem requisito seria um órfão. A include UC "Notificar paciente por e-mail" já existe e hoje não tem responsável modelada (achado R5-12).
 
-**Situação:** forma de modelagem aguardando aprovação do grupo (DEC-009 já aprovada).
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
 ## DEC-023 — Registro de atendimento referencia o agendamento (aprovada em 28/10/2026 como DEC-030)
 
@@ -331,19 +327,19 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
 
-## DEC-024 — Colaboração de auditoria e conteúdo mínimo (proposta)
+## DEC-024 — Colaboração de auditoria e conteúdo mínimo (aprovada em 28/10/2026)
 
 **Proposta:** O registro de auditoria é disparado por um **serviço de aplicação** após cada operação auditável, e não por dependência estrutural das entidades. O conteúdo mínimo do registro é: responsável, data, hora, operação, **situação anterior** e **nova situação** quando a operação alterou uma situação.
 
 **Justificativa:** Fecha a pendência PC-12 do Integrante 3 (colaborações) e a INC-07 do Integrante 4 (situação anterior/nova), e mantém RN-009 e RN-014 verificáveis sem acoplar todas as classes ao `RegistroAuditoria`.
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 
-## DEC-026 — Convenção de numeração de casos de uso e de testes (proposta)
+## DEC-026 — Convenção de numeração de casos de uso e de testes (aprovada em 28/10/2026)
 
 **Proposta:** A numeração de casos de uso segue a convenção já adotada nos casos críticos, `UC-0RF` (o número do caso é o número do requisito), e a de teste conceitual idem, `CT-0RF`. Os casos críticos recebem a linha "RFs cobertos", como já existe nos demais casos.
 
 **Justificativa:** Torna a [matriz de rastreabilidade](../06-rastreabilidade/matriz-rastreabilidade-fase5.md) auditável linha a linha e elimina a interpretação manual dos vínculos (achados R5-16 e R5-17).
 
-**Situação:** aguardando aprovação do grupo.
+**Situação:** `APROVADA PELO GRUPO` em 28/10/2026.
 

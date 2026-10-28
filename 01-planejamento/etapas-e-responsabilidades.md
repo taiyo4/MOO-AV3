@@ -16,7 +16,7 @@ Regra de ouro para evitar conflito: **cada artefato tem um dono**. Quem encontra
 | 5 | Qualidade, normas e processo | `05-qualidade/`, gate de qualidade, textos das seções 28 a 30 |
 | 6 | Documentação, integração e pitch | `07-dossie/`, `08-pitch/`, README, relatório de atuação, pacote final |
 
-Estado das decisões em 28/10/2026: nenhuma pendência PG aberta (DEC-027 a DEC-030). Propostas ainda abertas: DEC-013, 014, 015, 018 a 022, 024 e 026.
+Estado das decisões em 28/10/2026: nenhuma pendência PG aberta (DEC-027 a DEC-030). Todas as propostas da Fase 5 foram aprovadas em 28/10/2026 (DEC-013, 014, 015, 018 a 022, 024 e 026); não há proposta aberta.
 
 ## 2. O que falta antes de avançar (propagação das decisões)
 
@@ -36,7 +36,7 @@ As decisões de 25 e 28/10/2026 ainda não chegaram aos diagramas. É a priorida
 | P10 | Operações duplicadas (`adicionarDisponibilidade`/`cadastrarDisponibilidade`, `estaAutorizado`/`estaAtivo`) | 3 | Q5-09 |
 | P11 | Alinhar a numeração de RF de `04-persistencia/impacto-requisitos.md` com a baseline; refletir lista de espera, `Não compareceu` e e-mail na persistência | 4 | Q3-11, INT-06 |
 | P12 | Corrigir os textos antigos (CTX-001, atores, README de requisitos) | 1 e 2 | INT-03 a INT-05 |
-| P13 | Aprovar ou rejeitar as propostas abertas (DEC-013 a 015, 018 a 022, 024, 026) numa reunião do grupo | grupo, registro por 1 | — |
+| P13 | Aplicar as DEC aprovadas em 28/10/2026: situações de conta, paciente e vínculo (013, 014, 015), slot de disponibilidade (018), cardinalidades (019, 021), sessão fora do domínio (020), `ServicoEnvioMensagem` como único nome (022), auditoria por serviço (024) e numeração UC-0RF/CT-0RF (026) | 2 (UC, nomes), 3 (classes), 4 (persistência), 1 (IDs) | — |
 
 Depois de cada correção, o Integrante 5 confirma na tabela de controle de achados (Aberto → Corrigido) e o Integrante 6 regera o dossiê.
 

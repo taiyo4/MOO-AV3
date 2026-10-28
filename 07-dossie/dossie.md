@@ -193,9 +193,9 @@ O registro oficial está em `01-planejamento/decisoes.md`. Situação em 28/10/2
 
 | Situação | Decisões |
 |---|---|
-| Aprovadas | DEC-001 a DEC-010, DEC-011 (redação revisada), DEC-016, DEC-017, DEC-023, DEC-025 (redação revisada), DEC-027 a DEC-030 (28/10/2026) |
+| Aprovadas | DEC-001 a DEC-011, DEC-013 a DEC-030, exceto DEC-012 (DEC-011 e DEC-025 com redação revisada; DEC-013 a DEC-015, DEC-018 a DEC-024 e DEC-026 a DEC-030 aprovadas em 28/10/2026) |
 | Não adotada | DEC-012 (prazo de 2 horas; superada pela DEC-028) |
-| Propostas aguardando o grupo | DEC-013, DEC-014, DEC-015, DEC-018 a DEC-022, DEC-024, DEC-026 |
+| Propostas aguardando o grupo | nenhuma |
 | Pendências abertas | nenhuma (PG-02 e PG-04 a PG-12 resolvidas em 28/10/2026) |
 
 | Decisão aprovada | Conteúdo |
@@ -572,7 +572,7 @@ O diagrama é a origem do mapeamento classe ↔ tabela: cada uma das doze classe
 ## 20. Diagrama de objetos
 
 > **Nota de integração (Integrante 6, 28/10/2026).** O texto abaixo foi preparado antes das decisões de 25/10/2026 e é mantido como entregue pelo autor. Prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O objeto de notificação é descrito "enquanto DEC-009 não for decidida"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (proposta DEC-022).
+> - O objeto de notificação é descrito "enquanto DEC-009 não for decidida"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (DEC-022, aprovada em 28/10/2026).
 
 ### 20.1 Identificação e objetivo
 

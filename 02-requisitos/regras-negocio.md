@@ -34,6 +34,8 @@ As regras formalizam restrições operacionais identificadas no escopo e nas dec
 
 **Justificativa:** Restringir o acesso aos dados necessários à atuação autorizada.
 
+**Vínculo encerrado (DEC-015):** o acesso do Psicólogo ao paciente termina; agendamentos futuros não são cancelados automaticamente e aparecem na agenda como "paciente sem vínculo ativo".
+
 ### RN-004 — Acesso do paciente ao próprio cadastro
 
 **Regra:** O Cliente/Paciente somente pode consultar informações relacionadas ao próprio cadastro e liberadas para seu acesso.
