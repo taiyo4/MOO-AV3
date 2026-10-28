@@ -20,6 +20,7 @@ O produto é um **dossiê de modelagem** completo e rastreável — requisitos, 
 | Entrega | 24/11/2026 | Meta interna: 23/11/2026 |
 
 Decisões vigentes, propostas e pendências: [`01-planejamento/decisoes.md`](01-planejamento/decisoes.md).
+Etapas restantes e responsabilidades: [`01-planejamento/etapas-e-responsabilidades.md`](01-planejamento/etapas-e-responsabilidades.md).
 
 ## Onde está cada coisa
 
