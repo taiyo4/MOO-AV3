@@ -257,7 +257,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Alinha o modelo ao dicionário de dados do plano §10.2 (`status` = ATIVO, BLOQUEADO, INATIVO) e dá significado operacional a RF-005/RF-006.
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-014 — Situações cadastrais do paciente (proposta)
 
@@ -265,7 +265,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** RF-020 exige "alterar a situação do cliente/paciente", mas o modelo não tinha valores definidos (pendência PC-05).
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-015 — Situação e temporalidade do vínculo (proposta)
 
@@ -275,7 +275,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Ponto de atenção:** a alternativa "cancelar automaticamente os agendamentos futuros" é mais simples de implementar, mas retira decisão do profissional — o grupo precisa escolher.
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-018 — Modelo de tempo da disponibilidade (proposta)
 
@@ -301,7 +301,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Coerente com a análise do Integrante 4 (P-07) e com a decisão de modelagem OO-16 do Integrante 3. Evita inflar o domínio com conceito técnico e sem regra de negócio própria.
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-021 — Conta de acesso opcional para os cadastros (proposta)
 
@@ -309,7 +309,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Fecha a INC-12/P-11 do Integrante 4 e preserva a distinção entre conta de acesso e cadastro (RF-014, RF-018, DEC-006).
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-022 — Notificação por e-mail como fronteira de aplicação (proposta)
 
@@ -337,7 +337,7 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Fecha a pendência PC-12 do Integrante 3 (colaborações) e a INC-07 do Integrante 4 (situação anterior/nova), e mantém RN-009 e RN-014 verificáveis sem acoplar todas as classes ao `RegistroAuditoria`.
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
 ## DEC-026 — Convenção de numeração de casos de uso e de testes (proposta)
 
@@ -345,5 +345,5 @@ O **Psicólogo** registra a situação `Não compareceu` **após o horário marc
 
 **Justificativa:** Torna a [matriz de rastreabilidade](../06-rastreabilidade/matriz-rastreabilidade-fase5.md) auditável linha a linha e elimina a interpretação manual dos vínculos (achados R5-16 e R5-17).
 
-**Situação:** `APROVADA PELO GRUPO` em 28/10/2026 (DEC-030).
+**Situação:** aguardando aprovação do grupo.
 
