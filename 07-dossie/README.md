@@ -50,3 +50,12 @@ Quando uma decisão aprovada torna parte de um texto de origem desatualizada, o 
 | 7 | Seções 25 e 26 (Integrante 4) |
 | 8 | Seções 28 a 31 finais (Integrante 5; matriz final) |
 | 9 | Conclusão, limitações, relatório de funções, figuras embutidas, revisão editorial e exportação em PDF |
+
+## Processo e controle (Integrante 6)
+
+| Documento | Conteúdo |
+|---|---|
+| [Auditoria de arquivos editáveis e exportações](processo/auditoria-arquivos-editaveis-exportacoes.md) | Fonte editável × PDF por diagrama |
+| [Backup e controle de versões](processo/convencao-backup-e-versoes.md) | Convenção de backup, marcas de versão e commits |
+| [Modelo de ata de walkthrough](processo/ata-walkthrough-modelo.md) | Modelo; nenhuma ata realizada até 28/10/2026 |
+| [Relatório de atuação individual](processo/relatorio-atuacao-individual-modelo.md) | Modelo e preenchimento parcial, com a recuperação das Fases 1 a 6 dos Integrantes 5 e 6 |
