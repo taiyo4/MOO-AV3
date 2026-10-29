@@ -42,7 +42,8 @@ Regras:
 | Objetos (proposta) | OBJ-002 | `Objetos/proposta-I2-diagrama-objetos-v2.mmd` | `Objetos/proposta-I2-diagrama-objetos-v2.drawio.xml` | `Objetos/proposta-I2-diagrama-objetos-v2.pdf` | **proposta** do Integrante 2 (Fase 5) |
 | Sequência — autenticar | SEQ-001 | `Sequências/proposta-I2-sequencia-seq-001-autenticar.mmd` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-001 |
 | Sequência — agendar | SEQ-002 | `Sequências/proposta-I2-sequencia-seq-002-agendar.mmd` | `Sequências/proposta-I2-sequencia-seq-002-agendar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-002-agendar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-025 |
-| Sequência — cancelar/confirmar | SEQ-003 | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-027 |
+| Sequência — cancelar/confirmar | SEQ-003 | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-027 (+ UC-035 `<<extend>>`) |
+| Sequência — lista de espera | SEQ-004 | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.mmd` | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-034 a UC-036 (DEC-027) |
 | Atividades | ATV-001 | `Atividade/proposta-I2-atividade-atv-001.mmd` | `Atividade/proposta-I2-atividade-atv-001.drawio.xml` | `Atividade/proposta-I2-atividade-atv-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
 | Comunicação | COM-001 | `Comunicação/proposta-I2-comunicacao-com-001.mmd` | `Comunicação/proposta-I2-comunicacao-com-001.drawio.xml` | `Comunicação/proposta-I2-comunicacao-com-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
 | Estados | EST-001 | `Estados/proposta-I2-estados-est-001.mmd` | `Estados/proposta-I2-estados-est-001.drawio.xml` | `Estados/proposta-I2-estados-est-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
@@ -54,10 +55,17 @@ na mesma pasta:
 
 | Especificação | Arquivo |
 |---|---|
-| Sequências (SEQ-001/002/003) | `Sequências/proposta-I2-especificacao-sequencias.md` |
+| Sequências (SEQ-001/002/003/**004**) | `Sequências/proposta-I2-especificacao-sequencias.md` |
 | Atividades (ATV-001) | `Atividade/proposta-I2-especificacao-atividade.md` |
 | Comunicação (COM-001) | `Comunicação/proposta-I2-especificacao-comunicacao.md` |
 | Estados (EST-001) | `Estados/proposta-I2-especificacao-estados.md` |
+
+Todas as especificações da Fase 6 estão em **v2.0**: abrem com **Objetivo** e
+**RFs cobertos** e seguem a ordem do plano §16.1.
+
+Casos de uso novos e revisados (UC-028, UC-033 a UC-037, revisão de UC-025 e
+UC-027 e as relações `<<extend>>`/`<<include>>` para o diagrama de casos):
+`Casos de uso/proposta-I2-casos-de-uso-faltantes.md`.
 
 Rastreabilidade e revisão da fase: `06-rastreabilidade/matriz-rastreabilidade-fase6.md`
 e `01-planejamento/revisoes/FASE6-REV-I2-revisao-comportamental.md`.
@@ -88,14 +96,26 @@ Texto pronto para as seções 21 a 24 do dossiê: `07-dossie/secoes/fase6-secao-
 ## Fases 5 e 6 — o que ainda está em aberto
 
 As pastas `Atividade`, `Comunicação`, `Estados` e `Sequências` **não estão mais
-vazias**: os seis diagramas comportamentais da Fase 6 já foram entregues.
+vazias**: os **sete** diagramas comportamentais da Fase 6 já foram entregues
+(SEQ-001 a **SEQ-004**, ATV-001, COM-001 e EST-001), cada um com `.mmd`,
+`.drawio.xml` e `.pdf`.
 
-O que segue **depende de decisão do grupo** e não é bloqueio de entrega, mas de
+O que segue **depende de terceiros** e não é bloqueio de entrega, mas de
 fechamento:
 
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
 | Multiplicidades `PENDENTE` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades (a exclusividade de horário é citada por RN/RF) | grupo + Integrante 3 |
-| Incorporação das operações `OP-01…OP-22` e das situações §6 da Fase 5 pelo Integrante 3 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto | Integrante 3 |
-| DEC-009 (canal de notificação), DEC-010 (inovação/"encaixe"), DEC-012 (prazo e ator do cancelamento) | notificação é fronteira externa condicional; a sequência do "encaixe" não foi produzida (lacuna registrada) | grupo |
-| P-01 (mecanismo da confirmação), P-02 (prazo), P-05 (modelo do horário) | as guardas `[slot livre]` e `[prazo]` e a reserva de slot ficam sem valor fechado | grupo |
+| Incorporação das operações `OP-01…OP-27`, das **4 situações** do `Agendamento` e da entidade **`SolicitacaoEspera`** (DEC-027) | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
+| `SOLICITADO` ainda presente no enum do CLS-001 v2 e no diagrama de objetos (Fase 5) | a máquina de estados e os diagramas da Fase 6 já têm **4 situações**; falta remover o valor — ver **R6-09** | Integrante 3 |
+| Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |
+| Tabela `solicitacao_espera` (ordem de entrada, situação, `prazoAceite`) no DER | a SEQ-004 pressupõe persistência da fila — ver **R6-10** | Integrante 4 |
+| `CT-033…CT-036` na matriz da Fase 5 | os RFs novos (RF-033 a RF-036) não têm teste conceitual próprio — ver **LAC-11** | Integrante 5 |
+| P-05 / DEC-018 (modelo do horário) | a reserva de slot continua interna a `Agendamento.solicitar` e não aparece como mensagem — ver **LAC-02** | grupo |
+
+**Não são mais pendências** (resolvidas ou revogadas na Fase 6): DEC-009
+(e-mail é o canal, sempre nos três eventos), DEC-010 ("encaixe" substituído
+pela **lista de espera**), DEC-012 (guarda `[antes do horário marcado]`), P-01
+(confirmação automática — o agendamento **nasce `CONFIRMADO`**), P-02 (prazo de
+cancelamento), P-14 (não comparecimento é manual) e a numeração dos casos de
+uso (`UC-0RF`, DEC-026).

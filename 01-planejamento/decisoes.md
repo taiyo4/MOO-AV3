@@ -71,6 +71,8 @@ O uso de um Serviço Externo de E-mail/Notificação como ator externo permanece
 **Justificativa:**  
 A definição do canal de disparo externo ou tratamento interno de avisos será deliberada em conjunto pelo grupo antes da consolidação dos casos de uso.
 
+**Revisão da Fase 6 (resolvida):** o grupo decidiu que há **Serviço Externo de E-mail** e que **confirmação, cancelamento e oferta de vaga sempre solicitam o envio**; a falha de envio **não desfaz** a operação de agenda. O requisito foi formalizado como **RF-033** e a fronteira de aplicação tem nome único, `ServicoEnvioMensagem` (DEC-022). O canal deixa de ser pendência e passa a ser parte do escopo comportamental.
+
 ## DEC-010 — Status da Funcionalidade de Inovação
 
 **Decisão:**  
@@ -108,6 +110,8 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 **Efeito no modelo:** a regra fica em uma única operação consultável, reutilizada pelo caso de uso e pelo teste conceitual CT-027.
 
 **Alternativa a discutir:** 4 horas ou 24 horas, ou valor definido por faixa de horário.
+
+**Revisão da Fase 6 (revogada):** o grupo definiu que **não existe prazo de 2 horas**. A guarda de cancelamento é apenas **"antes do horário marcado"**. A proposta perde o valor numérico e o parágrafo "após o início só pode encerrar como REALIZADO ou NAO_COMPARECEU" permanece.
 
 **Situação:** aguardando aprovação do grupo.
 
@@ -152,6 +156,17 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 `solicitar`, `confirmar` e `cancelar` ocupam o horário (RN-005, RN-010). `CANCELADO`, `REALIZADO` e `NAO_COMPARECEU` são terminais, e `CANCELADO` não admite atendimento (RN-006).
 
 **Justificativa:** Usa exatamente a nomenclatura do plano §5.4 ("Solicitado → Confirmado → Realizado; saídas para Cancelado e Não compareceu"), de modo que domínio, casos de uso, máquina de estados (EST-001) e banco (`agendamento.status`) usem os mesmos nomes.
+
+**Revisão da Fase 6 (revogada em parte):** o grupo eliminou `SOLICITADO` — o agendamento **já nasce `CONFIRMADO`** (RF-025/RF-026). A tabela vigente passa a ser:
+
+| De | Evento | Para |
+|---|---|---|
+| — | `solicitar` (cria já confirmado) | `CONFIRMADO` |
+| `CONFIRMADO` | `concluir` | `REALIZADO` |
+| `CONFIRMADO` | `registrarFalta` | `NAO_COMPARECEU` |
+| `CONFIRMADO` | `cancelar` | `CANCELADO` |
+
+São **4 situações** e **4 transições de saída** (mais a criação), e não mais 5 situações e 6 transições.
 
 **Situação:** aguardando aprovação do grupo.
 
@@ -203,6 +218,8 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 **Justificativa:** O plano §6.1 penaliza elementos órfãos; criar a classe `Notificacao` sem requisito seria um órfão. A include UC "Notificar paciente por e-mail" já existe e hoje não tem responsável modelada (achado R5-12).
 
+**Revisão da Fase 6 (aplicada):** com a DEC-009 resolvida, o requisito foi numerado **RF-033** e a fronteira recebeu **nome único `ServicoEnvioMensagem`** — não se usa mais `ServicoNotificacao`. O envio aparece nas sequências SEQ-002, SEQ-003 e SEQ-004, no COM-001 e no ATV-001; continua **sem classe de domínio e sem tabela**.
+
 **Situação:** aguardando aprovação do grupo (vinculada à DEC-009).
 
 ## DEC-023 — Registro de atendimento referencia o agendamento (proposta)
@@ -227,6 +244,8 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 **Justificativa:** Fecha a pendência "DEC-5" citada em `UC-027`. A alternativa automática exigiria um mecanismo de temporização, que traria complexidade (e risco) sem regra aprovada.
 
+**Revisão da Fase 6 (aplicada):** o registro manual pelo Psicólogo foi formalizado como **RF-037 / UC-037** e está desenhado no EST-001 (transição `CONFIRMADO → NAO_COMPARECEU`), na SEQ-003 e no ATV-001.
+
 **Situação:** aguardando aprovação do grupo.
 
 ## DEC-026 — Convenção de numeração de casos de uso e de testes (proposta)
@@ -235,5 +254,45 @@ A funcionalidade inovadora será proposta e escolhida coletivamente pela equipe 
 
 **Justificativa:** Torna a [matriz de rastreabilidade](../06-rastreabilidade/matriz-rastreabilidade-fase5.md) auditável linha a linha e elimina a interpretação manual dos vínculos (achados R5-16 e R5-17).
 
-**Situação:** aguardando aprovação do grupo.
+**Revisão da Fase 6 (aplicada):** os casos criados na revisão da Fase 6 já seguem a convenção: **UC-028**, **UC-033**, **UC-034**, **UC-035**, **UC-036** e **UC-037** (um caso por RF). As especificações passam a abrir com "Objetivo" e "RFs cobertos".
+
+**Situação:** aprovada e aplicada.
+
+## DEC-027 — Lista de espera: fila por ordem de entrada, uma oferta por vez
+
+**Proposta:** quando não houver horário disponível, o Paciente pode entrar na **lista de espera** do Psicólogo. A lista é uma **fila por ordem de entrada**, sem prioridade manual. Ao liberar um horário por cancelamento, o sistema abre **uma única oferta por vez**, com **prazo de aceite**; se o primeiro da fila **recusar** (ou o prazo vencer), a oferta **passa ao próximo**.
+
+**Regras:**
+1. entrada na fila exige vínculo ativo e ausência de entrada ativa do mesmo paciente para o mesmo psicólogo;
+2. a posição é a data/hora de entrada — não há reordenação manual nem prioridade por perfil;
+3. **uma oferta aberta por vez** por psicólogo; enquanto houver oferta aberta, a fila não é percorrida;
+4. a oferta tem **prazo de aceite** único do sistema (parâmetro de configuração, não por paciente);
+5. **recusa** ou **vencimento** encerram a solicitação (`RECUSADA` / `EXPIRADA`) e a vaga é ofertada ao **próximo**;
+6. o aceite cria o agendamento **já `CONFIRMADO`** (RF-025/RF-026) e encerra a solicitação como `ACEITA`;
+7. toda abertura de oferta, aceite, recusa e expiração é **auditada** (RN-009) e as três primeiras são **notificadas por e-mail** (RF-033).
+
+**Justificativa:** fecha a lacuna da SEQ-004 (que antes era "encaixe", bloqueada pela DEC-010) e dá comportamento observável a um processo de agenda que já existia como intenção no escopo. A fila por ordem de entrada é a regra mais simples auditável: não exige critério subjetivo e torna a posição verificável no banco.
+
+**Efeito no modelo:** introduz o conceito **`SolicitacaoEspera`** (Psychologo, Paciente, período desejado, `dataHoraEntrada`, situação `AGUARDANDO`/`OFERTADA`/`ACEITA`/`RECUSADA`/`EXPIRADA`, `prazoAceite`) e a responsabilidade de aplicação **`ServicoListaEspera` (AP-06)**. É um **incremento de domínio proposto na Fase 6**, pendente de incorporação pelo Integrante 3 ao CLS-001.
+
+**Relação com casos de uso:** **RF-034 → UC-034** (entrar na fila), **RF-035 → UC-035** (ofertar vaga, `<<extend>>` de UC-027), **RF-036 → UC-036** (responder à oferta). A sequência é a **SEQ-004**.
+
+**Situação:** aprovada pelo grupo no lote de ajustes da Fase 6.
+
+---
+
+## Lote de ajustes da Fase 6 — decisões do grupo aplicadas ao Integrante 2
+
+Este bloco registra, em um só lugar, as decisões que **substituem** propostas anteriores. Ele existe para que o histórico não seja reescrito: cada proposta revogada mantém o texto original e recebe a nota "Revisão da Fase 6".
+
+| Item | Decisão vigente | Revoga / substitui | Onde foi aplicado |
+|---|---|---|---|
+| Situação inicial do agendamento | **`CONFIRMADO`**; `SOLICITADO` não existe | tabela da **DEC-016** e LAC-05 (P-01) | EST-001, SEQ-002, SEQ-003, ATV-001, COM-001, dossiê §21/§24, matriz |
+| Guarda do cancelamento | **`[antes do horário marcado]`**; não há prazo de 2 horas | **DEC-012** (valor) e LAC-03 | EST-001 (T3), SEQ-003, ATV-001 (`d3`), dossiê §24 |
+| Envio de e-mail | **sempre** em confirmação, cancelamento e oferta de vaga; **falha não desfaz a operação** | **DEC-009** (pendência) e o caráter "condicional" | SEQ-002/003/004, ATV-001, COM-001, RF-033 |
+| Nome da fronteira de envio | **`ServicoEnvioMensagem`** | `ServicoNotificacao` (**DEC-022**) | todos os diagramas e especificações |
+| Oferta de vaga | **`<<extend>>` do cancelamento** (não é UC independente) | ausência anterior | SEQ-003 (`opt` `<<extend>>`), SEQ-004, UC-027/UC-035, ATV-001 |
+| Lista de espera | fila por ordem de entrada, uma oferta por vez, prazo de aceite, recusa passa ao próximo | lacuna da SEQ-004 ("encaixe", **DEC-010**) | **DEC-027**, SEQ-004, RF-034…RF-036, UC-034…UC-036 |
+| Numeração de casos de uso | **`UC-0RF`** | numeração ad hoc | **DEC-026** aplicada em UC-028, UC-033…UC-037 |
+| Não comparecimento | registro **manual** pelo Psicólogo | DEC-5 citada em UC-027 | **DEC-025** → RF-037/UC-037, EST-001 T4, SEQ-003, ATV-001 |
 

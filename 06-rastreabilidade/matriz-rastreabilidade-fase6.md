@@ -1,7 +1,7 @@
 # Matriz de Rastreabilidade — Fase 6 (diagramas comportamentais)
 
 **Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
-**Data:** 22/10/2026 · **Versão:** v1.0 (proposta para o grupo).
+**Data:** 22/10/2026 · **Versão:** v2.0 (revisão do lote de ajustes da Fase 6).
 **Natureza:** **PROPOSTA.** Não substitui artefato oficial do grupo.
 **Complementa (não altera):** [`matriz-rastreabilidade-fase5.md`](matriz-rastreabilidade-fase5.md) — a matriz da Fase 5 continua sendo a **matriz mestra** do projeto (RF → RN/RNF → UC → Classe → Operação → Sequência → Tabela → CT).
 
@@ -17,12 +17,12 @@ Para **não mexer em artefato de fase anterior** (regra da AV3), esta matriz é 
 
 | Sigla | Significado |
 |---|---|
-| **SEQ-001/002/003** | Diagramas de sequência (Fase 6). |
+| **SEQ-001…SEQ-004** | Diagramas de sequência (Fase 6). |
 | **ATV-001** | Diagrama de atividades (Fase 6). |
 | **COM-001** | Diagrama de comunicação (Fase 6). |
 | **EST-001** | Máquina de estados do `Agendamento` (Fase 6). |
-| **OP-xx** | Operação proposta na Fase 5 (CLS-001 v2). |
-| **AP-xx** | Responsabilidade de aplicação (FASE5-REV-I2 §5.2). |
+| **OP-xx** | Operação do modelo de classes: OP-01…OP-22 (Fase 5) e **OP-23…OP-27** (incremento da lista de espera, DEC-027). |
+| **AP-xx** | Responsabilidade de aplicação (FASE5-REV-I2 §5.2) — **AP-01…AP-06**. |
 | **IR-xx** | Interface de infraestrutura (Fase 7). |
 | **INC-xx / TRS-xx / ARQ-xx** | Restrições e decisões da análise de persistência do Integrante 4. |
 
@@ -55,19 +55,24 @@ Para **não mexer em artefato de fase anterior** (regra da AV3), esta matriz é 
 | RF-021 Vincular paciente a psicólogo | RN-003, RN-007 | UC-021 | `formalizar`; OP-21 `encerrar` | — | — | — | — | Coberto (estado pendente) |
 | RF-022 Consultar o próprio cadastro | RN-004, RNF-005 | UC-022 | `consultarCadastroPermitido` | — | — | — | — | Coberto |
 | RF-023 Cadastrar disponibilidade | RN-005, RN-011 | UC-015 | OP-10 `cadastrarDisponibilidade` | — | — | — | — | Proposto (Fase 5) |
-| RF-024 Consultar horários disponíveis | RN-010, RNF-010 | UC-024 | OP-11 `consultarHorariosDisponiveis` | **SEQ-002** | **ATV-001** (`Consultar horários`) | **4, 5** | — | Proposto (Fase 5) |
-| RF-025 Solicitar agendamento | RN-005, RN-010 | UC-025 | `Agendamento.solicitar` | **SEQ-002** | **ATV-001** (`Criar agendamento`) | **1, 7** | **T1** (`[*] → SOLICITADO`) | Parcial (PC-07) |
-| RF-026 Confirmar agendamento | RN-013 | UC-025 | OP-13 `confirmar` | **SEQ-002**, **SEQ-003** (`opt`) | **ATV-001** (`Confirmar (OP-13)`) | **8** | **T2** (`SOLICITADO → CONFIRMADO`) | Parcial (PC-07) |
-| RF-027 Cancelar agendamento | RN-012, RN-006 | UC-027 | OP-14 `cancelar`; OP-15 `podeSerCancelado` | **SEQ-003** | **ATV-001** (`Cancelar (OP-14)`) | **12** | **T3**, **T4** (→ `CANCELADO`) | Parcial (PC-07) |
-| RF-028 Consultar os próprios agendamentos | RN-004 | UC-028 | OP-19 `consultarMeus` | **SEQ-003** | — | — | — | Proposto (Fase 5) |
+| **RF-024** Consultar horários disponíveis | RN-010, RNF-010 | UC-024 | OP-11 `consultarHorariosDisponiveis` | **SEQ-002** | **ATV-001** (`Consultar horários`) | **4, 5** | — | Proposto (Fase 5) |
+| **RF-025** Solicitar agendamento | RN-005, RN-010, RN-013 | UC-025 / UC-036 (aceite) | `Agendamento.solicitar` (cria **`CONFIRMADO`**) | **SEQ-002**, **SEQ-004** | **ATV-001** (`Criar agendamento (CONFIRMADO)`) | **1, 7** | **T0** (`[*] → CONFIRMADO`) | Coberto |
+| **RF-026** Confirmar agendamento | RN-013 | UC-025 (efeito) / UC-036 | `Agendamento.solicitar` — a confirmação é **automática e simultânea** | **SEQ-002**, **SEQ-004** | **ATV-001** (`Criar agendamento (CONFIRMADO)`) | **7** | **T0** | Coberto (confirmação automática) |
+| **RF-027** Cancelar agendamento | RN-012, RN-006 | UC-027 | OP-14 `cancelar`; OP-15 `podeSerCancelado` (guarda `[antes do horário marcado]`) | **SEQ-003**, **SEQ-004** (gatilho) | **ATV-001** (`Cancelar (OP-14)`) | **11** | **T1** (`CONFIRMADO → CANCELADO`) | Coberto |
+| **RF-028** Consultar os próprios agendamentos | RN-004 | **UC-028** (novo) | OP-19 `consultarMeus` | **SEQ-003** | — | — | — | Coberto |
 | RF-029 Consultar a agenda do psicólogo | RN-011 | UC-029 | OP-12 `consultarCompromissos` | — | — | — | — | Proposto (Fase 5) |
-| RF-030 Registrar atendimento | RN-006, RN-007, DEC-008 | UC-016 / UC-027 | OP-20 `registrar`; OP-17 `concluir` | **SEQ-003** (`opt`) | **ATV-001** (`Registrar atendimento`, `Concluir`) | **13, 14** | **T5** (`CONFIRMADO → REALIZADO`) | Proposto (Fase 5) |
+| **RF-030** Registrar atendimento | RN-006, RN-007, DEC-008 | UC-016 / UC-027 | OP-20 `registrar`; OP-17 `concluir` | **SEQ-003** (`opt`) | **ATV-001** (`Registrar atendimento`, `Concluir`) | **16, 17** | **T2** (`CONFIRMADO → REALIZADO`) | Coberto |
 | RF-031 Consultar histórico de atendimentos | RN-003, RN-007, RNF-006 | UC-016 | `consultarHistoricoPermitido` | — | — | — | — | Coberto |
-| RF-032 Registrar evento de auditoria | RN-009, RN-014, RNF-004 | UC-032 (`<<include>>`) | `RegistroAuditoria.registrar` + AP-02 | **SEQ-001/002/003** | **ATV-001** (4 auditorias) | **9, 10** | **T2, T3, T4, T5, T6** (efeito) | Coberto (colaboração parcial) |
-| — (plano §5.4 / INC-13) | — | UC-027 | OP-18 `registrarFalta` | **SEQ-003** (`opt`) | **ATV-001** (`Registrar falta`) | — | **T6** (`CONFIRMADO → NAO_COMPARECEU`) | Proposto (Fase 6) |
-| — (DEC-009, sem RF) | — | UC-033 | AP-04 `ServicoNotificacao.notificar` | **SEQ-002/003** | **ATV-001** (2 nós: confirmação e cancelamento) | **11** | efeito de T2/T3/T4 | Fora do domínio (condicional) |
+| **RF-032** Registrar evento de auditoria | RN-009, RN-014, RNF-004 | UC-032 (`<<include>>`) | `RegistroAuditoria.registrar` + AP-02 | **SEQ-001/002/003/004** | **ATV-001** (4 auditorias) | **8, 9** | efeito de T0–T3 | Coberto |
+| **RF-033** Notificar os interessados por e-mail | RN-009, RNF-004 | **UC-033** (novo) | AP-04 `ServicoEnvioMensagem.notificar` (fronteira externa) | **SEQ-002/003/004** | **ATV-001** (2 nós: confirmação e cancelamento) | **10, 12, 15** | efeito de T1 | Coberto (DEC-022) |
+| **RF-034** Entrar na lista de espera | RN-003, DEC-027 | **UC-034** (novo) | AP-06 `ServicoListaEspera.entrarNaFila`; OP-23 `registrarEntrada` | **SEQ-002** (A1), **SEQ-004** | **ATV-001** (`Sem horários: oferecer lista de espera`) | — | — | Coberto (incremento DEC-027) |
+| **RF-035** Ofertar vaga ao próximo | RN-010, DEC-027 | **UC-035** (`<<extend>>` de UC-027) | AP-06 `ofertarVaga`; OP-24 `proximoDaFila`; OP-25 `abrirOferta` | **SEQ-003** (`opt <<extend>>`), **SEQ-004** | **ATV-001** (`Ofertar vaga se houver fila`) | **13, 14, 15** | efeito de T1 | Coberto (incremento DEC-027) |
+| **RF-036** Responder à oferta de vaga | DEC-027 | **UC-036** (novo) | OP-26 `validarPrazo`; OP-27 `encerrar` (ACEITA/RECUSADA/EXPIRADA) | **SEQ-004** | — | — | — | Coberto (incremento DEC-027) |
+| **RF-037** Registrar não comparecimento | RN-006, DEC-025 | **UC-037** (novo) | OP-18 `registrarFalta` | **SEQ-003** (`opt`) | **ATV-001** (`Registrar falta`) | — | **T3** (`CONFIRMADO → NAO_COMPARECEU`) | Coberto |
 
-**Leitura:** 10 dos 32 RFs (RF-024 a RF-030, RF-032) têm **cobertura comportamental de Fase 6**; os demais 22 são de **cadastro, consulta e administration** — declaradamente fora do escopo comportamental desta fase (plano §6.1: "casos de uso críticos aprovados"), e todos já estão cobertos pela matriz da Fase 5. Nenhum RF **crítico** ficou sem diagrama.
+**Leitura:** **14 dos 37 RFs** (RF-024 a RF-037) têm **cobertura comportamental de Fase 6**; os demais 23 são de **cadastro, consulta e administração** — declaradamente fora do escopo comportamental desta fase (plano §6.1: "casos de uso críticos aprovados"), e todos já estão cobertos pela matriz da Fase 5. Nenhum RF **crítico** ficou sem diagrama.
+
+> **Mudança em relação à v1.0:** entraram RF-033, RF-034, RF-035, RF-036 e RF-037 (seção 8 de `02-requisitos/requisitos-funcionais.md`), RF-028 ganhou o **UC-028** (antes só existia como operação), `SOLICITADO` saiu do EST-001 (T0 substitui T1+T2) e o e-mail deixou de ser "condicional".
 
 ---
 
@@ -89,81 +94,110 @@ Para **não mexer em artefato de fase anterior** (regra da AV3), esta matriz é 
 
 | # | Mensagem | Origem | RN/RF |
 |---|---|---|---|
-| 1 | `solicitar(horario)` | ator → **AP-03** | RF-025 |
+| 1 | `consultarHorariosDisponiveis(periodo)` | ator → **AP-03** | RF-024 |
 | 2 | `estaAtivo()` | **OP-22** `Vinculo` | RN-003, RN-005 |
 | 3 | `consultarHorariosDisponiveis(paciente, periodo)` | **OP-11** `Agenda` | RF-024 |
-| 4 | `verificarDisponibilidade(horario)` | `Agenda.verificarDisponibilidade` (modelo do I3) | RN-010 |
-| 5 | `Agendamento.solicitar(psicologo, paciente, horario, solicitante)` | entidade de domínio | RF-025, RN-005, RN-010 |
-| 6 | `confirmar(solicitante)` | **OP-13** | RF-026, RN-013 |
-| 7 | `registrar("AGENDAMENTO_CONFIRMADO", …)` | **AP-02** | RF-032, RN-009 |
-| 8 | `notificar(confirmacao)` | **AP-04** (fronteira externa) | DEC-009 |
+| 4 | `verificarDisponibilidade(horario)` | `Agenda.verificarDisponibilidade` (modelo do I3) | RN-005, RN-010 |
+| 5 | `Agendamento.solicitar(psicologo, paciente, horario, solicitante)` | entidade de domínio — devolve **`CONFIRMADO`** | RF-025, RF-026, RN-013 |
+| 6 | `registrar("AGENDAMENTO_CONFIRMADO", …)` | **AP-02** | RF-032, RN-009 |
+| 7 | `registrar(responsavel, data, hora, operacao)` | `RegistroAuditoria.registrar` | RF-032 |
+| 8 | `notificar(evento=confirmacao)` | **AP-04** (fronteira externa, sempre) | RF-033, DEC-022 |
+| 9 | *(A1)* informar ausência e **oferecer lista de espera** | **AP-06** / UC-034 | RF-034 |
 
-### 2.3 SEQ-003 — Cancelar / confirmar / concluir / registrar falta (UC-027)
+> **Não existe** `confirmar(solicitante)` (OP-13) nesta sequência: a criação já produz `CONFIRMADO` (T0 do EST-001).
+
+### 2.3 SEQ-003 — Cancelar / concluir / registrar falta (UC-027 + UC-035)
 
 | # | Mensagem | Origem | RN/RF |
 |---|---|---|---|
-| 1 | `consultarMeus(solicitante)` | **OP-19** | RF-028 |
+| 1 | `consultarMeus(solicitante)` | **OP-19** | RF-028, UC-028 |
 | 2 | `podeSerCancelado()` | **OP-15** | RN-012, RF-027 |
 | 3 | `cancelar(solicitante, motivo)` | **OP-14** | RF-027, RN-012 |
 | 4 | `registrar("AGENDAMENTO_CANCELADO", …)` | **AP-02** | RF-032 |
-| 5 | `notificar(cancelamento)` | **AP-04** | DEC-009 |
-| 6 | `confirmar(solicitante)` | **OP-13** | RF-026, RN-013 |
+| 5 | `notificar(evento=cancelamento)` | **AP-04** (sempre) | RF-033 |
+| 6 | `ofertarVaga(agendamento)` — `opt <<extend>> UC-035` | **AP-06** | RF-035, DEC-027 |
 | 7 | `estaCancelada()` | **OP-16** | RN-006 |
 | 8 | `concluir(solicitante)` | **OP-17** | RF-030 |
 | 9 | `registrar(agendamento, contextoSessao, solicitante)` | **OP-20** `Atendimento` | RF-030, RN-006/007 |
-| 10 | `registrarFalta(solicitante)` | **OP-18** | plano §5.4, INC-13 |
+| 10 | `registrarFalta(solicitante)` | **OP-18** | RF-037, DEC-025 |
 | 11 | `registrar("AGENDAMENTO_CONCLUIDO" / "AGENDAMENTO_NAO_COMPARECEU", …)` | **AP-02** | RF-032 |
 
-### 2.4 COM-001 — Comunicação (14 mensagens)
+### 2.4 SEQ-004 — Lista de espera e oferta de vaga (UC-034 a UC-036)
+
+| # | Mensagem | Origem | RN/RF |
+|---|---|---|---|
+| 1 | `entrarNaFila(psicologo, paciente, periodo)` | ator → **AP-06** | RF-034 |
+| 2 | `registrarEntrada(...)` | **OP-23** `SolicitacaoEspera` | RF-034, DEC-027 |
+| 3 | `registrar("ESPERA_REGISTRADA", …)` | **AP-02** | RF-032 |
+| 4 | `registrar(responsavel, data, hora, operacao)` | `RegistroAuditoria.registrar` | RF-032 |
+| 5 | `ofertarVaga(horarioLiberado)` — `opt <<extend>> do cancelamento` | **AP-06** | RF-035, DEC-027 |
+| 6 | `proximoDaFila(psicologo)` | **OP-24** | RF-035 (ordem de entrada) |
+| 7 | `abrirOferta(prazoAceite)` | **OP-25** | RF-035 (uma oferta por vez) |
+| 8 | `notificar(evento=ofertaVaga)` | **AP-04** (sempre) | RF-033 |
+| 9 | `registrar("OFERTA_VAGA_ABERTA", …)` | **AP-02** | RF-032 |
+| 10 | `aceitarOferta(solicitacao)` | ator → **AP-06** | RF-036 |
+| 11 | `validarPrazo()` | **OP-26** | RF-036, DEC-027 |
+| 12 | `agendar(psicologo, paciente, horario)` → `Agendamento.solicitar` | **AP-03** + entidade | RF-025, RF-026 |
+| 13 | `notificar(evento=confirmacao)` | **AP-04** (sempre) | RF-033 |
+| 14 | `encerrar(ACEITA / RECUSADA)` | **OP-27** | RF-036 |
+| 15 | `expirarOferta(prazoAceite)` → `encerrar(EXPIRADA)` | **OP-27** | RF-036, DEC-027 |
+| 16 | `registrar("OFERTA_RECUSADA" / "OFERTA_EXPIRADA", …)` | **AP-02** | RF-032 |
+| 17 | `ofertarVaga(...)` recursivo (passa ao próximo) | **AP-06** | RF-035, DEC-027 |
+
+> O aceite **reusa** o caminho normal de agendamento (linha 12): não há criação "especial" de agendamento pela fila. Recusa e vencimento reusam `encerrar` (OP-27) variando a situação final.
+
+### 2.5 COM-001 — Comunicação (14 colaboradores, 17 mensagens)
 
 | # | Mensagem | Origem | Diagrama correspondente |
 |---|---|---|---|
 | 1 | `solicitar(horario)` | AP-03 | SEQ-002 (1) |
-| 2 | `consultarPermitidos(solicitante)` | **OP-04** | SEQ-001 (autorização por operação) |
+| 2 | `consultarPermitidos()` | **OP-04** | SEQ-001 (autorização por operação) |
 | 3 | `estaAtivo()` | **OP-22** | SEQ-002 (2) |
-| 4 | `consultarHorarios(paciente, periodo)` | **OP-11** | SEQ-002 (3) |
+| 4 | `consultarHorarios()` | **OP-11** | SEQ-002 (3) |
 | 5 | `slots livres` | A09 (`Agenda`—`Disponibilidade`) | SEQ-002 (3) |
-| 6 | `verificarDisponibilidade(horario)` | `Agenda.verificarDisponibilidade` | SEQ-002 (4) |
-| 7 | `solicitar(psicologo, paciente, horario)` | `Agendamento.solicitar` | SEQ-002 (5) |
-| 8 | `confirmar(solicitante)` | **OP-13** | SEQ-002 (6) |
-| 9 | `registrar(AGENDAMENTO_CONFIRMADO, …)` | **AP-02** | SEQ-002 (7) |
-| 10 | `registrar(responsavel, data, hora, operacao)` | `RegistroAuditoria.registrar` | SEQ-002 (7) |
-| 11 | `notificar(confirmacao)` | **AP-04** | SEQ-002 (8) |
-| 12 | `cancelar(solicitante, motivo)` | **OP-14** | SEQ-003 (3) |
-| 13 | `concluir(agendamento)` | RF-030 (fluxo do ator) | SEQ-003 (`opt` conclusão) |
-| 14 | `registrar(agendamento, contextoSessao)` | **OP-20** | SEQ-003 (9) |
+| 6 | `verificarDisponibilidade()` | `Agenda.verificarDisponibilidade` | SEQ-002 (4) |
+| 7 | `solicitar(horario)` | `Agendamento.solicitar` (cria `CONFIRMADO`) | SEQ-002 (5), SEQ-004 (12) |
+| 8 | `registrar(criacao)` | **AP-02** | SEQ-002 (6) |
+| 9 | `registrar(tabela)` | `RegistroAuditoria.registrar` | SEQ-002 (7) |
+| 10 | `notificar(confirmacao)` | **AP-04** | SEQ-002 (8) |
+| 11 | `cancelar(motivo)` | **OP-14** | SEQ-003 (3) |
+| 12 | `notificar(cancelamento)` | **AP-04** | SEQ-003 (5) |
+| 13 | `ofertarVaga()` | **AP-06** | SEQ-003 (6), SEQ-004 (5) |
+| 14 | `proximoDaFila()` | **OP-24** | SEQ-004 (6) |
+| 15 | `notificar(ofertaVaga)` | **AP-04** | SEQ-004 (8) |
+| 16 | `concluir(agendamento)` | RF-030 (fluxo do ator) | SEQ-003 (8) |
+| 17 | `registrar(atendimento)` | **OP-20** | SEQ-003 (9) |
 
-### 2.5 ATV-001 — Atividades
+### 2.6 ATV-001 — Atividades
 
 | Nó do diagrama | Origem | Diagrama correspondente |
 |---|---|---|
 | Solicitar agendamento | RF-025 (ator) | SEQ-002 (1) |
 | Consultar horários (OP-11) | **OP-11** | SEQ-002 (3), COM-001 (4) |
 | Validar vínculo e horário | **OP-22** + `Agenda.verificarDisponibilidade` | SEQ-002 (2, 4), COM-001 (3, 6) |
-| Criar agendamento | `Agendamento.solicitar` | SEQ-002 (5), COM-01 (7) |
-| Confirmar (OP-13) | **OP-13** | SEQ-002 (6), COM-001 (8), EST T2 |
-| Auditar confirmação (RN-009) | **AP-02** | SEQ-002 (7), COM-001 (9/10) |
-| Notificar confirmação (AP-04) | **AP-04** | SEQ-002 (8), COM-001 (11) |
-| Cancelar (OP-14) | **OP-14** | SEQ-003 (3), COM-001 (12), EST T3/T4 |
-| Liberar horário | RN-012/RN-010 (efeito no catálogo) | SEQ-003 (implícito), EST T3/T4 |
+| Criar agendamento (CONFIRMADO) | `Agendamento.solicitar` | SEQ-002 (5), SEQ-004 (12), COM-001 (7), EST T0 |
+| Auditar criação (RN-009) | **AP-02** | SEQ-002 (6), COM-001 (8/9) |
+| Notificar confirmação (RF-033) | **AP-04** | SEQ-002 (8), COM-001 (10) |
+| Sem horários: oferecer lista de espera (A1) | **AP-06** / UC-034 | SEQ-002 (9), SEQ-004 (1) |
+| Cancelar (OP-14) | **OP-14** | SEQ-003 (3), COM-001 (11), EST T1 |
+| Liberar horário | RN-012/RN-010 (efeito no catálogo) | SEQ-003 (implícito), EST T1 |
 | Auditar cancelamento | **AP-02** | SEQ-003 (4) |
-| Notificar cancelamento (AP-04) | **AP-04** | SEQ-003 (5) |
-| Registrar atendimento (OP-20) | **OP-20** | SEQ-003 (9), COM-001 (14) |
-| Concluir (OP-17) | **OP-17** | SEQ-003 (8), EST T5 |
-| Registrar falta (OP-18) | **OP-18** | SEQ-003 (10), EST T6 |
+| Notificar cancelamento (RF-033) | **AP-04** | SEQ-003 (5), COM-001 (12) |
+| Ofertar vaga se houver fila (UC-035) | **AP-06** / OP-24 / OP-25 | SEQ-003 (6), SEQ-004 (5–8), COM-001 (13, 14, 15) |
+| Registrar atendimento (OP-20) | **OP-20** | SEQ-003 (9), COM-001 (17) |
+| Concluir (OP-17) | **OP-17** | SEQ-003 (8), COM-001 (16), EST T2 |
+| Registrar falta (OP-18) | **OP-18** | SEQ-003 (10), EST T3 |
 | Auditar falta / conclusão | **AP-02** | SEQ-003 (11) |
-| Decisões `d1`, `d2`, `d3`, `d5` | RN-010, RN-005/RN-010, RN-012, RN-006 | SEQ-002/003 (fragamentos `alt`) |
+| Decisões `d1`, `d2`, `d3`, `d5` | RN-010, RN-005/RN-010, RN-012, RN-006/RN-003 | SEQ-002/003 (fragmentos `alt`) |
 
-### 2.6 EST-001 — Transições
+### 2.7 EST-001 — Transições
 
 | # | Transição | Evento | Guarda | Operação | Sequência |
 |---|---|---|---|---|---|
-| T1 | `[*] → SOLICITADO` | `solicitar` | vínculo ATIVO e slot livre | `Agendamento.solicitar` | SEQ-002 (5) |
-| T2 | `SOLICITADO → CONFIRMADO` | `confirmar` | `[slot livre]` | **OP-13** | SEQ-002 (6), SEQ-003 (`opt`) |
-| T3 | `SOLICITADO → CANCELADO` | `cancelar` | `[prazo]` | **OP-14** / **OP-15** | SEQ-003 (3) |
-| T4 | `CONFIRMADO → CANCELADO` | `cancelar` | `[prazo]` | **OP-14** / **OP-15** | SEQ-003 (3) |
-| T5 | `CONFIRMADO → REALIZADO` | `concluir` | `[atendimento]` | **OP-17** / **OP-20** | SEQ-003 (8, 9) |
-| T6 | `CONFIRMADO → NAO_COMPARECEU` | `registrarFalta` | — | **OP-18** | SEQ-003 (10) |
+| **T0** | `[*] → CONFIRMADO` | `solicitar` | vínculo ATIVO e slot livre | `Agendamento.solicitar` | SEQ-002 (5), SEQ-004 (12) |
+| **T1** | `CONFIRMADO → CANCELADO` | `cancelar` | **`[antes do horário marcado]`** | **OP-14** / **OP-15** | SEQ-003 (3) |
+| **T2** | `CONFIRMADO → REALIZADO` | `concluir` | `[atendimento registrado]` | **OP-17** / **OP-20** | SEQ-003 (8, 9) |
+| **T3** | `CONFIRMADO → NAO_COMPARECEU` | `registrarFalta` | `[horário já passou; ação do psicólogo]` | **OP-18** | SEQ-003 (10) |
 
 **Nenhuma mensagem de sequência, nenhuma mensagem de comunicação e nenhuma atividade está sem origem em operação ou responsabilidade.** Este é o critério de elegibilidade adotado no plano §6.1 ("mensagens, retornos, alternativas e exceções coerentes com os fluxos textuais") e na revisão FASE5-REV-I2 §5.2.
 
@@ -178,15 +212,17 @@ Cada linha cruza os quatro diagramas comportamentais e as três fontes textuais 
 | Autenticar | UC-001 | `Usuario.podeAutenticar` (OP-01), `confereCredencial` (OP-02) | SEQ-001 | — | — | — | RF-001 | RN-001, RN-002 |
 | Encerrar sessão | UC-001 (A1) | AP-01 | SEQ-001 (`opt`) | — | — | — | RF-002 | RNF-002 |
 | Consultar horários | UC-024 | `Agenda.consultarHorariosDisponiveis` (OP-11) | SEQ-002 | ATV-001 | COM-001 (4, 5) | — | RF-024 | RN-010 |
-| Solicitar agendamento | UC-025 | `Agendamento.solicitar` | SEQ-002 | ATV-001 | COM-001 (1, 7) | EST-001 (T1) | RF-025 | RN-005, RN-010 |
-| Confirmar | UC-025 | `Agendamento.confirmar` (OP-13) | SEQ-002, SEQ-003 | ATV-001 | COM-001 (8) | EST-001 (T2) | RF-026 | RN-013 |
-| Cancelar | UC-027 | `Agendamento.cancelar` (OP-14), `podeSerCancelado` (OP-15) | SEQ-003 | ATV-001 | COM-001 (12) | EST-001 (T3, T4) | RF-027 | RN-012, RN-006 |
-| Consultar meus agendamentos | UC-028 | `Agendamento.consultarMeus` (OP-19) | SEQ-003 | — | — | — | RF-028 | RN-004 |
-| Registrar atendimento | UC-016 / UC-027 | `Atendimento.registrar` (OP-20), `Agendamento.concluir` (OP-17) | SEQ-003 (`opt`) | ATV-001 | COM-001 (13, 14) | EST-001 (T5) | RF-030 | RN-006, RN-007 |
-| Registrar falta | UC-027 (plano §5.4) | `Agendamento.registrarFalta` (OP-18) | SEQ-003 (`opt`) | ATV-001 | — | EST-001 (T6) | — | INC-13 |
-| Auditar | UC-032 (`<<include>>`) | `RegistroAuditoria.registrar` + AP-02 | SEQ-001/002/003 | ATV-001 (4 nós) | COM-001 (9, 10) | efeito de T2–T6 | RF-032 | RN-009, RN-014 |
-| Notificar | UC-033 | AP-04 (fronteira externa) | SEQ-002, SEQ-003 | ATV-001 (2 nós) | COM-001 (11) | efeito de T2–T4 | — (DEC-009) | — |
-| Autorização | UC-001, UC-016 | `Usuario.consultarPermitidos` (OP-04), `Vinculo.estaAtivo` (OP-22) | SEQ-002 | ATV-001 (`d2`) | COM-001 (2, 3) | guarda de T1 | RF-010, RF-017, RF-021 | RN-003, RN-005 |
+| Solicitar agendamento | UC-025 | `Agendamento.solicitar` (cria `CONFIRMADO`) | SEQ-002, SEQ-004 | ATV-001 | COM-001 (1, 7) | EST-001 (T0) | RF-025, RF-026 | RN-005, RN-010, RN-013 |
+| Cancelar | UC-027 | `Agendamento.cancelar` (OP-14), `podeSerCancelado` (OP-15) | SEQ-003 | ATV-001 | COM-001 (11) | EST-001 (T1) | RF-027 | RN-012, RN-006 |
+| Consultar meus agendamentos | **UC-028** | `Agendamento.consultarMeus` (OP-19) | SEQ-003 | — | — | — | RF-028 | RN-004 |
+| Registrar atendimento | UC-016 / UC-027 | `Atendimento.registrar` (OP-20), `Agendamento.concluir` (OP-17) | SEQ-003 (`opt`) | ATV-001 | COM-001 (16, 17) | EST-001 (T2) | RF-030 | RN-006, RN-007 |
+| Registrar falta | **UC-037** | `Agendamento.registrarFalta` (OP-18) | SEQ-003 (`opt`) | ATV-001 | — | EST-001 (T3) | RF-037 | RN-006, DEC-025 |
+| Notificar | **UC-033** | AP-04 `ServicoEnvioMensagem.notificar` (fronteira externa) | SEQ-002, SEQ-003, SEQ-004 | ATV-001 (2 nós) | COM-001 (10, 12, 15) | efeito de T1 | RF-033 | DEC-022, RNF-004 |
+| Entrar na lista de espera | **UC-034** | AP-06 `entrarNaFila`, OP-23 `registrarEntrada` | SEQ-002 (A1), SEQ-004 | ATV-001 | — | — | RF-034 | RN-003, DEC-027 |
+| Ofertar vaga | **UC-035** (`<<extend>>` de UC-027) | AP-06 `ofertarVaga`, OP-24 `proximoDaFila`, OP-25 `abrirOferta` | SEQ-003 (`opt`), SEQ-004 | ATV-001 | COM-001 (13, 14, 15) | efeito de T1 | RF-035 | RN-010, DEC-027 |
+| Responder à oferta | **UC-036** | OP-26 `validarPrazo`, OP-27 `encerrar` | SEQ-004 | — | — | — | RF-036 | DEC-027 |
+| Auditar | UC-032 (`<<include>>`) | `RegistroAuditoria.registrar` + AP-02 | SEQ-001/002/003/004 | ATV-001 (4 nós) | COM-001 (8, 9) | efeito de T0–T3 | RF-032 | RN-009, RN-014 |
+| Autorização | UC-001, UC-016 | `Usuario.consultarPermitidos` (OP-04), `Vinculo.estaAtivo` (OP-22) | SEQ-002 | ATV-001 (`d2`) | COM-001 (2, 3) | guarda de T0 | RF-010, RF-017, RF-021 | RN-003, RN-005 |
 
 **Divergências detectadas: 0.** A verificação detalhada (incluindo o cotejo com a análise de persistência do Integrante 4) está em `01-planejamento/revisoes/FASE6-REV-I2-revisao-comportamental.md`.
 
@@ -196,18 +232,18 @@ Cada linha cruza os quatro diagramas comportamentais e as três fontes textuais 
 
 | Verificação exigida pelo plano | Resultado | Observação |
 |---|---|---|
-| RF sem diagrama comportamental | **Sim — 22** | RF-003 a RF-023 (exceto RF-024) e RF-028/RF-029/RF-031 são de cadastro/consulta/administração: **fora do escopo comportamental** desta fase (plano §6.1 — "casos de uso críticos"). Cobertos pela matriz da Fase 5 e pelos diagramas de classes/objetos. |
-| RF crítico sem diagrama comportamental | **Não** | RF-001, RF-002, RF-024, RF-025, RF-026, RF-027, RF-030, RF-032 têm pelo menos um diagrama. |
-| Caso de uso crítico sem diagrama | **Não** | UC-001 → SEQ-001 · UC-021 → coberto indiretamente por SEQ-002 (`estaAtivo`) e pelo modelo · UC-025 → SEQ-002 + ATV-001 + COM-001 · UC-027 → SEQ-003 + ATV-001 + COM-001 + EST-001. |
-| Mensagem de sequência sem operação/responsabilidade | **Não** | Ver §2.1–2.3 (todas as mensagens remeteram a OP/AP/IR). |
-| Atividade sem origem | **Não** | Ver §2.5. |
-| Mensagem de comunicação sem origem | **Não** | Ver §2.4. |
-| Transição de estado sem operação | **Não** | Ver §2.6. |
-| Situação de estado sem atributo persistível | **Não** | `SOLICITADO`, `CONFIRMADO`, `REALIZADO`, `CANCELADO`, `NAO_COMPARECEU` = exatamente o enum `SituacaoAgendamento` do CLS-001 v2 e a coluna `agendamento.status` proposta na Fase 5 (`IMP-DER-02` do I4). |
-| Transição sem caso de uso | **Não** | T1–T6 mapeadas na §3. |
-| Diagrama sem requisito | **Não** | Todos os seis diagramas declaram RF/RN no cabeçalho do `.mmd` e na especificação correspondente. |
-| Diagrama comportamental sem classe | **Não** | Todos os participantes/atividade/colaboradores pertencem a uma classe do CLS-001 v2 ou a uma responsabilidade AP/IR declarada. |
-| Sequência sem par Aufruf/Resposta | **Não** | Toda mensagem de solicitação tem o retorno correspondente (`-->>`), com exceção das chamadas internas de auto-mensagem, que são rotuladas como tal. |
+| RF sem diagrama comportamental | **Sim — 23** | RF-003 a RF-023 (exceto RF-024) e RF-029, RF-031 são de cadastro/consulta/administração: **fora do escopo comportamental** desta fase (plano §6.1 — "casos de uso críticos"). Cobertos pela matriz da Fase 5 e pelos diagramas de classes/objetos. |
+| RF crítico sem diagrama comportamental | **Não** | RF-001, RF-002, RF-024 a RF-028, RF-030, RF-032, RF-033, RF-034, RF-035, RF-036 e RF-037 têm pelo menos um diagrama. |
+| Caso de uso crítico sem diagrama | **Não** | UC-001 → SEQ-001 · UC-021 → coberto indiretamente por SEQ-002/004 (`estaAtivo`) · UC-024/UC-025 → SEQ-002 + ATV-001 + COM-001 · UC-027 → SEQ-003 + ATV-001 + COM-001 + EST-001 · **UC-028 → SEQ-003** · **UC-033 → SEQ-002/003/004** · **UC-034/UC-035/UC-036 → SEQ-004** · **UC-037 → SEQ-003 + ATV-001 + EST-001**. |
+| Mensagem de sequência sem operação/responsabilidade | **Não** | Ver §2.1–2.4 (todas as mensagens remetem a OP/AP/IR). |
+| Atividade sem origem | **Não** | Ver §2.6. |
+| Mensagem de comunicação sem origem | **Não** | Ver §2.5. |
+| Transição de estado sem operação | **Não** | Ver §2.7 (T0–T3). |
+| Situação de estado sem atributo persistível | **Não** | `CONFIRMADO`, `REALIZADO`, `CANCELADO`, `NAO_COMPARECEU` = enum `SituacaoAgendamento` do CLS-001 v2 e coluna `agendamento.status` (`IMP-DER-02` do I4). **Pendência R6-09:** o enum da Fase 5 ainda lista `SOLICITADO` e precisa ser alinhado pelo Integrante 3. |
+| Transição sem caso de uso | **Não** | T0–T3 mapeadas na §3. |
+| Diagrama sem requisito | **Não** | Todos os **sete** diagramas declaram RF/RN no cabeçalho do `.mmd` e na especificação correspondente. |
+| Diagrama comportamental sem classe | **Não** | Todos os participantes/atividade/colaboradores pertencem a uma classe do CLS-001 v2, ao incremento `SolicitacaoEspera` (DEC-027) ou a uma responsabilidade AP/IR declarada. |
+| Sequência sem par pedido/resposta | **Não** | Toda mensagem de solicitação tem o retorno correspondente (`-->>`), com exceção das chamadas internas de auto-mensagem (`ServicoListaEspera → ServicoListaEspera` na reoferta), rotuladas como tal. |
 
 ---
 
@@ -218,14 +254,17 @@ Cada linha cruza os quatro diagramas comportamentais e as três fontes textuais 
 | 1 | RF-001 | 1 | 0 | 0 | 0 | 1 |
 | 2 | RF-002 | 1 | 0 | 0 | 0 | 1 |
 | 24 | RF-024 | 1 | 1 | 1 | 0 | 3 |
-| 25 | RF-025 | 1 | 1 | 1 | 1 | 4 |
+| 25 | RF-025 | 2 | 1 | 1 | 1 | 5 |
 | 26 | RF-026 | 2 | 1 | 1 | 1 | 5 |
-| 27 | RF-027 | 1 | 1 | 1 | 1 | 4 |
+| 27 | RF-027 | 2 | 1 | 1 | 1 | 5 |
 | 28 | RF-028 | 1 | 0 | 0 | 0 | 1 |
 | 30 | RF-030 | 1 | 1 | 1 | 1 | 4 |
-| 32 | RF-032 | 3 | 1 | 1 | 0 | 5 |
-| — | INC-13 (falta) | 1 | 1 | 0 | 1 | 3 |
-| — | DEC-009 (notificar) | 2 | 1 | 1 | 0 | 4 |
+| 32 | RF-032 | 4 | 1 | 1 | 0 | 6 |
+| 33 | RF-033 | 3 | 1 | 1 | 0 | 5 |
+| 34 | RF-034 | 2 | 1 | 0 | 0 | 3 |
+| 35 | RF-035 | 2 | 1 | 1 | 0 | 4 |
+| 36 | RF-036 | 1 | 0 | 0 | 0 | 1 |
+| 37 | RF-037 | 1 | 1 | 0 | 1 | 3 |
 
 ---
 
@@ -238,13 +277,15 @@ A matriz da Fase 5 (§6) define os testes conceituais por RF. A Fase 6 **não cr
 | CT-001 | RF-001 | SEQ-001 (`alt` E2 — conta bloqueada) |
 | CT-002 | RF-002 | SEQ-001 (`opt` A1) |
 | CT-024 | RF-024 | SEQ-002 (`alt` "Há horários disponíveis" / A1), ATV-001 (`d1`), COM-001 (4, 5) |
-| CT-025 | RF-025 | SEQ-002, ATV-001 (`d2`, `Criar agendamento`), COM-001 (1, 7), EST-001 (T1) |
-| CT-026 | RF-026 | SEQ-002, SEQ-003 (`opt`), ATV-001 (`Confirmar (OP-13)`), COM-001 (8), EST-001 (T2) |
-| CT-027 | RF-027 | SEQ-003 (`alt` "Pode ser cancelado" / E1), ATV-001 (`d3`), COM-001 (12), EST-001 (T3, T4) |
-| CT-028 | RF-028 | SEQ-003 (`consultarMeus`) |
-| CT-030 | RF-030 | SEQ-003 (`opt` conclusão), ATV-001 (`d5` [Sim]), COM-001 (13, 14), EST-001 (T5) |
-| CT-032 | RF-032 | SEQ-001/002/003 (7 + 1 + 4 mensagens de auditoria), ATV-001 (4 nós de auditoria), COM-001 (9, 10) |
-| — | INC-13 | SEQ-003 (`opt` "Não compareceu"), ATV-001 (`d5` [Não]), EST-001 (T6) |
+| CT-025 | RF-025 | SEQ-002, SEQ-004 (aceite), ATV-001 (`d2`, `Criar agendamento (CONFIRMADO)`), COM-001 (1, 7), EST-001 (T0) |
+| CT-026 | RF-026 | SEQ-002 (agendamento devolvido `CONFIRMADO`), SEQ-004 (aceite), ATV-001 (`Criar agendamento (CONFIRMADO)`), COM-001 (7), EST-001 (T0) |
+| CT-027 | RF-027 | SEQ-003 (`alt` "Pode ser cancelado" / E1), ATV-001 (`d3`), COM-001 (11), EST-001 (T1) |
+| CT-028 | RF-028 | SEQ-003 (`consultarMeus`, OP-19) |
+| CT-030 | RF-030 | SEQ-003 (`opt` conclusão), ATV-001 (`d5` [Sim]), COM-001 (16, 17), EST-001 (T2) |
+| CT-032 | RF-032 | SEQ-001/002/003/004 (mensagens de auditoria), ATV-001 (4 nós de auditoria), COM-001 (8, 9) |
+| — | RF-037 | SEQ-003 (`opt` "Não comparecimento"), ATV-001 (`d5` [Não] → `Registrar falta`), EST-001 (T3) |
+
+> **Pendência para o Integrante 5:** RF-033 a RF-036 não têm CT na matriz da Fase 5. A proposta é abrir **CT-033…CT-036** (e-mail obrigatório; entrada na fila por ordem; oferta única com prazo; aceite/recusa/expiração), usando a SEQ-004 como evidência. Registrar na revisão, não criar teste novo nesta fase.
 
 ---
 
@@ -253,8 +294,9 @@ A matriz da Fase 5 (§6) define os testes conceituais por RF. A Fase 6 **não cr
 1. Toda mudança em RF, RN, UC, operação, diagrama comportamental ou situação **atualiza esta matriz e a matriz da Fase 5 no mesmo commit** (plano §6.1 e §13).
 2. Nenhuma mensagem pode ser adicionada a um diagrama comportamental sem uma linha nesta matriz (§2) — a regra é o mecanismo que impede "mensagem inventada para satisfazer um diagrama futuro".
 3. Ao aprovar o grupo as propostas, as colunas `Sequência` da matriz da Fase 5 devem ser completadas com ATV/COM/EST e esta matriz deve ser **fundida** na matriz mestra (ou mantida como apêndice, o que é decisão do Integrante 5).
-4. Mudança nas **situações** (`SOLICITADO`…`NAO_COMPARECEU`) altera simultaneamente: o enum do CLS-001 v2, o `CHECK` de `agendamento.status` (`IMP-DER-02` do I4) e o EST-001.
-5. Mudança em **P-01** (confirmação automática síncrona × assíncrona) pode colapsar T1+T2 do EST-001 — a máquina já está desenhada para admitir esse colapso sem redesenhar o diagrama.
+4. Mudança nas **situações** (`CONFIRMADO`…`NAO_COMPARECEU`) altera simultaneamente: o enum do CLS-001 v2, o `CHECK` de `agendamento.status` (`IMP-DER-02` do I4) e o EST-001. **O valor `SOLICITADO` não existe mais** (DEC-016 revista / R6-09).
+5. Mudança nas **regras da fila** (DEC-027) altera simultaneamente `SolicitacaoEspera`, `ServicoListaEspera` (AP-06), OP-23…OP-27 e a SEQ-004.
+6. O **e-mail é obrigatório** nos três eventos (RF-033): qualquer diagrama que trate o envio como condicional está divergente e deve ser corrigido.
 
 ---
 
@@ -265,8 +307,12 @@ A matriz da Fase 5 (§6) define os testes conceituais por RF. A Fase 6 **não cr
 | SEQ-001 | `03-uml/Sequências/proposta-I2-sequencia-seq-001-autenticar.mmd` (+`.drawio.xml`, `.pdf`) | `03-uml/Sequências/proposta-I2-especificacao-sequencias.md` |
 | SEQ-002 | `03-uml/Sequências/proposta-I2-sequencia-seq-002-agendar.mmd` (+`.drawio.xml`, `.pdf`) | idem |
 | SEQ-003 | `03-uml/Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd` (+`.drawio.xml`, `.pdf`) | idem |
+| **SEQ-004** | `03-uml/Sequências/proposta-I2-sequencia-seq-004-lista-espera.mmd` (+`.drawio.xml`, `.pdf`) | idem |
 | ATV-001 | `03-uml/Atividade/proposta-I2-atividade-atv-001.mmd` (+`.drawio.xml`, `.pdf`) | `03-uml/Atividade/proposta-I2-especificacao-atividade.md` |
 | COM-001 | `03-uml/Comunicação/proposta-I2-comunicacao-com-001.mmd` (+`.drawio.xml`, `.pdf`) | `03-uml/Comunicação/proposta-I2-especificacao-comunicacao.md` |
 | EST-001 | `03-uml/Estados/proposta-I2-estados-est-001.mmd` (+`.drawio.xml`, `.pdf`) | `03-uml/Estados/proposta-I2-especificacao-estados.md` |
+| Casos de uso novos/revisados | `03-uml/Casos de uso/proposta-I2-casos-de-uso-faltantes.md` | (documento único) |
+| Requisitos novos | `02-requisitos/requisitos-funcionais.md` (§8 — RF-033 a RF-037) | — |
+| Decisões | `01-planejamento/decisoes.md` (DEC-022, DEC-025, DEC-026, DEC-027) | — |
 | Revisão | `01-planejamento/revisoes/FASE6-REV-I2-revisao-comportamental.md` | — |
 | Dossiê | `07-dossie/secoes/fase6-secao-21-24.md` | — |

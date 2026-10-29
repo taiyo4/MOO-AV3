@@ -1,20 +1,21 @@
 %% =====================================================================
-%% SEQ-003 - Cancelar / confirmar / concluir agendamento (UC-027) - FASE 6
+%% SEQ-003 - Cancelar / concluir / registrar falta (UC-027) - FASE 6
 %% PROPOSTA DO INTEGRANTE 2 (casos de uso e diagramas comportamentais).
 %% Natureza: PROPOSTA. Nao substitui artefato oficial do grupo.
 %% Fonte da verdade do CONTEUDO.
 %%
 %% Rastreabilidade das mensagens:
 %%   AP-03 ServicoAgenda (coordenacao) | AP-02 ServicoAuditoria.registrar
-%%   AP-04 ServicoNotificacao.notificar
+%%   AP-04 ServicoEnvioMensagem.notificar | AP-06 ServicoListaEspera.ofertarVaga
 %%   OP-19 Agendamento.consultarMeus | OP-15 podeSerCancelado | OP-14 cancelar
-%%   OP-13 confirmar | OP-16 estaCancelada | OP-17 concluir | OP-18 registrarFalta
+%%   OP-16 estaCancelada | OP-17 concluir | OP-18 registrarFalta
 %%   OP-20 Atendimento.registrar
 %% Regras: RN-006, RN-009, RN-012, RN-013
-%% Requisitos: RF-026, RF-027, RF-028, RF-030, RF-032  Casos: UC-027
+%% Requisitos: RF-026, RF-027, RF-028, RF-030, RF-032, RF-033, RF-035, RF-037
+%% Casos: UC-027 (+ UC-035 como <<extend>>)
 %% =====================================================================
-%% label: SEQ-003 - Cancelar / confirmar agendamento (UC-027)
-%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd | PROPOSTA do Integrante 2 (Fase 6) | prazo de cancelamento depende de DEC-012/P-02; notificacao depende de DEC-009
+%% label: SEQ-003 - Cancelar agendamento (UC-027)
+%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd | PROPOSTA do Integrante 2 (Fase 6) | guarda [antes do horario marcado] | e-mail sempre enviado | oferta de vaga como <<extend>>
 
 sequenceDiagram
     actor Ator as Ator (Paciente ou Psicologo)
@@ -23,30 +24,28 @@ sequenceDiagram
     participant Atendimento as Atendimento
     participant ServicoAuditoria as ServicoAuditoria
     participant RegistroAuditoria as RegistroAuditoria
-    participant ServicoNotificacao as ServicoNotificacao
+    participant ServicoEnvioMensagem as ServicoEnvioMensagem
+    participant ServicoListaEspera as ServicoListaEspera
 
-    Ator->>ServicoAgenda: consultarMeus(solicitante) [OP-19 / RF-028]
+    Ator->>ServicoAgenda: consultarMeus(solicitante) [OP-19 / RF-028 / UC-028]
     ServicoAgenda-->>Ator: agendamentos do ator
     Ator->>ServicoAgenda: cancelar(agendamento, motivo) [RF-027 / UC-027]
     ServicoAgenda->>Agendamento: podeSerCancelado() [OP-15 / RN-012]
-    Agendamento-->>ServicoAgenda: true
+    Agendamento-->>ServicoAgenda: true - hora marcada ainda nao comecou
     alt Pode ser cancelado
         ServicoAgenda->>Agendamento: cancelar(solicitante, motivo) [OP-14]
         Agendamento-->>ServicoAgenda: agendamento (CANCELADO)
-        ServicoAgenda->>ServicoAuditoria: registrar(\"AGENDAMENTO_CANCELADO\", responsavel, detalhes) [AP-02]
+        ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CANCELADO", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
-        ServicoAgenda->>ServicoNotificacao: notificar(cancelamento) [AP-04 - DEC-009 pendente]
-        ServicoNotificacao-->>ServicoAgenda: enviado | falha de entrega
+        ServicoAgenda->>ServicoEnvioMensagem: notificar(evento=cancelamento) [AP-04 / RF-033]
+        ServicoEnvioMensagem-->>ServicoAgenda: entregue | falha de envio
+        opt <<extend>> UC-035 - Ofertar vaga ao proximo da lista de espera [RF-035 / DEC-027]
+            ServicoAgenda->>ServicoListaEspera: ofertarVaga(agendamento) [AP-06]
+            ServicoListaEspera-->>ServicoAgenda: uma oferta aberta ao primeiro da fila (detalhe na SEQ-004)
+        end
         ServicoAgenda-->>Ator: agendamento cancelado (UC-027)
     else E1 - Agendamento ja realizado ou ja cancelado
         ServicoAgenda-->>Ator: recusa - agendamento nao cancelavel (E1)
-    end
-
-    opt RF-026 - Confirmacao do agendamento (automatica na solicitacao)
-        ServicoAgenda->>Agendamento: confirmar(solicitante) [OP-13 / RN-013]
-        Agendamento-->>ServicoAgenda: agendamento (CONFIRMADO)
-        ServicoAgenda->>ServicoAuditoria: registrar(\"AGENDAMENTO_CONFIRMADO\", responsavel, detalhes) [AP-02]
-        ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
     end
 
     opt RF-030 - Conclusao da sessao realizada
@@ -57,16 +56,17 @@ sequenceDiagram
         Agendamento-->>ServicoAgenda: agendamento (REALIZADO)
         ServicoAgenda->>Atendimento: registrar(agendamento, contextoSessao, solicitante) [OP-20]
         Atendimento-->>ServicoAgenda: atendimento registrado
-        ServicoAgenda->>ServicoAuditoria: registrar(\"AGENDAMENTO_CONCLUIDO\", responsavel, detalhes) [AP-02]
+        ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CONCLUIDO", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
     end
 
-    opt Plano 5.4 / INC-13 - Nao compareceu (a partir de CONFIRMADO)
-        Ator->>ServicoAgenda: registrarFalta(agendamento)
+    opt RF-037 - Registrar nao comparecimento (manual, apos o horario)
+        Ator->>ServicoAgenda: registrarFalta(agendamento) [DEC-025]
         ServicoAgenda->>Agendamento: registrarFalta(solicitante) [OP-18]
         Agendamento-->>ServicoAgenda: agendamento (NAO_COMPARECEU)
-        ServicoAgenda->>ServicoAuditoria: registrar(\"AGENDAMENTO_NAO_COMPARECEU\", responsavel, detalhes) [AP-02]
+        ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_NAO_COMPARECEU", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
     end
 
-    note over Ator,ServicoNotificacao: Os tres blocos opt sao fluxos alternativos do mesmo agendamento, nao etapas obrigatorias em sequencia. A guarda de prazo (RN-012) depende de DEC-012/P-02, ainda nao decidida pelo grupo.
+    note over Ator,ServicoEnvioMensagem: A confirmacao nao aparece aqui porque acontece na criacao do agendamento (SEQ-002). Os blocos opt sao fluxos alternativos independentes, nao etapas obrigatorias em sequencia.
+    note over ServicoEnvioMensagem,ServicoListaEspera: O e-mail e sempre solicitado no cancelamento e a falha de entrega NAO desfaz o cancelamento (RF-033). A oferta de vaga e um <<extend>> do cancelamento (UC-035), com a fila e o prazo de aceite detalhados na SEQ-004.
