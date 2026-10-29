@@ -101,7 +101,7 @@ A mesma topologia vale para `ServicoAuditoria`, que **chama** `RegistroAuditoria
 2. **A notificação sai do hub (mensagens 10 e 12) e da fila (15), nunca da entidade `Agendamento`.** Notificar é efeito de aplicação, não regra do domínio, e a falha de envio não desfaz a operação (RF-033).
 3. **`Usuario` aparece no COM-001** (e não nas sequências) porque o diagrama de comunicação destaca **vínculos**: mostrar que a autorização é uma *consulta* a uma entidade, e não uma condição implícita no ator, é um ganho de legibilidade que o diagrama de atividades não tem.
 4. **Não há `Perfil`/`Permissao` como objetos.** O COM-001 é do cenário de agendamento; a estrutura de acesso (A01/A02) aparece no diagrama de classes e em SEQ-001.
-5. **O objeto `Disponibilidade` é alcançado só por `Agenda`** (A09), coerente com a associação do CLS-001 v2 (a reserva A17 é condicional a P-05 e não é desenhável ainda).
+5. **O objeto `Disponibilidade` é alcançado só por `Agenda`** (A09). Com o **slot discreto** (DEC-018) a associação A17 `Disponibilidade`—`Agendamento` passa a existir no modelo, mas a reserva continua interna a `Agendamento.solicitar` e não vira mensagem.
 6. **A oferta de vaga é uma mensagem do hub para `ServicoListaEspera`** (13), e não um novo caso de uso iniciado por ator: é o `<<extend>>` do cancelamento (UC-035 / DEC-027).
 
 ## 8. Pendências registradas (não são lacunas desta entrega)
@@ -109,7 +109,7 @@ A mesma topologia vale para `ServicoAuditoria`, que **chama** `RegistroAuditoria
 | Pendência | Causa | Tratamento |
 |---|---|---|
 | Incremento `SolicitacaoEspera` + `ServicoListaEspera` | DEC-027 aprovada na Fase 6 | o COM-001 já os mostra; o Integrante 3 precisa incorporá-los ao CLS-001 (não existem na Fase 5). |
-| Reserva do slot (A17) | P-05 | Não há mensagem entre `Disponibilidade` e `Agendamento`. |
+| Reserva do slot (A17) | DEC-018 (interna ao domínio) | Não há mensagem entre `Disponibilidade` e `Agendamento`; a reserva é efeito de `Agendamento.solicitar`. |
 | Canal de notificação | resolvido: e-mail (RF-033) | `ServicoEnvioMensagem` aparece como fronteira externa, com canal definido. |
 | Prazo de cancelamento | resolvido: `[antes do horário marcado]` | A mensagem 11 não carrega prazo numérico porque não existe. |
 

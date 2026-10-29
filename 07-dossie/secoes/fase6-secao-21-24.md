@@ -4,9 +4,9 @@
 **Uso:** texto para as seções 21 (Diagramas de sequência), 22 (Diagrama de comunicação), 23 (Diagrama de atividades) e 24 (Máquina de estados) do dossiê final (estrutura do plano §16).
 **Regra de inserção de diagramas (plano §16.1):** cada diagrama entra no dossiê com título + identificador, objetivo, elementos principais, como interpretar, decisões de modelagem, relação com requisitos/classes/banco e **referência ao arquivo editável** no repositório. Os **sete** diagramas da Fase 6 têm **PDF e fonte editável (`.drawio.xml`)** versionados em `03-uml/` — ver a convenção de entrega em `03-uml/README.md`; se o grupo quiser PNG/SVG adicional, eles são gerados a partir do `.drawio.xml` no diagrams.net.
 
-> **Estado dos diagramas na data deste texto:** os sete diagramas comportamentais estão em **fase de aprovação**. O que ainda **não** está incorporado é o incremento de domínio da lista de espera (`SolicitacaoEspera`, `ServicoListaEspera` — DEC-027) e as operações `OP-23…OP-27` no diagrama de classes oficial; além disso, o enum `SituacaoAgendamento` do CLS-001 v2 ainda lista `SOLICITADO` e precisa ser alinhado às quatro situações desta entrega (achado **R6-09**, pendência do Integrante 3). Enquanto o grupo não aprovar, o dossiê deve usar a formulação "proposta em revisão" e não "decidido".
+> **Estado dos diagramas na data deste texto:** os sete diagramas comportamentais estão em **fase de aprovação**. O que ainda **não** está incorporado é o incremento de domínio da lista de espera (`SolicitacaoEspera`, `ServicoListaEspera` — DEC-027) e as operações `OP-23…OP-27` no diagrama de classes oficial; além disso, o diagrama de classes oficial (CLS-001) ainda declara `Agendamento.confirmar()` e não fixa o enumerado das quatro situações: a DEC-016 as fixa e a DEC-017 dispensa a operação `confirmar` (achado **R6-09**, pendência do Integrante 3). Enquanto o grupo não aprovar, o dossiê deve usar a formulação "proposta em revisão" e não "decidido".
 >
-> **Decisões já resolvidas que este texto aplica:** **DEC-022** (nome único `ServicoEnvioMensagem`), **DEC-025** (não comparecimento manual), **DEC-026** (numeração `UC-0RF`), **DEC-027** (fila por ordem de entrada, uma oferta por vez, prazo, recusa passa ao próximo). As antigas pendências DEC-009 (canal de notificação), DEC-010 ("encaixe") e DEC-012 (prazo de 2 horas) **não existem mais** nesta entrega: o e-mail é obrigatório, o "encaixe" foi substituído pela lista de espera e a guarda de cancelamento é `[antes do horário marcado]`.
+> **Decisões já resolvidas que este texto aplica:** **DEC-022** (nome único `ServicoEnvioMensagem`), **DEC-025** (não comparecimento manual), **DEC-026** (numeração `UC-0RF`), **DEC-027** (fila por ordem de entrada, uma oferta por vez, prazo, recusa passa ao próximo). As antigas pendências **não existem mais** nesta entrega: o e-mail é obrigatório e a falha de envio não desfaz a operação (**DEC-009 + DEC-029**), o "encaixe" foi substituído pela lista de espera (**DEC-010 + DEC-027**), a guarda de cancelamento é `[antes do horário marcado]`, sem antecedência mínima e sem cancelamento pelo Administrador (**DEC-011 + DEC-028**), o agendamento nasce `CONFIRMADO` (**DEC-016 + DEC-017**) e o modelo do horário é **slot discreto** (**DEC-018**).
 >
 > **Regra de ausência de dados reais (DEC-005):** nenhum diagrama desta seção contém nome, documento, e-mail ou qualquer identificador de pessoa real — apenas papéis, identificadores de operação e de regra.
 
@@ -41,7 +41,7 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 
 **Linhas de vida (8):** Ator (paciente) · `ServicoAgenda` (AP-03) · `Vinculo` · `Agenda` · `Agendamento` · `ServicoAuditoria` (AP-02) · `RegistroAuditoria` · `ServicoEnvioMensagem` (AP-04).
 
-**Fluxo:** consulta de horários (`consultarHorariosDisponiveis`, OP-11) → validação do vínculo (`estaAtivo`, OP-22) → escolha do horário → `verificarDisponibilidade(horario)` (RN-010) → `Agendamento.solicitar(...)` → **agendamento devolvido já `CONFIRMADO`** (RF-026 / RN-013) → auditoria → **e-mail de confirmação** → resposta ao ator.
+**Fluxo:** consulta de horários (`consultarHorariosDisponiveis`, OP-11) → validação do vínculo (`estaAtivo`, OP-22) → escolha do horário → `verificarDisponibilidade(horario)` (RN-010) — o horário é um **slot discreto** (DEC-018), de modo que a consulta devolve slots reais e a exclusividade é verificada slot a slot → `Agendamento.solicitar(...)` → **agendamento devolvido já `CONFIRMADO`** (RF-026 / RN-013) → auditoria → **e-mail de confirmação** → resposta ao ator.
 
 **Alternativas e exceções:** `alt` **A1 — nenhum horário disponível** (informar e **oferecer a lista de espera**, RF-034 / SEQ-004); `alt` **E1 — conflito de horário** (recusa com sugestão de outro horário).
 
@@ -63,7 +63,7 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 
 > **A oferta de vaga é `<<extend>>`, não um caso de uso independente.** Ela aparece como `opt` **dentro** do ramo "pode ser cancelado" e só existe quando há cancelamento **e** fila (UC-035 / DEC-027). O detalhamento — uma oferta por vez, prazo de aceite, recusa passa ao próximo — está na SEQ-004.
 >
-> **A notificação do cancelamento é obrigatória e não bloqueante:** a mensagem `notificar(evento=cancelamento)` é sempre enviada; o retorno `entregue | falha de envio` deixa explícito que a falha **não desfaz** o cancelamento (RF-033 / DEC-022).
+> **A notificação do cancelamento é obrigatória e não bloqueante:** a mensagem `notificar(evento=cancelamento)` é sempre enviada; o retorno `entregue | falha de envio` deixa explícito que a falha **não desfaz** o cancelamento (RF-033 / DEC-022). A falha é **registrada na auditoria** e o envio pode ser **repetido** (DEC-029).
 
 ### 21.5 SEQ-004 — Lista de espera e oferta de vaga (UC-034 a UC-036)
 
@@ -84,6 +84,8 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 **Volume:** 36 setas (25 solicitações e 11 retornos).
 
 > **Por que a SEQ-004 existe.** Na v1.0 a sequência do "encaixe" estava bloqueada pela DEC-010. A DEC-027 resolveu a questão: o "encaixe" foi **substituído pela lista de espera**, com regras explícitas, e por isso a quarta sequência passou a ser obrigatória — ela é a única que mostra `SolicitacaoEspera`, OP-23…OP-27 e AP-06.
+>
+> **Ressalvas da DEC-027 ainda não desenhadas** (registradas como LAC-13 e LAC-15 na revisão da fase): a **saída da fila** e a **consulta posterior da posição** pelo paciente, e a **reserva do horário durante o prazo** (interna a `abrirOferta`). A SEQ-004 devolve a posição na entrada (`posicao na fila`) e a oferta carrega `prazoAceite`.
 
 ### 21.6 Como interpretar
 
@@ -93,7 +95,7 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 4. **`alt` é alternativa de fluxo, `opt` é bloco condicional**, e ambos refletem o texto do caso de uso — nenhuma alternativa existe só no diagrama.
 5. **As guardas aparecem entre colchetes** na própria mensagem (`[OP-15 / RN-012]`), de modo que a regra fica legível sem consultar a matriz.
 6. **Repositórios são infraestrutura**, não domínio: aparecem como `RepositorioUsuario` e `RepositorioAutorizacao`, e apenas carregam dados.
-7. **O e-mail é sempre solicitado** (RF-033) nos três eventos de agenda — confirmação, cancelamento e oferta de vaga. A resposta `entregue | falha de envio` é **retorno**, não desfaz a operação e não gera transição de estado.
+7. **O e-mail é sempre solicitado** (RF-033) nos três eventos de agenda — confirmação, cancelamento e oferta de vaga. A resposta `entregue | falha de envio` é **retorno**, não desfaz a operação e não gera transição de estado; a falha é registrada na auditoria e o envio pode ser repetido (DEC-029).
 
 ### 21.7 Decisões de modelagem
 
@@ -104,7 +106,7 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 | Notificação é fronteira externa **obrigatória** | `ServicoEnvioMensagem` é interface (DEC-022); o envio é sempre solicitado e a falha não bloqueia | RF-033, DEC-022, TRS-02 do Integrante 4 |
 | Auditoria como efeito transversal | `registrar(...)` é sempre delegado a `ServicoAuditoria` e nunca executado "de dentro" da entidade | RN-009, RN-014 |
 | Sessão fora do domínio | `criarSessao` / `invalidarSessaoAtiva` são responsabilidade de aplicação | RF-002, P-07 |
-| Cancelamento exige verificação prévia | `podeSerCancelado()` (OP-15) é consultada antes de `cancelar` (OP-14), com guarda **`[antes do horário marcado]`** | RN-012, DEC-012 revista |
+| Cancelamento exige verificação prévia | `podeSerCancelado()` (OP-15) é consultada antes de `cancelar` (OP-14), com guarda **`[antes do horário marcado]`** | RN-012, DEC-011 + DEC-028 |
 | Oferta de vaga é `<<extend>>` | o `opt` de UC-035 fica **dentro** do ramo de cancelamento, não é participante obrigatório | UC-035, DEC-027 |
 | Lista de espera é domínio | `SolicitacaoEspera` tem estado persistente, ordem e prazo → entidade; `ServicoListaEspera` (AP-06) coordena | DEC-027 |
 | "Não compareceu" é manual | bloco `opt` próprio, iniciado pelo psicólogo, sem expiração automática | RF-037, DEC-025 |
@@ -294,7 +296,7 @@ O §6.1 do plano pede a máquina de estados de uma entidade relevante, com **eve
 |---|---|---|---|---|
 | **T0** (criação) | `[*] → CONFIRMADO` | `solicitar` | `[vínculo ATIVO e slot livre]` | `Agendamento.solicitar` (RF-025 / RF-026 / RN-013) |
 | **T1** | `CONFIRMADO → CANCELADO` | `cancelar` | **`[antes do horário marcado]`** | OP-14 / OP-15 (RN-012) |
-| **T2** | `CONFIRMADO → REALIZADO` | `concluir` | `[atendimento registrado]` | OP-17 / OP-20 (RF-030) |
+| **T2** | `CONFIRMADO → REALIZADO` | `concluir` | `[atendimento registrado e vinculado ao agendamento]` | OP-17 / OP-20 (RF-030 / DEC-030) |
 | **T3** | `CONFIRMADO → NAO_COMPARECEU` | `registrarFalta` | `[horário já passou; ação do psicólogo]` | OP-18 (RF-037 / DEC-025) |
 
 ### 24.3 Como interpretar
@@ -312,7 +314,7 @@ O §6.1 do plano pede a máquina de estados de uma entidade relevante, com **eve
 | **Quatro situações, três terminais** | o compromisso encerrado não volta | plano §5.4, DEC-016 revista |
 | **`CONFIRMADO` é a situação inicial** | não há passo de aprovação; criação e confirmação são o mesmo ato | RF-025 + RF-026, RN-013 |
 | `NAO_COMPARECEU` só a partir de `CONFIRMADO` | fecha a INC-13 do Integrante 4 e a pergunta P-14 | INC-13, RF-037, DEC-025 |
-| **Guarda `[antes do horário marcado]`** | não existe prazo de 2 horas; a condição é o início do horário | RN-012, DEC-012 revista |
+| **Guarda `[antes do horário marcado]`** | não existe antecedência mínima; a condição é o início do horário | RN-012, DEC-028 (a DEC-012 não foi adotada) |
 | **Sem situação "aguardando aprovação"/`SOLICITADO`** | não há aprovação manual nem confirmação posterior no escopo | RN-013 |
 | **A máquina tem 4 situações e 4 transições** (T0–T3) | qualquer contagem diferente em outro artefato é divergência a corrigir | esta entrega |
 
@@ -322,7 +324,7 @@ As quatro situações são os valores do enumerado `SituacaoAgendamento` (modelo
 
 **A oferta de vaga não é transição:** o agendamento cancelado permanece `CANCELADO`; a fila e o prazo de aceite vivem em `SolicitacaoEspera` (SEQ-004). Tentar representá-la como estado do agendamento duplicaria o ciclo de vida em duas entidades.
 
-**Pendência registrada (não é lacuna desta entrega):** o enum `SituacaoAgendamento` do CLS-001 v2 e o diagrama de objetos da Fase 5 ainda listam `SOLICITADO`. A máquina e os diagramas da Fase 6 já estão alinhados às quatro situações; o **Integrante 3** precisa remover o valor do enum e do diagrama de objetos ao incorporar a proposta (achado **R6-09**).
+**Pendência registrada (não é lacuna desta entrega):** o diagrama de classes oficial (CLS-001) ainda declara `Agendamento.confirmar()` e não fixa o enumerado das quatro situações; as propostas da Fase 5 que traziam esse enumerado foram retiradas do repositório em 28/10/2026. A máquina e os diagramas da Fase 6 já usam exatamente as quatro situações da DEC-016; o **Integrante 3** precisa retirar `confirmar()` e incorporar o enumerado (achado **R6-09**).
 
 ### 24.6 Arquivos
 
@@ -338,7 +340,7 @@ As quatro situações são os valores do enumerado `SituacaoAgendamento` (modelo
 Ao montar o dossiê final:
 
 1. **Inserir as sete figuras** nas seções 21 a 24, usando o `.pdf` correspondente e **mantendo a identificação** (`SEQ-001`, `SEQ-002`, `SEQ-003`, `SEQ-004`, `COM-001`, `ATV-001`, `EST-001`) nas legendas, para que a matriz de rastreabilidade (seção 31) possa referenciá-las.
-2. **Conservar as ressalvas de estado**: o texto deve continuar dizendo "proposta em revisão" enquanto o Integrante 3 não incorporar ao CLS-001 o incremento da lista de espera (`SolicitacaoEspera`, `ServicoListaEspera`/AP-06, `OP-23…OP-27`) e não remover `SOLICITADO` do enum e do diagrama de objetos (achado **R6-09**). As antigas pendências DEC-009, DEC-010 e DEC-012 **não devem ser citadas** como abertas: foram resolvidas ou revogadas por este lote.
+2. **Conservar as ressalvas de estado**: o texto deve continuar dizendo "proposta em revisão" enquanto o Integrante 3 não incorporar ao CLS-001 o incremento da lista de espera (`SolicitacaoEspera`, `ServicoListaEspera`/AP-06, `OP-23…OP-27`), o enumerado das quatro situações e a retirada de `confirmar()` (achado **R6-09**). As antigas pendências DEC-009, DEC-010 e DEC-012 **não devem ser citadas** como abertas: foram resolvidas ou revogadas por este lote.
 3. **Não remeter lacunas que já não existem.** A sequência do "encaixe" foi substituída pela **SEQ-004** (lista de espera, DEC-027); o prazo de cancelamento é a guarda `[antes do horário marcado]`; o canal de notificação é o e-mail (RF-033); e a reserva de slot continua registrada como pendência de P-05. O que sobra vai para a seção de revisões/decisões, não para o corpo dos diagramas.
 4. **Não inserir PNG/SVG separados**: o repositório entrega `.mmd` (fonte do conteúdo), `.drawio.xml` (editável) e `.pdf` (dossiê), com o **mesmo nome-base**. Se uma versão vetorial for necessária, gerar a partir do `.drawio.xml` no diagrams.net.
 5. **Conferências automáticas feitas na Fase 6:** XML bem formado nos **sete** arquivos, **1 página por PDF**, ausência de sobreposição de caixas e de arestas atravessando caixas, e conferência do texto extraído de cada PDF contra o conteúdo do `.mmd`.

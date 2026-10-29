@@ -136,7 +136,6 @@ O diagrama é a origem do mapeamento classe ↔ tabela: cada uma das doze classe
 - Versão para publicação no dossiê: `03-uml/Classes/diagrama-classes.pdf`
 - Especificação de classes: `03-uml/Classes/especificacao-classes.md`
 - Decisões de modelagem OO: `03-uml/Classes/decisoes-modelagem.md`
-- Proposta de fechamento das multiplicidades e das situações (Fase 5): `03-uml/Classes/proposta-I2-diagrama-classes-v2.mmd`, com `proposta-I2-diagrama-classes-v2.drawio.xml` e `proposta-I2-diagrama-classes-v2.pdf`
 
 ---
 
@@ -174,10 +173,10 @@ Cada objeto corresponde a uma linha (ou a um conjunto de linhas) do modelo relac
 
 ### 20.6 Arquivos
 
-- Fontes editáveis (Mermaid): `03-uml/Objetos/diagrama-objetos.mmd` (OBJ-001) e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.mmd` (OBJ-002)
-- Fontes editáveis no diagrams.net: `03-uml/Objetos/diagrama-objetos.drawio.xml` e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.drawio.xml`
-- Versões para publicação no dossiê: `03-uml/Objetos/diagrama-objetos.pdf` e `03-uml/Objetos/proposta-I2-diagrama-objetos-v2.pdf`
-- Especificações: `03-uml/Objetos/especificacao-objetos.md` e `03-uml/Objetos/proposta-I2-especificacao-objetos-v2.md`
+- Fontes editáveis (Mermaid): `03-uml/Objetos/diagrama-objetos.mmd` (OBJ-001). O cenário OBJ-002 foi retirado em 28/10/2026 junto com a proposta de classes v2 (decisão do Integrante 1); a descrição dele acima permanece como texto até o Integrante 3 decidir se o incorpora ao OBJ-001
+- Fontes editáveis no diagrams.net: `03-uml/Objetos/diagrama-objetos.drawio.xml`
+- Versões para publicação no dossiê: `03-uml/Objetos/diagrama-objetos.pdf`
+- Especificações: `03-uml/Objetos/especificacao-objetos.md`
 
 ---
 

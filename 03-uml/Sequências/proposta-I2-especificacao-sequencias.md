@@ -28,7 +28,7 @@ Os quatro diagramas são **entrelaçados**: quem lê o conjunto entende o ciclo 
 
 ## 2. Regras de elegibilidade das mensagens (plano §6.1)
 
-Toda mensagem de um diagrama de sequência deve corresponder a **uma operação conhecida** (OP-01…OP-27, do diagrama de classes CLS-001 v2 e do incremento da lista de espera) ou a **uma responsabilidade de aplicação** (AP-01…AP-06, da revisão FASE5-REV-I2 §5.2). Não há mensagem "criada para satisfazer um diagrama futuro".
+Toda mensagem de um diagrama de sequência deve corresponder a **uma operação conhecida** (OP-01…OP-27, propostos para o CLS-001 e para o incremento da lista de espera) ou a **uma responsabilidade de aplicação** (AP-01…AP-06, da revisão FASE5-REV-I2 §5.2). Não há mensagem "criada para satisfazer um diagrama futuro".
 
 | Elemento | Origem da autorização | Onde aparece |
 |---|---|---|
@@ -110,7 +110,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **A consulta vai ao `ServicoAgenda`, não ao `Agendamento`.** O `ServicoAgenda` (AP-03) é o único coordenador do caso: ele consulta, decide, cria, audita e solicita o envio. É o que evita a classe onipotente vedada pelo plano §5.2.
 - **O vínculo é consultado antes da agenda** (`estaAtivo`, OP-22): sem vínculo ATIVO o paciente não tem agenda alheia — é a materialização de RN-003/RN-005.
 - **Não há passo de confirmação.** `Agendamento.solicitar` devolve o agendamento **`CONFIRMADO`** (RF-026 / RN-013). A v1.0 tinha um passo `confirmar` separado; ele foi removido porque a situação `SOLICITADO` deixou de existir.
-- **A reserva do slot não aparece como mensagem.** Com o modelo de slot discreto (P-05, associação A17 `Disponibilidade`—`Agendamento`), a reserva é interna a `Agendamento.solicitar`. Está registrado como pendência em §8.
+- **A reserva do slot não aparece como mensagem.** O modelo do horário é **slot discreto** (DEC-018) e a associação A17 `Disponibilidade`—`Agendamento` está habilitada; a reserva é interna a `Agendamento.solicitar` e não gera mensagem própria (§8).
 - **O envio de e-mail é obrigatório e não bloqueante** (RF-033 / DEC-022): a resposta "entregue | falha de envio" deixa explícito que a falha **não desfaz** o agendamento. Não existe mais o caráter "condicional" da v1.0.
 
 ## 5. SEQ-003 — Cancelar / concluir / registrar falta (UC-027 + UC-035)
@@ -207,7 +207,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | Pendência | Causa | Efeito no diagrama |
 |---|---|---|
 | **Incremento de domínio `SolicitacaoEspera` + AP-06** | DEC-027 aprovada na Fase 6 | a SEQ-004 já os usa; o Integrante 3 precisa incorporá-los ao CLS-001 (não existem na Fase 5). |
-| **Reserva do slot (A17)** | P-05 (slot discreto) não decidido | a reserva aparece como interna a `Agendamento.solicitar`; não há mensagem própria. |
+| **Reserva do slot (A17)** | DEC-018 (slot discreto) — decisão do grupo | a reserva é interna a `Agendamento.solicitar`; não há mensagem própria. |
 | **Prazo de aceite (valor)** | parâmetro de configuração (DEC-027) | a operação `abrirOferta(prazoAceite)` aparece sem valor numérico; o valor é configuração, não regra de negócio variável por caso. |
 | **Prazo de cancelamento** | resolvido: `[antes do horário marcado]` | a guarda não tem valor numérico **por decisão** (não existe prazo de 2 horas). |
 | **Canal de notificação** | resolvido: e-mail (RF-033) | `ServicoEnvioMensagem` é fronteira externa (interface), não entidade. |

@@ -37,9 +37,7 @@ Regras:
 | Casos de uso | UC-001 | — (Fase 3) | `Casos de uso/Diagrama casos de uso uc001/Diagrama casos de uso uc001 .drawio.xml` | `Casos de uso/Diagrama casos de uso uc001/Cópia de Diagrama casos de uso uc001 .pdf` | oficial do grupo (Fase 3, nomes preservados) |
 | Domínio | CLS-DOM | `Dominio/diagrama-dominio.mmd` | `Dominio/diagrama-dominio.drawio.xml` | `Dominio/diagrama-dominio.pdf` | oficial do Integrante 3 |
 | Classes | CLS-001 | `Classes/diagrama-classes.mmd` | `Classes/diagrama-classes.drawio.xml` | `Classes/diagrama-classes.pdf` | oficial do Integrante 3 (multiplicidades `PENDENTE`) |
-| Classes (proposta) | CLS-001 v2 | `Classes/proposta-I2-diagrama-classes-v2.mmd` | `Classes/proposta-I2-diagrama-classes-v2.drawio.xml` | `Classes/proposta-I2-diagrama-classes-v2.pdf` | **proposta** do Integrante 2 (Fase 5) |
 | Objetos | OBJ-001 | `Objetos/diagrama-objetos.mmd` | `Objetos/diagrama-objetos.drawio.xml` | `Objetos/diagrama-objetos.pdf` | oficial do Integrante 3 |
-| Objetos (proposta) | OBJ-002 | `Objetos/proposta-I2-diagrama-objetos-v2.mmd` | `Objetos/proposta-I2-diagrama-objetos-v2.drawio.xml` | `Objetos/proposta-I2-diagrama-objetos-v2.pdf` | **proposta** do Integrante 2 (Fase 5) |
 | Sequência — autenticar | SEQ-001 | `Sequências/proposta-I2-sequencia-seq-001-autenticar.mmd` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-001 |
 | Sequência — agendar | SEQ-002 | `Sequências/proposta-I2-sequencia-seq-002-agendar.mmd` | `Sequências/proposta-I2-sequencia-seq-002-agendar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-002-agendar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-025 |
 | Sequência — cancelar/confirmar | SEQ-003 | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.mmd` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-003-cancelar-confirmar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-027 (+ UC-035 `<<extend>>`) |
@@ -100,22 +98,30 @@ vazias**: os **sete** diagramas comportamentais da Fase 6 já foram entregues
 (SEQ-001 a **SEQ-004**, ATV-001, COM-001 e EST-001), cada um com `.mmd`,
 `.drawio.xml` e `.pdf`.
 
-O que segue **depende de terceiros** e não é bloqueio de entrega, mas de
-fechamento:
+O grupo decidiu as pendências em 28/10/2026 (DEC-009 a DEC-030). Os itens que
+eram do **Integrante 2** — `SOLICITADO`, guarda de cancelamento, notificação
+condicional, lista de espera e não comparecimento — foram **propagados aos
+diagramas** nesta entrega (v2.0). O que resta depende de outros integrantes;
+a lista completa, com dono, está em
+[`../01-planejamento/etapas-e-responsabilidades.md`](../01-planejamento/etapas-e-responsabilidades.md).
 
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
-| Multiplicidades `PENDENTE` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades (a exclusividade de horário é citada por RN/RF) | grupo + Integrante 3 |
-| Incorporação das operações `OP-01…OP-27`, das **4 situações** do `Agendamento` e da entidade **`SolicitacaoEspera`** (DEC-027) | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
-| `SOLICITADO` ainda presente no enum do CLS-001 v2 e no diagrama de objetos (Fase 5) | a máquina de estados e os diagramas da Fase 6 já têm **4 situações**; falta remover o valor — ver **R6-09** | Integrante 3 |
+| Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016 | Integrante 3 |
+| Operações `OP-01…OP-27`, entidade `SolicitacaoEspera` e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
+| `Agendamento.confirmar()` ainda declarada no diagrama de classes oficial | contraria a DEC-017 (a criação já nasce confirmada): a operação não é usada por nenhum diagrama da Fase 6 — ver **R6-09** | Integrante 3 |
 | Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |
 | Tabela `solicitacao_espera` (ordem de entrada, situação, `prazoAceite`) no DER | a SEQ-004 pressupõe persistência da fila — ver **R6-10** | Integrante 4 |
 | `CT-033…CT-036` na matriz da Fase 5 | os RFs novos (RF-033 a RF-036) não têm teste conceitual próprio — ver **LAC-11** | Integrante 5 |
-| P-05 / DEC-018 (modelo do horário) | a reserva de slot continua interna a `Agendamento.solicitar` e não aparece como mensagem — ver **LAC-02** | grupo |
+| Reserva do slot como mensagem explícita | a reserva é interna a `Agendamento.solicitar` e o **modelo do horário já está decidido** (slot discreto, DEC-018) — ver **LAC-02** | fechada na decisão; incorporação pelo I3 |
 
-**Não são mais pendências** (resolvidas ou revogadas na Fase 6): DEC-009
-(e-mail é o canal, sempre nos três eventos), DEC-010 ("encaixe" substituído
-pela **lista de espera**), DEC-012 (guarda `[antes do horário marcado]`), P-01
-(confirmação automática — o agendamento **nasce `CONFIRMADO`**), P-02 (prazo de
-cancelamento), P-14 (não comparecimento é manual) e a numeração dos casos de
-uso (`UC-0RF`, DEC-026).
+**Não são mais pendências** (resolvidas pelo grupo ou por esta entrega):
+DEC-009 e DEC-029 (e-mail é o canal, sempre nos três eventos, e a falha não
+desfaz a operação), DEC-010 e DEC-027 ("encaixe" substituído pela **lista de
+espera**), DEC-011 e DEC-028 (guarda `[antes do horário marcado]`, sem
+antecedência mínima e sem cancelamento pelo Administrador), DEC-016 e DEC-017
+(o agendamento **nasce `CONFIRMADO`**), DEC-018 (slot discreto), DEC-019
+(cardinalidade conta—perfil), DEC-020 (sessão fora do domínio), DEC-022
+(`ServicoEnvioMensagem`), DEC-025 (falta manual), DEC-026 (`UC-0RF`),
+DEC-030 (atendimento referencia o agendamento) e P-14.
+

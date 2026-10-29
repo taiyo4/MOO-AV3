@@ -42,7 +42,7 @@ O cenário é o **mesmo** coberto por SEQ-002, SEQ-003 e SEQ-004, justamente par
 | Nó | Texto | Condição detalhada | Regra |
 |---|---|---|---|
 | `d1` | Há horários? | A agenda do psicólogo tem slots livres no período pedido | RF-024 / UC-024 |
-| `d2` | Vínculo OK? | Vínculo ATIVO entre paciente e psicólogo **e** slot ainda livre | RN-005, RN-010 (A17 condicional a P-05) |
+| `d2` | Vínculo OK? | Vínculo ATIVO entre paciente e psicólogo **e** slot ainda livre | RN-005, RN-010 (A17, slot discreto — DEC-018) |
 | `d3` | Cancelamento? | O pedido de cancelamento é aceito: agendamento `CONFIRMADO` e **antes do horário marcado** | RF-027, RN-012, OP-15 |
 | `d5` | Sessão realizada? | O atendimento chegou a acontecer (senão, falta manual pelo psicólogo) | RF-030, RF-037, RN-006, DEC-025 |
 
@@ -128,7 +128,7 @@ Além dos três blocos paralelos, há **duas etapas sequenciais** depois do `joi
 
 | Pendência | Causa | Tratamento no desenho |
 |---|---|---|
-| Reserva do slot (A17) | P-05 não decidido | "Validar vínculo e horário" cobre a verificação; a reserva é interna a `Agendamento.solicitar`. |
+| Reserva do slot (A17) | DEC-018 (slot discreto) — decidida | "Validar vínculo e horário" cobre a verificação; a reserva é interna a `Agendamento.solicitar`. |
 | Prazo de cancelamento | resolvido: `[antes do horário marcado]` | `d3` registra a existência da guarda; **não há valor de 2 horas**. |
 | Incremento `SolicitacaoEspera` + AP-06 | DEC-027 aprovada na Fase 6 | o nó `Ofertar vaga` já usa a responsabilidade; o Integrante 3 precisa incorporar a entidade e a AP-06 ao CLS-001. |
 | Canal de notificação | resolvido: e-mail (RF-033) | `Notificar confirmação/cancelamento` são fronteira externa (`ServicoEnvioMensagem`), não entidade do domínio. |

@@ -6,9 +6,9 @@
 criar pelo menos três diagramas de sequência para os casos de uso críticos aprovados; garantir que mensagens, retornos, alternativas e exceções sejam coerentes com os fluxos textuais; criar o diagrama de atividades com decisões, responsabilidades e paralelismo; criar o diagrama de comunicação para um cenário relevante; criar a máquina de estados de `Agendamento`; **comparar todos os diagramas comportamentais entre si e corrigir divergências**; atualizar a matriz de rastreabilidade com os diagramas.
 
 > **O que mudou da v1.0 para a v2.0 (lote de ajustes do grupo):**
-> 1. `SOLICITADO` **deixou de existir** — o agendamento nasce `CONFIRMADO` (DEC-016 revista, DEC-017/P-01 resolvida). EST-001 = **4 situações / 4 transições** (T0 criação + T1–T3).
-> 2. A guarda de cancelamento é **`[antes do horário marcado]`**; não há prazo de 2 horas (DEC-012 revista).
-> 3. O e-mail é **obrigatório nos três eventos** (confirmação, cancelamento, oferta de vaga) e a falha **não desfaz** a operação (DEC-009 resolvida, RF-033 criado). Nome único: **`ServicoEnvioMensagem`** (DEC-022).
+> 1. `SOLICITADO` **deixou de existir** — o agendamento nasce `CONFIRMADO` (DEC-016 + DEC-017, P-01 resolvida). EST-001 = **4 situações / 4 transições** (T0 criação + T1–T3).
+> 2. A guarda de cancelamento é **`[antes do horário marcado]`**; não há antecedência mínima e o Administrador não cancela (DEC-011 + DEC-028; a DEC-012 não foi adotada).
+> 3. O e-mail é **obrigatório nos três eventos** (confirmação, cancelamento, oferta de vaga); a falha **não desfaz** a operação, é **registrada na auditoria** e pode ser **repetida** (DEC-009 + DEC-029, RF-033). Nome único: **`ServicoEnvioMensagem`** (DEC-022).
 > 4. Entraram **4 casos de uso novos** (UC-028, UC-033, UC-034, UC-036, UC-037) e a **SEQ-004** (lista de espera, DEC-027); a oferta de vaga é **`<<extend>>` do cancelamento** (UC-035).
 > 5. A numeração dos casos passou a **`UC-0RF`** (DEC-026) e cada especificação abriu com **Objetivo** e **RFs cobertos**.
 > 6. O ATV-001 ganhou a 4ª pista renomeada (**"Auditoria, notificação e extensão"**) e duas etapas sequenciais após o `join2`: **notificar → ofertar vaga**.
@@ -42,11 +42,11 @@ Numeração de achados: **R6-xx** = achado desta revisão (local). Os demais pre
 | Regras de negócio | `02-requisitos/regras-negocio.md` | RN-001 a RN-014 |
 | Critérios de aceite | `02-requisitos/criterios-aceite.md` | CA-RF-xxx |
 | Modelo de classes (oficial) | `03-uml/Classes/diagrama-classes.mmd` | Operações existentes, multiplicidades `PENDENTE` |
-| Modelo de classes (proposta I2) | `03-uml/Classes/proposta-I2-diagrama-classes-v2.mmd` | OP-01…OP-22, enum `SituacaoAgendamento` (ainda com `SOLICITADO` — R6-09) |
+| Modelo de classes (proposta I2, Fase 5) | `01-planejamento/revisoes/FASE5-REV-I2-revisao-modelo-dominio.md` §5.2 | OP-01…OP-22 e AP-01…AP-05 (as propostas em `.mmd` foram retiradas do repositório em 28/10/2026; ver R6-09) |
 | Revisão da Fase 5 | `01-planejamento/revisoes/FASE5-REV-I2-revisao-modelo-dominio.md` | §5.2 (AP-01…AP-05), §5.3 (mensagens previstas), §6.1 (transições), §9 |
 | Análise de impacto comportamental (I4) | `04-persistencia/analises/fase-06-impacto-comportamental-persistencia.md` | INC-13, TRS-02, ARQ-07, operações de infraestrutura |
 | Matriz da Fase 5 | `06-rastreabilidade/matriz-rastreabilidade-fase5.md` | Colunas herdadas (classe, operação, tabela, CT) |
-| **Decisões do grupo** | `01-planejamento/decisoes.md` | DEC-001…DEC-027 — em especial **DEC-009 (resolvida), DEC-011, DEC-012 (revista), DEC-016 (revista), DEC-017, DEC-022, DEC-025, DEC-026, DEC-027**; P-05/DEC-018 ainda aberta |
+| **Decisões do grupo** | `01-planejamento/decisoes.md` | DEC-001…DEC-030 — em especial **DEC-009 + DEC-029** (e-mail e falha), **DEC-010 + DEC-027** (lista de espera), **DEC-011 + DEC-028** (cancelamento), **DEC-016 + DEC-017** (situações e confirmação), **DEC-018** (slot discreto), **DEC-019** (conta—perfil), **DEC-020** (sessão), **DEC-022** (`ServicoEnvioMensagem`), **DEC-025** (falta manual), **DEC-026** (`UC-0RF`) e **DEC-030** (atendimento) |
 
 ---
 
@@ -289,7 +289,7 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | — | **INC-13** — "Não compareceu" apenas a partir de "Confirmado" | EST-001 (T3); SEQ-003 (`opt RF-037`); ATV-001 (`d5` [Não]) | **OK — resolvido** | Não existe transição de `SOLICITADO` para `NAO_COMPARECEU` — nem `SOLICITADO`. Responde à P-14. |
 | — | **ARQ-07** — *outbox* para eventos pós-commit | Não aparece nos diagramas | **PENDENTE / fora de escopo** | **R6-08**: infraestrutura de Fase 7. O ATV-001 já separa o ramo de notificação, o que facilita a inclusão. |
 | — | Tabela/coluna para a **lista de espera** | SEQ-004 (`SolicitacaoEspera`) | **NÃO INCORPORADO** | **R6-10**: o I4 precisa de tabela `solicitacao_espera` (psicólogo, paciente, período, `dataHoraEntrada`, `situacao`, `prazoAceite`) no DER. |
-| — | Enum `SituacaoAgendamento` com `SOLICITADO` | EST-001 (4 situações), §24 do dossiê | **NÃO INCORPORADO** | **R6-09**: o CLS-001 v2 e o diagrama de objetos da Fase 5 ainda listam `SOLICITADO`; o I3 precisa remover. Não é defeito desta entrega. |
+| — | `Agendamento.confirmar()` e enumerado das situações no diagrama oficial | EST-001 (4 situações), §24 do dossiê | **NÃO INCORPORADO** | **R6-09**: o CLS-001 oficial ainda declara `confirmar()` e não fixa o enumerado; pela DEC-017 a criação já nasce confirmada e pela DEC-016 são quatro situações. O I3 precisa alinhar. |
 
 ### 6.1 Achados desta revisão (R6-01 … R6-10)
 
@@ -303,7 +303,10 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | R6-06 | B | Nome do parâmetro da notificação (`evento` × valores) | I4 §2.6 × SEQ-002/003/004 | Parâmetro `evento`; valores `confirmacao`, `cancelamento`, `ofertaVaga` | I4 + I2 | **Fechado** |
 | R6-07 | B | Diagramas não marcam fronteira de transação | SEQ-002/003/004, ATV-001 | Manter; a fronteira é da Fase 7 (TRS-02); a ordem já está explícita | I2 + I4 | **Documentado** |
 | R6-08 | M | Análise do I4 da Fase 5 (R5-13) feita sobre a lista do plano, não sobre o modelo real | I4 §1 e R5-13 | Refazer a análise contra o modelo aprovado antes do DER | I4 | **Aberto** |
-| **R6-09** | **M** | **Enum `SituacaoAgendamento` do CLS-001 v2 e o diagrama de objetos da Fase 5 ainda listam `SOLICITADO`** | `03-uml/Classes/proposta-I2-diagrama-classes-v2.mmd`, `03-uml/Objetos/diagrama-objetos.mmd` × EST-001 (4 situações) | Remover o valor do enum, do diagrama de objetos e do `CHECK` de `agendamento.status` | **I3** | **Aberto (herdado)** |
+| **R6-09** | **M** | **O CLS-001 oficial ainda declara `Agendamento.confirmar()` e não fixa o enumerado das quatro situações** | `03-uml/Classes/diagrama-classes.mmd` × DEC-016/DEC-017 × EST-001 | Retirar `confirmar()` e incorporar o enumerado (`CONFIRMADO`, `CANCELADO`, `REALIZADO`, `NAO_COMPARECEU`) ao CLS-001 e ao `CHECK` de `agendamento.status` | **I3** | **Aberto (herdado)** |
+| **R6-11** | **B** | **A falha de envio não é registrada na auditoria nos diagramas (DEC-029)** | SEQ-002/003/004 (`falha de envio`) × DEC-029 | Desenhar `registrar("FALHA_ENVIO_EMAIL")` e a repetição do envio — ver **LAC-14** | **I2** | **Aberto** |
+| **R6-12** | **B** | **A saída da fila e a consulta de posição não estão desenhadas (DEC-027)** | SEQ-004 × DEC-027 ("o paciente pode consultar a própria posição e sair da lista") | Acrescentar `opt` de saída/consulta e a operação correspondente — ver **LAC-13** | **I2** | **Aberto** |
+| **R6-13** | **B** | **A reserva do horário durante o prazo da oferta não está desenhada (DEC-027)** | SEQ-004 (`abrirOferta`) × DEC-027 ("durante o prazo o horário fica reservado") | Explicitar a reserva como efeito de `abrirOferta` — ver **LAC-15** | **I2** | **Aberto** |
 | **R6-10** | **M** | **A lista de espera exige tabela própria (`solicitacao_espera`) e coluna de prazo; o DER do I4 ainda não a tem** | SEQ-004 × DEC-027 × `04-persistencia/` | Incluir `solicitacao_espera` (psicólogo, paciente, período, `dataHoraEntrada`, `situacao`, `prazoAceite`) e o índice de ordem | **I4** | **Aberto** |
 
 > **Nota de numeração:** R6-08 reativa o achado R5-13, porque ele **bloqueia a Fase 7** e agora tem consequência direta nos diagramas: enquanto o Integrante 3 não incorporar OP-01…OP-27, os diagramas da Fase 6 estão apoiados em um modelo que ainda não é o oficial.
@@ -312,7 +315,7 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 
 **a) R6-05 (herdado) — ordem do cancelamento.** O SEQ-003 mostra **auditar → notificar → ofertar → responder**. O ATV-001 passou a reproduzir exatamente essa ordem: `fork2` (liberar ‖ auditar) → `join2` → `Notificar cancelamento` → `Ofertar vaga se houver fila` → `Fim`. A notificação **não** é um terceiro ramo do `fork2`: ela é sequencial, porque só pode ocorrer com o cancelamento gravado e auditado (TRS-02), e a oferta só pode ocorrer depois dela.
 
-**b) `SOLICITADO` eliminado.** A transição `[*] → CONFIRMADO : solicitar` substitui T1+T2; o passo `confirmar` desapareceu da SEQ-002 e do ATV-001; o COM-001 foi renumerado (a antiga msg. 8 virou `registrar(criacao)`). O dossiê §24 passou de "5 situações / 6 transições" para **4 situações / 4 transições**.
+**b) `SOLICITADO` eliminado.** A transição `[*] → CONFIRMADO : solicitar` substitui T1+T2; o passo `confirmar` desapareceu da SEQ-002 e do ATV-001; o COM-001 foi renumerado (a antiga msg. 8 virou `registrar(criacao)`). O dossiê §24 passou de "5 situações / 6 transições" para **4 situações / 4 transições**. O diagrama de classes oficial ainda declara `confirmar()` — achado **R6-09**, do Integrante 3.
 
 **c) E-mail obrigatório.** `notificar(...)` aparece nos **três** eventos e em **todos** os diagramas que os contêm; a resposta `entregue | falha de envio` é retorno, sem transição. A especificação de ATV-001 e o dossiê §21 deixam de tratar o envio como condicional.
 
@@ -329,22 +332,26 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | ID | Lacuna (v1.0) | Como foi fechada |
 |---|---|---|
 | **LAC-01** | SEQ-004 ("Preencher encaixe") não produzida | **Fechada**: a DEC-027 substituiu o "encaixe" pela **lista de espera**; a SEQ-004 existe e cobre UC-034 a UC-036. |
-| **LAC-03** | Prazo e atores do cancelamento (DEC-012 / P-02) | **Fechada**: guarda **`[antes do horário marcado]`** (DEC-012 revista) e atores definidos (DEC-011: paciente, psicólogo; administrador só em correção). |
+| **LAC-03** | Prazo e atores do cancelamento (DEC-012 / P-02) | **Fechada**: guarda **`[antes do horário marcado]`**, sem antecedência mínima (DEC-028), e atores definidos (DEC-011): paciente titular e psicólogo responsável; o Administrador **não** cancela. |
 | **LAC-04** | Canal de notificação (DEC-009) | **Fechada**: e-mail; RF-033; `ServicoEnvioMensagem` (DEC-022). |
 | **LAC-05** | Mecanismo da confirmação (P-01) | **Fechada**: confirmação automática e simultânea (DEC-017); o agendamento nasce `CONFIRMADO`. |
 | **LAC-06** | "Não compareceu": manual ou automático? | **Fechada**: manual, pelo psicólogo (DEC-025 / RF-037 / UC-037). |
 | **LAC-09** | `consultarMeus` e RF-028 sem caso de uso | **Fechada**: **UC-028** criado (DEC-026). |
+| **LAC-02** | Reserva do slot (A17 `Disponibilidade`—`Agendamento`) | **Fechada na decisão**: a **DEC-018** aprovou o **slot discreto**; a reserva continua interna a `Agendamento.solicitar` (não é mensagem) e a associação A17 fica habilitada para o I3/I4. |
+| **LAC-07** | UC-027 cita **DEC-011 e DEC-012** "que não existem" | **Fechada**: as duas existem no registro oficial (DEC-011 aprovada; DEC-012 registrada como **não adotada**, substituída pela DEC-028). |
+| **LAC-08** | Multiplicidades `PENDENTE` no diagrama oficial | **Parcialmente fechada**: a **DEC-019** fixa `Usuario "0..1" — Perfil "1"`; as demais multiplicidades seguem `PENDENTE` (R5-10/PC-09). |
 
 ### 7.2 Lacunas e pendências que permanecem
 
 | ID | Lacuna | Causa | Efeito nos diagramas | Quem fecha |
 |---|---|---|---|---|
-| **LAC-02** | Reserva do slot (A17 `Disponibilidade`—`Agendamento`) | **P-05 / DEC-018** pendente | Não há mensagem de reserva; é interna a `Agendamento.solicitar`; a verificação aparece como `verificarDisponibilidade` | Grupo (P-05) |
-| **LAC-07** | UC-027 cita **DEC-011 e DEC-012**, que não existem no registro oficial (R5-12) | Inconsistência herdada da Fase 3 | Os diagramas usam a guarda vigente; se o grupo renumerar, é renomeação | I1 + grupo |
-| **LAC-08** | Multiplicidades ainda `PENDENTE` no diagrama oficial | R5-10 / PC-09 | Os diagramas **não dependem** de multiplicidades | Grupo + I3 |
+| **LAC-08** | Multiplicidades ainda `PENDENTE` no diagrama oficial (exceto conta—perfil, DEC-019) | R5-10 / PC-09 | Os diagramas **não dependem** de multiplicidades | Grupo + I3 |
 | **LAC-10** | `SolicitacaoEspera`, AP-06 e OP-23…OP-27 fora do CLS-001 oficial | DEC-027 aprovada na Fase 6 | Todos os artefatos da fila são **proposta**; falta incorporação | **I3** |
 | **LAC-11** | RF-033…RF-036 sem teste conceitual na matriz da Fase 5 | os RFs foram criados na Fase 6 | Nenhum — os diagramas evidenciam os cenários; faltam os CT | **I5** |
 | **LAC-12** | Diagrama de casos de uso oficial sem o ator "Serviço Externo de E-mail" e sem os `<<extend>>`/`<<include>>` novos | artefato da Fase 3 (I3) | As relações estão especificadas e desenhadas nos diagramas comportamentais; falta o desenho oficial | **I3** |
+| **LAC-13** | Saída da fila e consulta posterior da posição (DEC-027) | o lote da fila desenhou entrada, oferta e resposta | A SEQ-004 devolve `posicao na fila` na entrada, mas não desenha `sairDaFila` nem a consulta posterior | **I2** (próxima rodada) |
+| **LAC-14** | Registro da falha de envio na auditoria e repetição (DEC-029) | os diagramas devolvem `falha de envio`, mas não desenham `registrar("FALHA_ENVIO_EMAIL")` | Nenhum no fluxo principal; o requisito RF-033 fica **parcialmente** evidenciado | **I2** (próxima rodada) |
+| **LAC-15** | Reserva do horário durante o prazo da oferta (DEC-027) | a reserva é efeito de `abrirOferta`, não mensagem | A oferta carrega `prazoAceite`; a reserva não aparece como nó/mensagem | **I2** (próxima rodada) |
 
 ---
 
@@ -357,6 +364,7 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | Conceitos relevantes dos casos aparecem nos diagramas | 12 classes do modelo + incremento da fila | **OK** — 8 classes do modelo (`Usuario`, `Vinculo`, `Agenda`, `Disponibilidade`, `Agendamento`, `Atendimento`, `RegistroAuditoria`, `SolicitacaoEspera`) aparecem como participante/colaborador; `Perfil`/`Permissao` entram por IR-02; `Psicologo`/`Paciente`/`AreaAtuacao` são de cadastros |
 | Cada entidade/objeto tem responsabilidade clara; sem classes onipotentes | 7 diagramas | **OK** — coordenação em `ServicoAgenda` (AP-03) e `ServicoListaEspera` (AP-06); nenhuma entidade "sistema" |
 | **Mensagens de sequência correspondem a operações conhecidas** | §5.3 | **OK** — 114/114 setas com origem em OP/AP/IR |
+| **Notificação obrigatória e falha não bloqueante** | DEC-009 + DEC-029 | **OK no fluxo** — o envio é sempre solicitado e a falha não desfaz; o registro da falha na auditoria é **LAC-14** |
 | **Mensagens de comunicação correspondem a operações conhecidas** | §5.3 | **OK** — 17/17 |
 | Estados e transições têm eventos, condições ou ações coerentes | EST-001 | **OK** — **4 situações, 4 transições** (T0–T3), todas com evento; 3 com guarda |
 | Atividades têm decisões, responsabilidades e paralelismo | ATV-001 | **OK** — 4 decisões, 4 pistas, 3 blocos paralelos e **2 etapas sequenciais** (notificar → ofertar) |
@@ -378,9 +386,10 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | R6-08 / R5-13 | Reanálise de persistência contra o modelo aprovado | I4 |
 | **R6-09** | **Remover `SOLICITADO` do enum, do diagrama de objetos e do `CHECK`** | **I3** |
 | **R6-10** | **Tabela `solicitacao_espera` no DER** | **I4** |
-| LAC-02 | Reserva do slot (P-05/DEC-018) | Grupo |
-| LAC-07 | Numeração de DEC-011/DEC-012 em UC-027 | I1 + grupo |
-| LAC-08 | Multiplicidades `PENDENTE` | Grupo + I3 |
+| LAC-08 | Multiplicidades `PENDENTE` (exceto conta—perfil, DEC-019) | Grupo + I3 |
+| LAC-13 | Saída da fila e consulta de posição na SEQ-004 | I2 |
+| LAC-14 | Registro da falha de envio na auditoria (DEC-029) | I2 |
+| LAC-15 | Reserva do horário durante o prazo da oferta (DEC-027) | I2 |
 | LAC-10 | Incorporação de `SolicitacaoEspera`, AP-06 e OP-23…OP-27 | **I3** |
 | LAC-11 | CT-033…CT-036 na matriz da Fase 5 | **I5** |
 | LAC-12 | Diagrama de casos de uso: ator E-mail + `<<extend>>`/`<<include>>` | **I3** |
@@ -392,9 +401,9 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 ## 10. Checklist de aprovação (para a ata do walkthrough)
 
 - [ ] Grupo aprova os **sete diagramas** (SEQ-001/002/003/**004**, ATV-001, COM-001 e EST-001) como artefatos comportamentais da Fase 6.
-- [ ] Grupo ratifica as decisões já aplicadas: **DEC-009** (e-mail obrigatório em três eventos), **DEC-016 revista** (nasce `CONFIRMADO`), **DEC-012 revista** (guarda `[antes do horário marcado]`), **DEC-022** (`ServicoEnvioMensagem`), **DEC-025** (falta manual), **DEC-026** (`UC-0RF`) e **DEC-027** (lista de espera).
-- [ ] Grupo decide **P-05 / DEC-018** (modelo do horário) — fecha LAC-02.
-- [ ] Integrante 3 incorpora **OP-01…OP-27**, **AP-06**, `SolicitacaoEspera` e as **4 situações** — e remove `SOLICITADO` do enum e do diagrama de objetos (**R6-09** / LAC-10).
+- [x] Decisões **já ratificadas pelo grupo** e aplicadas nesta entrega: **DEC-009 + DEC-029** (e-mail obrigatório, falha não desfaz), **DEC-010 + DEC-027** (lista de espera), **DEC-011 + DEC-028** (guarda `[antes do horário marcado]`, sem Administrador), **DEC-016 + DEC-017** (nasce `CONFIRMADO`), **DEC-018** (slot discreto), **DEC-022** (`ServicoEnvioMensagem`), **DEC-025** (falta manual), **DEC-026** (`UC-0RF`) e **DEC-030** (atendimento).
+- [x] **DEC-018** (modelo do horário) — aprovada em 28/10/2026; fecha LAC-02.
+- [ ] Integrante 3 incorpora **OP-01…OP-27**, **AP-06**, `SolicitacaoEspera`, as **4 situações** da DEC-016 e retira `Agendamento.confirmar()` do CLS-001 (**R6-09** / LAC-10).
 - [ ] Integrante 3 atualiza o **diagrama de casos de uso** com o ator E-mail e as relações `<<extend>>`/`<<include>>` (**LAC-12**).
 - [ ] Integrante 4 atualiza a análise de impacto com **R6-01, R6-02, R6-03** e inclui a tabela `solicitacao_espera` (**R6-10**).
 - [ ] Integrante 5 abre **CT-033…CT-036** (LAC-11) e revisa a matriz.
@@ -425,4 +434,4 @@ O Integrante 4 produziu uma análise de impacto comportamental (`04-persistencia
 | `07-dossie/secoes/fase6-secao-21-24.md` | Texto pronto para as seções 21, 22, 23 e 24 (**sete figuras**) | v2.0 — para o I6 consolidar |
 | `01-planejamento/revisoes/FASE6-REV-I2-revisao-comportamental.md` | Esta revisão: cobertura, comparação cruzada, cotejo com o I4, R6-01…R6-10, checklist | v2.0 — pronto para walkthrough |
 
-**Sequência sugerida ao grupo:** (1) walkthrough desta revisão e dos sete diagramas; (2) ratificação das decisões aplicadas (DEC-009/012/016/022/025/026/027); (3) decisão de **P-05/DEC-018**; (4) incorporação pelo I3 de OP-01…OP-27, AP-06, `SolicitacaoEspera` e das quatro situações (R6-09/LAC-10), além do diagrama de casos (LAC-12); (5) atualização das análises do I4 com R6-01…R6-03 e R6-10; (6) Fase 7 (pacotes, componentes, DER) com a matriz da Fase 6 como insumo.
+**Sequência sugerida ao grupo:** (1) walkthrough desta revisão e dos sete diagramas; (2) incorporação pelo I3 de OP-01…OP-27, AP-06, `SolicitacaoEspera`, das quatro situações e da retirada de `confirmar()` (R6-09/LAC-10), além do diagrama de casos (LAC-12); (3) fechamento das três ressalvas do lote da fila e do e-mail (LAC-13/14/15, R6-11/12/13); (4) atualização das análises do I4 com R6-01…R6-03 e R6-10; (5) Fase 7 (pacotes, componentes, DER) com a matriz da Fase 6 como insumo.

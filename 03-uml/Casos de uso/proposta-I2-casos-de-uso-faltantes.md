@@ -66,7 +66,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 **RFs cobertos:** RF-033 (principal), RF-025, RF-026, RF-027, RF-035.
 
-**Regras aplicadas:** DEC-022 (fronteira única `ServicoEnvioMensagem`), DEC-009 resolvida, TRS-02 do Integrante 4 (pós-commit).
+**Regras aplicadas:** DEC-022 (fronteira única `ServicoEnvioMensagem`), DEC-009 + DEC-029 (envio sempre solicitado; falha não desfaz, é auditada e repetível), TRS-02 do Integrante 4 (pós-commit).
 
 **Pré-condições:** a operação de agenda (criação, cancelamento ou abertura de oferta) terminou com sucesso; o destinatário tem e-mail cadastrado.
 
@@ -271,7 +271,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 | Item | v1.0 (Fase 4) | v2.0 (Fase 6) |
 |---|---|---|
-| Guarda | "prazo de antecedência" (pendente, DEC-012) | **`[antes do horário marcado]`** — não existe prazo de 2 horas |
+| Guarda | "prazo de antecedência" (pendente, DEC-012) | **`[antes do horário marcado]`** — não existe antecedência mínima (DEC-028) |
 | Confirmar | caso de uso separado incluído | **removido**: a confirmação ocorre na criação (UC-025) |
 | E-mail | efeito implícito | **sempre** solicita o e-mail de cancelamento (UC-033) |
 | Oferta de vaga | não existia | **`<<extend>>` UC-035** quando há fila |

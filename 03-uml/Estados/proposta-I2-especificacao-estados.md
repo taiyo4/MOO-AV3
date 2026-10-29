@@ -9,7 +9,7 @@
 | Fonte editável (verdade do conteúdo) | [`proposta-I2-estados-est-001.mmd`](proposta-I2-estados-est-001.mmd) |
 | Editável (draw.io) | `proposta-I2-estados-est-001.drawio.xml` |
 | Dossiê (PDF) | `proposta-I2-estados-est-001.pdf` |
-| Entidade modelada | `Agendamento` (CLS-001 v2) · atributo `-situacao` : `SituacaoAgendamento` |
+| Entidade modelada | `Agendamento` (CLS-001) · atributo `-situacao` : `SituacaoAgendamento` (4 valores — DEC-016) |
 | **RFs cobertos** | **RF-025** (solicitar), **RF-026** (confirmar), **RF-027** (cancelar), **RF-030** (concluir), **RF-037** (não comparecimento), **RF-032** (auditoria) |
 | Base de regras | RN-012, RN-013, RN-006, RN-009 · plano §5.4 · DEC-025 (falta manual) · DEC-027 (lista de espera) |
 
@@ -51,9 +51,9 @@ Essas situações são o atributo `-situacao` do `Agendamento` — o que faz des
 
 ### 3.2 A guarda de cancelamento
 
-> **`[antes do horário marcado]`** — o cancelamento só é aceito enquanto a hora marcada não começou. **Não existe prazo de 2 horas** (revoga o valor numérico da DEC-012).
+> **`[antes do horário marcado]`** — o cancelamento só é aceito enquanto a hora marcada não começou. **Não existe antecedência mínima** (DEC-028; a DEC-012 não foi adotada).
 
-A guarda é a mesma para Paciente e Psicólogo (DEC-011); o Administrador só cancela em operação corretiva, com motivo registrado. Depois do início do horário, o compromisso só pode terminar como `REALIZADO` ou `NAO_COMPARECEU`.
+A guarda e os atores são os da DEC-011: o **Paciente titular** e o **Psicólogo responsável**; o **Administrador não cancela** (DEC-028). Depois do início do horário, o compromisso só pode terminar como `REALIZADO` ou `NAO_COMPARECEU`.
 
 ### 3.3 Não comparecimento é manual
 
@@ -85,7 +85,7 @@ A oferta de vaga (RF-035 / UC-035) é um **efeito colateral** de T1, não uma si
 
 | Pendência | Causa | Efeito |
 |---|---|---|
-| Enum `SituacaoAgendamento` do CLS-001 v2 e o diagrama de objetos da Fase 5 ainda listam `SOLICITADO` | artefatos da Fase 5, de outro escopo | a máquina e os diagramas da Fase 6 já estão alinhados; o Integrante 3 precisa remover o valor do enum ao incorporar a proposta (achado **R6-09**) |
+| O CLS-001 oficial ainda declara `Agendamento.confirmar()` e não fixa o enumerado das quatro situações | artefato da Fase 3, sob responsabilidade do Integrante 3 | a máquina e os diagramas da Fase 6 já usam as quatro situações da DEC-016 e dispensam `confirmar()` (DEC-017); falta alinhar o CLS-001 (achado **R6-09**) |
 
 ## 7. Como ler e editar
 

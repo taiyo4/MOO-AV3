@@ -19,6 +19,8 @@ O sistema possui três atores humanos primários confirmados:
 2. **Psicólogo**
 3. **Cliente/Paciente**
 
+Ator externo de suporte confirmado (DEC-009, 25/10/2026): **Serviço Externo de E-mail**.
+
 ## 3. Responsabilidades por ator
 
 ### 3.1 Administrador
@@ -35,6 +37,8 @@ O sistema possui três atores humanos primários confirmados:
 - Consultar a relação de clientes/pacientes aos quais possui vínculo formalizado;
 - Cadastrar e gerenciar seus períodos e horários de disponibilidade na agenda;
 - Consultar sua agenda de sessões e horários marcados;
+- Cancelar agendamentos da própria agenda antes do horário marcado (DEC-011);
+- Registrar `Não compareceu` após o horário marcado, quando o agendamento não foi cancelado nem concluído (DEC-025);
 - Executar funções operacionais e profissionais autorizadas;
 - Registrar conceitualmente as sessões de atendimento realizadas;
 - Consultar o histórico permitido dos atendimentos executados.
@@ -44,7 +48,8 @@ O sistema possui três atores humanos primários confirmados:
 - Consultar faixas de horários disponíveis do psicólogo vinculado;
 - Solicitar agendamentos de sessões;
 - Consultar o status e o histórico dos próprios agendamentos;
-- Cancelar agendamentos próprios, em conformidade com as regras de antecedência permitidas;
+- Cancelar agendamentos próprios antes do horário marcado (DEC-011; sem antecedência mínima adicional, DEC-028);
+- Entrar na lista de espera do psicólogo vinculado e responder a ofertas de vaga (DEC-010);
 - Consultar unicamente as informações e dados disponibilizados ao seu próprio usuário.
 
 ## 4. Limitações de acesso
@@ -76,11 +81,11 @@ Para fins de consistência e apoio ao **Integrante 2 (Casos de Uso e Comportamen
 - Tabelas, entidades ou classes;
 - Componentes de infraestrutura ou serviços internos.
 
-## 6. Decisões pendentes
+## 6. Ator externo
 
-### 6.1 Ator Externo: Serviço Externo de E-mail/Notificação
-- **Situação:** `PENDENTE DE DECISÃO DO GRUPO`
-- **Descrição:** Caso o grupo decida que a plataforma emitirá confirmações e avisos externos de agendamento por meio de terceiros, o *Serviço Externo de Notificação* atuará como um ator externo de suporte. Caso contrário, as notificações serão restritas ao ambiente interno da aplicação.
+### 6.1 Serviço Externo de E-mail
+- **Situação:** `APROVADO PELO GRUPO` (DEC-009, formalizado em 25/10/2026).
+- **Descrição:** Ator externo de suporte que recebe da plataforma as solicitações de envio de e-mail de confirmação de agendamento, cancelamento de agendamento e oferta de vaga da lista de espera (RF-033).
 
 ---
 
@@ -96,5 +101,5 @@ Psicólogo --- [ Plataforma para Psicólogos ] --- Cliente/Paciente
              |
              |
       Serviço Externo
-(E-mail/Notificação - se confirmado)
+(E-mail — DEC-009)
 ```

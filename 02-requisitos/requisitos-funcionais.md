@@ -1,6 +1,8 @@
 # Requisitos Funcionais
 
-Os requisitos abaixo derivam do escopo e das decisões registradas na Fase 2. Prioridades indicam importância para o escopo mínimo da plataforma, não ordem de implementação. Ações administrativas devem respeitar permissões autorizadas. A integração externa e a inovação permanecem pendentes e não possuem RF definido.
+Os requisitos abaixo derivam do escopo e das decisões registradas em [`01-planejamento/decisoes.md`](../01-planejamento/decisoes.md). Prioridades indicam importância para o escopo mínimo da plataforma, não ordem de implementação. Ações administrativas devem respeitar permissões autorizadas.
+
+**Atualização de 25/10/2026:** com a aprovação de DEC-009 (serviço externo de e-mail), DEC-010 (lista de espera inteligente), DEC-011 (cancelamento por paciente e psicólogo), DEC-016 (situações do agendamento, parcialmente) e DEC-017 (confirmação automática), foram revisados RF-025, RF-026, RF-027 e RF-030 e acrescentados RF-033 a RF-037. Os identificadores RF-001 a RF-032 foram preservados. Pendências do grupo são citadas pelo identificador `PG-xx` definido em `decisoes.md`.
 
 ## 1. Identidade e Acesso
 
@@ -406,43 +408,45 @@ Os requisitos abaixo derivam do escopo e das decisões registradas na Fase 2. Pr
 
 **Pré-condições:** O Cliente/Paciente deve estar autenticado, vinculado ao Psicólogo e selecionar horário disponível.
 
-**Pós-condições:** A solicitação deverá ser registrada com Cliente/Paciente, Psicólogo, horário e situação `CONFIRMADO`, ocupando imediatamente o horário.
+**Pós-condições:** Se o horário estiver disponível e não houver conflito, o agendamento deverá ser registrado com Cliente/Paciente, Psicólogo e horário, e confirmado automaticamente (RF-026), ocupando o horário. Caso contrário, a solicitação não deverá gerar agendamento confirmado nem ocupar o horário.
 
-**Dependências:** RF-021, RF-024.
+**Dependências:** RF-021, RF-024, RF-026.
 
-**Observações:** O agendamento **já nasce `CONFIRMADO`**: não existe situação `SOLICITADO` nem aprovação manual de outro ator (RN-013, DEC-017). A criação ocupa o horário (RN-005, RN-010).
+**Observações:** Confirmação automática aprovada em DEC-017. A solicitação não é registrada como situação própria: `SOLICITADO` não é persistente, e o agendamento já nasce `Confirmado` (DEC-016).
 
-### RF-026 — Confirmar agendamento
+### RF-026 — Confirmar agendamento automaticamente
 
-**Descrição:** O sistema deverá confirmar o agendamento no **mesmo ato** da solicitação, por mecanismo autorizado pela regra, sem etapa de aprovação manual.
+**Descrição:** O sistema deverá confirmar automaticamente o agendamento solicitado quando o horário estiver disponível e não houver conflito de agenda, sem aprovação manual de outro ator.
 
-**Ator(es):** Sistema (mecanismo autorizado, RN-013).
+**Ator(es):** Sistema (confirmação automática decorrente da solicitação do Cliente/Paciente).
 
 **Prioridade:** Alta.
 
-**Pré-condições:** Deve existir solicitação de agendamento com horário ainda disponível.
+**Pré-condições:** Deve existir solicitação de agendamento (RF-025) ou aceite de vaga da lista de espera (RF-036) para horário disponível e sem conflito.
 
-**Pós-condições:** A situação do agendamento deverá ser `CONFIRMADO`, preservando a associação entre Cliente/Paciente, Psicólogo e horário.
+**Pós-condições:** O agendamento deverá ficar na situação `Confirmado`, preservando a associação entre Cliente/Paciente, Psicólogo e horário, e o e-mail de confirmação deverá ser solicitado ao Serviço Externo de E-mail (RF-033).
 
-**Dependências:** RF-025.
+**Dependências:** RF-025, RF-033.
 
-**Observações:** A confirmação não é um estado intermediário: ela é o estado inicial do agendamento. Por isso não há transição `SOLICITADO → CONFIRMADO` no EST-001 (revisão da Fase 6).
+**Observações:** Decisão DEC-017. Não há situação anterior a `Confirmado` (DEC-016). A assinatura da operação nos modelos é proposta técnica do Integrante 2 e não decisão do grupo.
 
 ### RF-027 — Cancelar agendamento
 
-**Descrição:** O sistema deverá permitir que o Cliente/Paciente cancele agendamento próprio quando permitido; outras possibilidades de cancelamento dependem das permissões e regras aprovadas.
+**Descrição:** O sistema deverá permitir que o Cliente/Paciente titular ou o Psicólogo responsável cancele um agendamento antes do horário marcado.
 
-**Ator(es):** Cliente/Paciente (titular) e Psicólogo vinculado (DEC-011); Administrador apenas em operação corretiva, com motivo registrado.
+**Ator(es):** Cliente/Paciente (agendamento próprio) e Psicólogo (agendamento da própria agenda).
 
 **Prioridade:** Alta.
 
-**Pré-condições:** O agendamento deve pertencer ao solicitante ou o ator deve ter autorização; deve estar `CONFIRMADO` e o horário marcado ainda não pode ter começado.
+**Pré-condições:** O solicitante deve estar autenticado e ser o Cliente/Paciente titular ou o Psicólogo do agendamento; o agendamento deve estar na situação `Confirmado`; o horário marcado ainda não deve ter começado.
 
-**Pós-condições:** A situação do agendamento deverá ser alterada para `CANCELADO`, o horário deverá ser liberado, a operação auditada e o interessado notificado; não poderá ser registrada como atendimento realizado.
+**Pós-condições:** A situação do agendamento deverá ser alterada para `Cancelado`, o horário deverá ser liberado, a alteração deverá ser auditada (RF-032), o e-mail de cancelamento deverá ser solicitado (RF-033) e o horário liberado deverá ser oferecido à lista de espera (RF-035), inclusive quando o cancelamento for do Psicólogo (DEC-027). O agendamento cancelado não poderá ser registrado como atendimento realizado.
 
-**Dependências:** RF-025, RF-026.
+**Dependências:** RF-025, RF-026, RF-032, RF-033.
 
-**Observações:** A guarda é **"antes do horário marcado"** — **não existe prazo de 2 horas** (revisão da Fase 6). Após o início, o compromisso só pode terminar como `REALIZADO` ou `NAO_COMPARECEU`. O cancelamento é o gatilho da oferta de vaga (RF-035, `<<extend>>`).
+**Observações:** Não há antecedência mínima além de "antes do horário marcado", e o Administrador não cancela agendamentos (DEC-028).
+
+**Observações:** Decisão DEC-011. Não há antecedência mínima além de "antes do horário marcado", e o Administrador não cancela (DEC-028). Também estão pendentes o cancelamento pelo Administrador (`PG-10`), e se o cancelamento pelo Psicólogo gera oferta à lista de espera (`PG-09`).
 
 ### RF-028 — Consultar os próprios agendamentos
 
@@ -474,7 +478,23 @@ Os requisitos abaixo derivam do escopo e das decisões registradas na Fase 2. Pr
 
 **Dependências:** RF-023, RF-025.
 
-**Observações:** Não concede acesso a agendas de outros Psicólogos.
+**Observações:** Não concede acesso a agendas de outros Psicólogos. Agendamento futuro cujo vínculo foi encerrado permanece na agenda marcado como "paciente sem vínculo ativo", para o Psicólogo cancelar ou manter (DEC-015).
+
+### RF-037 — Registrar não comparecimento
+
+**Descrição:** O sistema deverá permitir que o Psicólogo registre que o Cliente/Paciente não compareceu a um agendamento confirmado, alterando sua situação para `Não compareceu`.
+
+**Ator(es):** Psicólogo (agendamento da própria agenda).
+
+**Prioridade:** Média.
+
+**Pré-condições:** O Psicólogo deve estar autenticado e ser o responsável pelo agendamento; o horário marcado já deve ter passado; o agendamento deve continuar `Confirmado`, ou seja, não pode ter sido cancelado nem concluído.
+
+**Pós-condições:** A situação do agendamento deverá ser `Não compareceu` e a alteração deverá ser auditada (RF-032).
+
+**Dependências:** RF-026, RF-029, RF-032.
+
+**Observações:** Situação aprovada em DEC-016 e responsável aprovado em DEC-025. Numerado em 25/10/2026, após RF-033 a RF-036, para preservar a numeração existente. O registro automático pelo sistema não foi aprovado.
 
 ## 6. Atendimento
 
@@ -492,7 +512,7 @@ Os requisitos abaixo derivam do escopo e das decisões registradas na Fase 2. Pr
 
 **Dependências:** RF-017, RF-021, RF-029.
 
-**Observações:** Registro conceitual não significa prontuário clínico completo; não incluir conteúdo clínico aprofundado.
+**Observações:** Registro conceitual não significa prontuário clínico completo; não incluir conteúdo clínico aprofundado. A situação `Realizado` foi aprovada (DEC-016); o registro só é permitido para agendamento `Confirmado` e, ao registrar, o agendamento passa a `Realizado` (DEC-030).
 
 ### RF-031 — Consultar histórico permitido de atendimentos
 
@@ -528,95 +548,72 @@ Os requisitos abaixo derivam do escopo e das decisões registradas na Fase 2. Pr
 
 **Observações:** O escopo define registro cronológico e imutável; eventos além das operações administrativas compulsórias devem ser selecionados pelo grupo. Nenhum segredo ou senha em texto puro deve constar no registro.
 
-## 8. Notificações, lista de espera e não comparecimento
+## 8. Notificações externas
 
-> **Origem deste bloco (Fase 6):** o grupo fechou as pendências DEC-009 (canal de notificação),
-> DEC-022 (nome único da fronteira de envio) e DEC-027 (regras da lista de espera). Os requisitos
-> abaixo formalizam o que os diagramas comportamentais já desenham. A numeração continua a série
-> oficial (RF-033 a RF-037) e cada um recebe um caso de uso com o mesmo número (DEC-026).
+### RF-033 — Enviar notificação por e-mail
 
-### RF-033 — Notificar os interessados por e-mail
+**Descrição:** O sistema deverá solicitar ao Serviço Externo de E-mail o envio de mensagem aos envolvidos quando ocorrer confirmação de agendamento, cancelamento de agendamento ou oferta de vaga da lista de espera.
 
-**Descrição:** O sistema deverá enviar mensagem por e-mail ao interessado sempre que ocorrer **confirmação de agendamento**, **cancelamento de agendamento** ou **oferta de vaga** proveniente da lista de espera.
+**Ator(es):** Sistema; Serviço Externo de E-mail (ator externo de suporte).
 
-**Ator(es):** Sistema (envio decorrente de ação de Paciente, Psicólogo ou do próprio sistema), por meio do Serviço Externo de E-mail.
+**Prioridade:** Média.
 
-**Prioridade:** Alta.
+**Pré-condições:** Deve ocorrer um dos eventos previstos: confirmação (RF-026), cancelamento (RF-027) ou oferta de vaga (RF-035).
 
-**Pré-condições:** A operação de agenda correspondente (RF-025, RF-027 ou RF-035) deve ter sido concluída com sucesso; o destinatário deve possuir endereço de e-mail cadastrado.
+**Pós-condições:** A solicitação de envio deverá conter apenas os dados necessários ao aviso, sem senhas nem informações clínicas.
 
-**Pós-condições:** A mensagem correspondente deverá ser entregue ao Serviço Externo de E-mail e o resultado do envio deverá ficar registrado. **A falha de envio não desfaz nem invalida a operação de agenda** que a originou.
+**Dependências:** RF-026, RF-027, RF-035.
 
-**Dependências:** RF-025, RF-026, RF-027, RF-035.
+**Observações:** Decisão DEC-009. Envio em outros eventos não foi decidido. A falha no envio não desfaz a operação de origem; é registrada na auditoria e o envio pode ser repetido (DEC-029). O envio é uma interface de fronteira, `ServicoEnvioMensagem` (DEC-022).
 
-**Observações:** O envio não é condicional: os três eventos (confirmação, cancelamento, oferta de vaga) **sempre** o solicitam (DEC-009 resolvida na Fase 6). A fronteira de aplicação tem nome único, `ServicoEnvioMensagem` (DEC-022); não há classe de domínio nem tabela própria. O envio é pós-commit e não participa da transação que grava o agendamento (TRS-02 do Integrante 4).
+## 9. Inovação — Lista de espera inteligente
+
+**Status do módulo:** aprovado pelo grupo (DEC-010). Os parâmetros da fila foram decididos em 28/10/2026 (DEC-027).
 
 ### RF-034 — Entrar na lista de espera
 
-**Descrição:** O sistema deverá permitir que um Cliente/Paciente autenticado, vinculado ao Psicólogo e **sem horário disponível** no período consultado, registre sua entrada na lista de espera daquele Psicólogo.
+**Descrição:** O sistema deverá permitir que um Cliente/Paciente autenticado registre interesse em horário com Psicólogo vinculado, entrando na lista de espera.
 
 **Ator(es):** Cliente/Paciente.
 
 **Prioridade:** Média.
 
-**Pré-condições:** O Cliente/Paciente deve estar autenticado e vinculado ao Psicólogo (RN-003); não deve existir entrada ativa do mesmo paciente para o mesmo Psicólogo.
+**Pré-condições:** O Cliente/Paciente deve estar autenticado e possuir vínculo autorizado com o Psicólogo.
 
-**Pós-condições:** A solicitação de espera deverá ser registrada com Psicólogo, Paciente, período desejado, data/hora de entrada e situação `AGUARDANDO`.
+**Pós-condições:** A entrada na lista de espera deverá ser registrada, associada ao Cliente/Paciente e ao Psicólogo.
 
-**Dependências:** RF-021, RF-024.
+**Dependências:** RF-001, RF-021.
 
-**Observações:** A posição na fila é definida **exclusivamente pela ordem de entrada** (DEC-027); não há prioridade manual. O registro da espera é um incremento de domínio proposto na Fase 6 (`SolicitacaoEspera`), dependente de incorporação pelo Integrante 3.
+**Observações:** A entrada é por Psicólogo e horário específico; o paciente pode consultar a própria posição e sair da lista (DEC-027).
 
-### RF-035 — Ofertar vaga ao próximo da lista de espera
+### RF-035 — Ofertar horário liberado à lista de espera
 
-**Descrição:** O sistema deverá, ao liberar um horário por cancelamento (RF-027), ofertar a vaga ao **primeiro** Cliente/Paciente da lista de espera daquele Psicólogo, abrindo uma oferta com prazo de aceite.
+**Descrição:** Quando um agendamento for cancelado e o horário for liberado, o sistema poderá oferecer esse horário a paciente da lista de espera do mesmo Psicólogo.
 
-**Ator(es):** Sistema (decorrente do cancelamento).
+**Ator(es):** Sistema; Serviço Externo de E-mail (aviso da oferta).
 
 **Prioridade:** Média.
 
-**Pré-condições:** Deve ter ocorrido cancelamento de agendamento que libere um horário; deve existir solicitação de espera em situação `AGUARDANDO` para o mesmo Psicólogo.
+**Pré-condições:** Deve existir cancelamento (RF-027) que libere horário ainda não iniciado e paciente elegível na lista de espera.
 
-**Pós-condições:** A solicitação mais antiga deverá passar a `OFERTADA`, com prazo de aceite registrado; o paciente deverá ser notificado por e-mail (RF-033).
+**Pós-condições:** A oferta deverá ser registrada e comunicada por e-mail (RF-033). A oferta, por si só, não cria agendamento confirmado.
 
 **Dependências:** RF-027, RF-033, RF-034.
 
-**Observações:** A oferta de vaga é modelada como **`<<extend>>` do cancelamento** — não é caso de uso independente iniciado por ator. Existe **uma única oferta aberta por vez** por Psicólogo (DEC-027); enquanto ela estiver aberta, a fila não é percorrida.
+**Observações:** Fila por ordem de entrada; oferta a um paciente por vez; o cancelamento feito pelo Psicólogo também gera oferta (DEC-027).
 
 ### RF-036 — Responder à oferta de vaga
 
-**Descrição:** O sistema deverá permitir que o Cliente/Paciente que recebeu uma oferta de vaga a **aceite** ou **recuse** dentro do prazo de aceite.
+**Descrição:** O sistema deverá permitir que o Cliente/Paciente que recebeu a oferta aceite ou recuse o horário oferecido.
 
 **Ator(es):** Cliente/Paciente.
 
 **Prioridade:** Média.
 
-**Pré-condições:** Deve existir oferta aberta para o Cliente/Paciente, dentro do prazo de aceite.
+**Pré-condições:** Deve existir oferta válida destinada ao Cliente/Paciente.
 
-**Pós-condições:** No aceite, o agendamento deverá ser criado já `CONFIRMADO` (RF-025/RF-026) e a solicitação de espera encerrada como `ACEITA`. Na recusa ou no vencimento do prazo, a solicitação deverá ser encerrada (`RECUSADA` / `EXPIRADA`) e a vaga deverá ser ofertada ao **próximo** da fila.
+**Pós-condições:** Em caso de aceite, o sistema deverá revalidar que o horário continua disponível e sem conflito; se sim, o agendamento deverá ser confirmado automaticamente (RF-026); se não, nenhum agendamento deverá ser criado. Em caso de recusa, a resposta deverá ser registrada.
 
-**Dependências:** RF-025, RF-035.
+**Dependências:** RF-026, RF-035.
 
-**Observações:** A recusa **não** remove o paciente de uma nova entrada futura na fila; apenas encerra aquela solicitação. O prazo de aceite é parâmetro único do sistema, definido em configuração — não há prazo por paciente.
-
-### RF-037 — Registrar não comparecimento
-
-**Descrição:** O sistema deverá permitir que o Psicólogo registre o não comparecimento do Cliente/Paciente a um agendamento `CONFIRMADO` cujo horário já tenha passado.
-
-**Ator(es):** Psicólogo.
-
-**Prioridade:** Média.
-
-**Pré-condições:** O Psicólogo deve estar autenticado e vinculado ao Paciente; o agendamento deve estar `CONFIRMADO` e o horário marcado já deve ter passado.
-
-**Pós-condições:** A situação do agendamento deverá passar a `NAO_COMPARECEU` (terminal) e a operação deverá ser auditada (RF-032).
-
-**Dependências:** RF-026, RF-030, RF-032.
-
-**Observações:** O registro é **manual** (DEC-025): não há expiração automática. Não comparecimento não é atendimento realizado (RN-006) e não gera registro em `Atendimento`.
-
-## 9. Inovação
-
-**Status do módulo:** `PENDENTE DE DECISÃO DO GRUPO`.
-
-Nenhum requisito funcional de inovação foi criado. A lista será atualizada somente após decisão formal do grupo.
+**Observações:** O prazo para aceitar é curto e configurável, e o horário fica reservado ao paciente durante o prazo. Em caso de recusa ou ausência de resposta, o paciente perde a vez e a oferta passa ao próximo da fila; se ninguém aceitar, o horário volta a ficar livre (DEC-027).
