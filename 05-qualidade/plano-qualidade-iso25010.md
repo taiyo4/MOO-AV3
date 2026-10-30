@@ -2,7 +2,7 @@
 
 **Responsável:** Integrante 5 — Franklin Reis (Qualidade, normas e processo)
 **Versão:** v0.6 — preliminar, atualizada até a Fase 6 (28/10/2026)
-**Fecha em:** Fase 8 — Qualidade e rastreabilidade (10/11 a 16/11), como seção 28 do dossiê
+**Fecha em:** Fase 8 — Qualidade e rastreabilidade (14/11 a 18/11), como seção 28 do dossiê
 **Base:** barema §13; seleção preliminar em `analises/fase-02-qualidade-visao-escopo-contexto.md` §5; classificação dos RNF em `analises/fase-03-verificacao-requisitos.md` §6.
 
 > **Natureza deste documento:** o plano avalia a **qualidade do modelo** (dossiê), não de um software executável. Cada critério é verificável por **inspeção de artefato** ou por **contagem** no repositório. Valores-alvo marcados como "proposta" dependem de aprovação do grupo.

@@ -959,7 +959,7 @@ As quatro situações são os valores do enumerado `SituacaoAgendamento` (modelo
 
 ## 25. Arquitetura: pacotes, componentes e implantação
 
-**Situação:** a produzir na Fase 7 (03/11 a 09/11) pelo Integrante 4, seguindo a ISO/IEC/IEEE 42010:2022.
+**Situação:** a produzir na Fase 7 (09/11 a 13/11) pelo Integrante 4, seguindo a ISO/IEC/IEEE 42010:2022.
 
 Insumos já disponíveis:
 
