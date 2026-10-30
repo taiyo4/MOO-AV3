@@ -16,7 +16,7 @@ Fases e janelas conforme o plano de execução da equipe de seis integrantes. Ca
 | 4 — Casos de uso | 19/10–25/10 | Concluída; UC-028 e UC-033 a UC-037 especificados pelo Integrante 2; especificações oficiais em v1.1 (Objetivo/RFs cobertos, DEC-026); desenho oficial pendente (Integrante 3) |
 | 5 — Modelo OO | 26/10–01/11 | Entregue; proposta v2 do Integrante 2 removida em 28/10/2026; falta fechar multiplicidades e incorporar DEC-013 a DEC-030 no diagrama oficial (Integrante 3) |
 | 6 — Comportamento | 02/11–08/11 | **Concluída no que é do Integrante 2** — sete diagramas (SEQ-001 a SEQ-004, ATV-001, COM-001, EST-001) em v2.0/v2.1, com DEC-009 a DEC-030 aplicadas e LAC-13/14/15 fechadas; falta o Integrante 3 incorporar o modelo (R6-09/LAC-10) |
-| 7 — Arquitetura e persistência | 09/11–13/11 | Revisão de coerência arquitetura × casos de uso entregue pelo Integrante 2 (`01-planejamento/revisoes/FASE7-REV-I2-…`), com 12 achados R7; pacotes, componentes, DER e DDL são do Integrante 4 |
+| 7 — Arquitetura e persistência | 09/11–13/11 | **Entregue pelo Integrante 4** (pacotes, componentes, implantação, DER, dicionário de dados, DDL MySQL); revisão de coerência arquitetura × casos de uso entregue pelo Integrante 2 (`01-planejamento/revisoes/FASE7-REV-I2-…`), com 12 achados R7; pacotes, componentes, DER e DDL são do Integrante 4 |
 | 8 — Qualidade e rastreabilidade | 14/11–18/11 | Testes conceituais do Integrante 2 entregues (15 testes / 68 cenários, `CT-0RF`); homologação na matriz mestra é do Integrante 5 |
 | 9 — Consolidação e pitch | 19/11–24/11 | Dossiê v0.7 montado; pontos do Integrante 2 para o pitch encaminhados ao Integrante 6 |
 | Entrega | 24/11/2026 | Congelar funcionalidades em 19/11; meta interna 23/11; reserva de 25 a 30/11 só para emergência |
