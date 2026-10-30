@@ -959,7 +959,7 @@ As quatro situações são os valores do enumerado `SituacaoAgendamento` (modelo
 
 ## 25. Arquitetura: pacotes, componentes e implantação
 
-**Situação:** a produzir na Fase 7 (09/11 a 13/11) pelo Integrante 4, seguindo a ISO/IEC/IEEE 42010:2022.
+**Situação:** artefatos entregues pelo Integrante 4 em 29/10/2026 — PAC-001 (`03-uml/Pacotes/`), CMP-001 (`03-uml/Componentes/`) e IMP-001 (`03-uml/Implantacao/`), fontes `.mmd` e `.drawio.xml`; PDF pendente (Q7-01). O **texto desta seção** (objetivo, leitura, decisões e relação com requisitos) ainda precisa ser escrito pelo Integrante 4 com o Integrante 6, seguindo a ISO/IEC/IEEE 42010:2022 e a tabela de correspondência entre visões (Q7-03). Revisão de qualidade: `05-qualidade/analises/fase-07-revisao-arquitetura-persistencia.md`.
 
 Insumos já disponíveis:
 
@@ -974,7 +974,7 @@ Estrutura prevista para cada diagrama (mesma das seções 18 a 24): identificaç
 
 ## 26. Persistência: DER, modelo relacional, dicionário e mapeamento objeto-relacional
 
-**Situação:** a produzir na Fase 7 pelo Integrante 4.
+**Situação:** artefatos entregues pelo Integrante 4 em 29/10/2026 em `04-persistencia/` — DER-001, modelo relacional, dicionário de dados, mapeamento objeto-relacional, normalização e DDL MySQL 8.0 (ainda não executado, Q7-02). O **texto desta seção** ainda precisa ser escrito pelo Integrante 4 com o Integrante 6.
 
 Insumos já disponíveis: revisão de dados por caso de uso (Fase 4), viabilidade de persistência do domínio com `INC-01` a `INC-13` e `P-01` a `P-19` (Fase 5), impactos no DER `IMP-DER-01` a `IMP-DER-10` e exigências transacionais `TRS-01` a `TRS-06` (Fase 6), todos em `04-persistencia/analises/`.
 
