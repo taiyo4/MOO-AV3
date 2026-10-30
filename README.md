@@ -4,19 +4,19 @@ Projeto da AV3 da disciplina de **Modelagem Orientada a Objetos** (Centro Univer
 
 O produto é um **dossiê de modelagem** completo e rastreável — requisitos, regras de negócio, modelos UML, persistência, arquitetura, qualidade, processo e documentação — capaz de orientar uma futura implementação. Não há sistema programado.
 
-## Situação (28/10/2026)
+## Situação (29/10/2026)
 
 | Fase | Período | Situação |
 |---|---|---|
 | 1 — Organização inicial | 01/09–14/09 | Concluída |
 | 2 — Visão, escopo e contexto | até 14/09 | Concluída |
 | 3 — Requisitos | 15/09–28/09 | Concluída; baseline atualizada com as decisões de 25/10/2026 |
-| 4 — Casos de uso | 29/09–05/10 | Concluída; UC-028 e UC-033 a UC-037 especificados pelo Integrante 2, desenho oficial pendente (Integrante 3) |
+| 4 — Casos de uso | 29/09–05/10 | Concluída; UC-028 e UC-033 a UC-037 especificados pelo Integrante 2; especificações oficiais em v1.1 (Objetivo/RFs cobertos, DEC-026); desenho oficial pendente (Integrante 3) |
 | 5 — Modelo OO | 06/10–19/10 | Entregue; proposta v2 do Integrante 2 removida em 28/10/2026; falta fechar multiplicidades e incorporar DEC-013 a DEC-030 no diagrama oficial (Integrante 3) |
-| 6 — Comportamento | 20/10–02/11 | **Em andamento** — **sete diagramas** entregues (SEQ-001 a SEQ-004, ATV-001, COM-001, EST-001), com DEC-009 a DEC-030 aplicadas; falta o Integrante 3 incorporar o modelo (R6-09/LAC-10) |
-| 7 — Arquitetura e persistência | 03/11–09/11 | A iniciar |
-| 8 — Qualidade e rastreabilidade | 10/11–16/11 | Plano de qualidade preliminar pronto |
-| 9 — Consolidação e pitch | 17/11–23/11 | Dossiê v0.6 montado; roteiro preliminar do pitch |
+| 6 — Comportamento | 20/10–02/11 | **Concluída no que é do Integrante 2** — sete diagramas (SEQ-001 a SEQ-004, ATV-001, COM-001, EST-001) em v2.0/v2.1, com DEC-009 a DEC-030 aplicadas e LAC-13/14/15 fechadas; falta o Integrante 3 incorporar o modelo (R6-09/LAC-10) |
+| 7 — Arquitetura e persistência | 03/11–09/11 | Revisão de coerência arquitetura × casos de uso entregue pelo Integrante 2 (`01-planejamento/revisoes/FASE7-REV-I2-…`), com 12 achados R7; pacotes, componentes, DER e DDL são do Integrante 4 |
+| 8 — Qualidade e rastreabilidade | 10/11–16/11 | Testes conceituais do Integrante 2 entregues (15 testes / 68 cenários, `CT-0RF`); homologação na matriz mestra é do Integrante 5 |
+| 9 — Consolidação e pitch | 17/11–23/11 | Dossiê v0.7 montado; pontos do Integrante 2 para o pitch encaminhados ao Integrante 6 |
 | Entrega | 24/11/2026 | Meta interna: 23/11/2026 |
 
 Decisões vigentes, propostas e pendências: [`01-planejamento/decisoes.md`](01-planejamento/decisoes.md).
