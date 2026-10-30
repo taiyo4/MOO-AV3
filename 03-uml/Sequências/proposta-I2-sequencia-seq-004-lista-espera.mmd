@@ -11,19 +11,20 @@
 %%   4. recusa (ou vencimento) PASSA A OFERTA AO PROXIMO.
 %%
 %% Rastreabilidade das mensagens:
-%%   AP-06 ServicoListaEspera: entrarNaFila | ofertarVaga | aceitarOferta |
-%%        recusarOferta | expirarOferta
+%%   AP-06 ServicoListaEspera: entrarNaFila | consultarPosicao | sairDaFila |
+%%        ofertarVaga | aceitarOferta | recusarOferta | expirarOferta
 %%   AP-03 ServicoAgenda.agendar | AP-02 ServicoAuditoria.registrar
 %%   AP-04 ServicoEnvioMensagem.notificar
 %%   OP-23 SolicitacaoEspera.registrarEntrada | OP-24 proximoDaFila
-%%   OP-25 abrirOferta | OP-26 validarPrazo | OP-27 encerrar
+%%   OP-25 abrirOferta | OP-26 validarPrazo | OP-27 encerrar | OP-28 posicaoNaFila
 %%   Agendamento.solicitar (cria JA CONFIRMADO)
+%%   Falha de envio: registrar("FALHA_ENVIO_EMAIL") e repetivel (DEC-029)
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013
 %% Requisitos: RF-025, RF-026, RF-027, RF-032, RF-033, RF-034, RF-035, RF-036
 %% Casos: UC-034, UC-035 (<<extend>> de UC-027), UC-036
 %% =====================================================================
 %% label: SEQ-004 - Lista de espera e oferta de vaga (UC-034 a UC-036)
-%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-004-lista-espera.mmd | PROPOSTA do Integrante 2 (Fase 6) | DEC-027: fila por ordem de entrada, uma oferta por vez, prazo de aceite, recusa passa ao proximo
+%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-004-lista-espera.mmd | PROPOSTA do Integrante 2 (Fase 6) | DEC-027: fila por ordem de entrada, uma oferta por vez, prazo de aceite com horario reservado, recusa passa ao proximo
 
 sequenceDiagram
     actor Ator as Ator (Paciente)
@@ -42,15 +43,34 @@ sequenceDiagram
     ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
     ServicoListaEspera-->>Ator: posicao na fila (ordem de entrada)
 
+    opt Consulta de posicao e saida da fila [RF-034 / DEC-027]
+        Ator->>ServicoListaEspera: consultarPosicao(psicologo, paciente) [AP-06]
+        ServicoListaEspera->>SolicitacaoEspera: posicaoNaFila(psicologo, paciente) [OP-28]
+        SolicitacaoEspera-->>ServicoListaEspera: posicao e dataHoraEntrada
+        ServicoListaEspera-->>Ator: posicao atual na fila e estimativa pela ordem de entrada
+        Ator->>ServicoListaEspera: sairDaFila(solicitacao) [AP-06 / DEC-027]
+        ServicoListaEspera->>SolicitacaoEspera: encerrar(DESISTIU) [OP-27]
+        SolicitacaoEspera-->>ServicoListaEspera: solicitacao (DESISTIU)
+        ServicoListaEspera->>ServicoAuditoria: registrar("ESPERA_ENCERRADA", responsavel, detalhes) [AP-02]
+        ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+        ServicoListaEspera-->>Ator: entrada encerrada - a posicao deixa de existir
+    end
+
     opt <<extend>> do cancelamento - horario liberado [RF-035 / UC-035]
         ServicoAgenda->>ServicoListaEspera: ofertarVaga(horarioLiberado) [AP-06 / DEC-027]
         ServicoListaEspera->>SolicitacaoEspera: proximoDaFila(psicologo) [OP-24 - ordem de entrada]
         SolicitacaoEspera-->>ServicoListaEspera: solicitacao mais antiga (AGUARDANDO)
         alt Ha solicitacao na fila e nenhuma oferta aberta
-            ServicoListaEspera->>SolicitacaoEspera: abrirOferta(prazoAceite) [OP-25 - uma oferta por vez]
-            SolicitacaoEspera-->>ServicoListaEspera: solicitacao (OFERTADA)
+            ServicoListaEspera->>SolicitacaoEspera: abrirOferta(horario, prazoAceite) [OP-25 - uma oferta por vez]
+            SolicitacaoEspera-->>ServicoListaEspera: solicitacao (OFERTADA) - horario reservado ate o prazo
             ServicoListaEspera->>ServicoEnvioMensagem: notificar(evento=ofertaVaga) [AP-04 / RF-033]
-            ServicoEnvioMensagem-->>ServicoListaEspera: entregue | falha de envio
+            alt Envio aceito pelo servico externo
+                ServicoEnvioMensagem-->>ServicoListaEspera: entregue
+            else Falha de envio - nao desfaz a oferta [DEC-029]
+                ServicoEnvioMensagem-->>ServicoListaEspera: falha de envio
+                ServicoListaEspera->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
+                ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+            end
             ServicoListaEspera->>ServicoAuditoria: registrar("OFERTA_VAGA_ABERTA", responsavel, detalhes) [AP-02]
             ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
         else Fila vazia ou oferta ja aberta
@@ -68,7 +88,13 @@ sequenceDiagram
         ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CONFIRMADO", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
         ServicoAgenda->>ServicoEnvioMensagem: notificar(evento=confirmacao) [AP-04 / RF-033]
-        ServicoEnvioMensagem-->>ServicoAgenda: entregue | falha de envio
+        alt Envio aceito pelo servico externo
+            ServicoEnvioMensagem-->>ServicoAgenda: entregue
+        else Falha de envio - nao desfaz o aceite [DEC-029]
+            ServicoEnvioMensagem-->>ServicoAgenda: falha de envio
+            ServicoAgenda->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
+            ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+        end
         ServicoListaEspera->>SolicitacaoEspera: encerrar(ACEITA) [OP-27]
         ServicoListaEspera-->>Ator: vaga confirmada (UC-036)
     else Recusa
@@ -83,5 +109,6 @@ sequenceDiagram
         ServicoListaEspera->>ServicoListaEspera: ofertarVaga(horarioLiberado) - passa ao proximo da fila [DEC-027]
     end
 
-    note over Ator,ServicoListaEspera: A fila e estritamente por dataHoraEntrada: nao ha prioridade manual nem reordenacao. Uma unica oferta fica aberta por psicologo; enquanto ela existir, a fila nao e percorrida.
-    note over ServicoEnvioMensagem,RegistroAuditoria: O e-mail e sempre solicitado na abertura da oferta e no aceite (RF-033); falha de envio nao desfaz a oferta nem o agendamento. Aceite, recusa e vencimento sao auditados (RN-009).
+    note over Ator,ServicoListaEspera: A fila e estritamente por dataHoraEntrada: nao ha prioridade manual nem reordenacao. Uma unica oferta fica aberta por psicologo; enquanto ela existir, a fila nao e percorrida. O paciente pode consultar a propria posicao e sair da fila a qualquer momento (DESISTIU).
+    note over SolicitacaoEspera,ServicoAgenda: Enquanto a oferta esta aberta o horario fica RESERVADO e nao aparece como livre. Se a recusa ou o vencimento acontecerem sem proximo na fila, o horario volta a ficar livre no catalogo.
+    note over ServicoEnvioMensagem,RegistroAuditoria: O e-mail e sempre solicitado na abertura da oferta e no aceite (RF-033); falha de envio nao desfaz a oferta nem o agendamento, e registrada na auditoria ("FALHA_ENVIO_EMAIL") e pode ser repetida (DEC-029). Aceite, recusa, vencimento e desistencia sao auditados (RN-009).

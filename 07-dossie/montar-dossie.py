@@ -25,8 +25,8 @@ SECOES = RAIZ / "07-dossie" / "secoes"
 REQ = RAIZ / "02-requisitos"
 SAIDA = RAIZ / "07-dossie" / "dossie.md"
 
-VERSAO = "v0.6"
-DATA = "28/10/2026"
+VERSAO = "v0.7"
+DATA = "29/10/2026"
 
 # Ordem das partes do dossiê: (arquivo, primeira seção a aproveitar).
 PARTES = [
@@ -83,16 +83,18 @@ NOTAS_INTEGRACAO = {
         "O objeto de notificação é descrito \"enquanto DEC-009 não for decidida\"; DEC-009 foi aprovada em 25/10/2026, e a notificação continua sendo objeto de aplicação, não classe de domínio (DEC-022, aprovada em 28/10/2026).",
     ],
     21: [
-        "O texto desta seção já é a **v2.0** (28/10/2026): aplica DEC-016/017 (o agendamento nasce `CONFIRMADO`), DEC-011/028 (guarda \"antes do horário marcado\"), DEC-009/029 (e-mail obrigatório, falha não desfaz) e DEC-010/027 (lista de espera, SEQ-004).",
+        "O texto desta seção já é a **v2.1** (29/10/2026): aplica DEC-016/017 (o agendamento nasce `CONFIRMADO`), DEC-011/028 (guarda \"antes do horário marcado\"), DEC-009/029 (e-mail obrigatório, falha auditada e não desfaz) e DEC-010/027 (lista de espera, SEQ-004).",
+        "O fechamento da v2.1 desenha o que faltava do lote da fila e do e-mail: consulta de posição (`posicaoNaFila`, OP-28), saída da fila (`DESISTIU`), reserva do horário durante o prazo e `registrar(\"FALHA_ENVIO_EMAIL\")` nos três eventos.",
+        "As sequências somam **136 setas** (85 solicitações e 51 retornos), não 114: SEQ-001 31, SEQ-002 21, SEQ-003 32 e SEQ-004 52.",
     ],
     22: [
-        "O texto desta seção já é a **v2.0**: 14 colaboradores e 17 mensagens, com `ServicoEnvioMensagem` (DEC-022) e `ServicoListaEspera` (DEC-027).",
+        "O texto desta seção já é a **v2.1**: 14 colaboradores e 17 mensagens, com `ServicoEnvioMensagem` (DEC-022) e `ServicoListaEspera` (DEC-027). A falha de envio é caminho de exceção nas sequências, não mensagem nova no COM-001.",
     ],
     23: [
-        "O texto desta seção já é a **v2.0**: inclui a notificação do cancelamento e a oferta de vaga (DEC-027); 4 pistas, 37 nós e 39 arestas.",
+        "O texto desta seção já é a **v2.1**: inclui a notificação do cancelamento e a oferta de vaga (DEC-027); 4 pistas, 37 nós e 39 arestas.",
     ],
     24: [
-        "O texto desta seção já é a **v2.0**: 4 situações e 4 transições (T0–T3), sem `SOLICITADO` (DEC-016/017) e com a guarda da DEC-011/028. Falta o Integrante 3 retirar `Agendamento.confirmar()` do CLS-001 (R6-09).",
+        "O texto desta seção já é a **v2.1**: 4 situações e 4 transições (T0–T3), sem `SOLICITADO` (DEC-016/017) e com a guarda da DEC-011/028. Falta o Integrante 3 retirar `Agendamento.confirmar()` do CLS-001 (R6-09) e incorporar OP-23…OP-28/AP-06 (LAC-10).",
     ],
     27: [
         "O texto afirma que `Agendamento`–`Atendimento` \"foi modelada como composição\", mas nem o diagrama oficial (OO-03) nem a proposta v2 (retirada) desenhavam composição. Recomendação do Integrante 5: manter associação `1`–`0..1` e, se o grupo quiser evidenciar composição, usar `Agenda` ◆— `Disponibilidade` (Q5-03).",

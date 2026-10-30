@@ -9,12 +9,13 @@
 %%   AP-02 ServicoAuditoria.registrar   |  AP-04 ServicoEnvioMensagem.notificar
 %%   OP-11 Agenda.consultarHorariosDisponiveis | OP-22 Vinculo.estaAtivo
 %%   Agendamento.solicitar (cria JA CONFIRMADO) | OP-13 confirmar (efeito)
+%%   Falha de envio: registrar("FALHA_ENVIO_EMAIL") e repetivel (DEC-029)
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013
 %% Requisitos: RF-024, RF-025, RF-026, RF-032, RF-033, RF-034
 %% Casos: UC-024, UC-025
 %% =====================================================================
 %% label: SEQ-002 - Agendar atendimento (UC-025)
-%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-002-agendar.mmd | PROPOSTA do Integrante 2 (Fase 6) | nasce CONFIRMADO (RN-013) | e-mail sempre enviado (RF-033/DEC-022), falha nao bloqueia
+%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-002-agendar.mmd | PROPOSTA do Integrante 2 (Fase 6) | nasce CONFIRMADO (RN-013) | e-mail sempre enviado (RF-033/DEC-022) | falha auditada e repetivel (DEC-029)
 
 sequenceDiagram
     actor Ator as Ator (Paciente)
@@ -43,7 +44,13 @@ sequenceDiagram
             ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CONFIRMADO", responsavel, detalhes) [AP-02]
             ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
             ServicoAgenda->>ServicoEnvioMensagem: notificar(evento=confirmacao) [AP-04 / RF-033]
-            ServicoEnvioMensagem-->>ServicoAgenda: entregue | falha de envio
+            alt Envio aceito pelo servico externo
+                ServicoEnvioMensagem-->>ServicoAgenda: entregue
+            else Falha de envio - nao desfaz a confirmacao [DEC-029]
+                ServicoEnvioMensagem-->>ServicoAgenda: falha de envio
+                ServicoAgenda->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
+                ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+            end
             ServicoAgenda-->>Ator: agendamento confirmado (UC-025)
         else E1 - Conflito de horario
             ServicoAgenda-->>Ator: horario indisponivel - sugerir outro horario
@@ -53,4 +60,4 @@ sequenceDiagram
     end
 
     note over Agenda,Agendamento: O agendamento nasce CONFIRMADO: a criacao e a confirmacao ocorrem no mesmo ato (RF-025 + RF-026 / RN-013). Nao ha passo separado de confirmacao nem situacao pendente.
-    note over ServicoEnvioMensagem: Envio pos-commit (TRS-02 do I4) e OBRIGATORIO nos tres eventos de agenda (RF-033). Se o envio falhar, o agendamento continua valido: a resposta "falha de envio" nao desfaz a operacao.
+    note over ServicoEnvioMensagem: Envio pos-commit (TRS-02 do I4) e OBRIGATORIO nos tres eventos de agenda (RF-033). Se o envio falhar, o agendamento continua valido: a falha e registrada na auditoria ("FALHA_ENVIO_EMAIL") e o envio pode ser repetido (DEC-029).

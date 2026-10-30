@@ -1,7 +1,7 @@
 # Casos de uso faltantes e revisão de UC-025/UC-027 — Fase 6
 
 **Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
-**Data:** 22/10/2026 · **Versão:** v1.0 (proposta para o grupo; lote de ajustes da Fase 6).
+**Data:** 22/10/2026 · **Versão:** v1.1 (proposta para o grupo; lote de ajustes da Fase 6 + consulta/saída da fila — LAC-13).
 **Natureza:** **PROPOSTA.** Não substitui os artefatos oficiais (`especificacoes-casos-de-uso-criticos.md` e `especificacoes-casos-de-uso-demais.md`); complementa-os com os casos que faltavam e com a revisão das decisões novas.
 
 > **Convenção de numeração (DEC-026):** cada caso de uso recebe o número do requisito que ele realiza — **`UC-0` + número do RF**. Assim, RF-028 → **UC-028**, RF-033 → **UC-033**, e assim por diante. Todo caso abre com **Objetivo** e **RFs cobertos**, como exige a revisão.
@@ -96,7 +96,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 ## 3. UC-034 — Entrar na lista de espera
 
-**Objetivo:** permitir que o Paciente sem horário disponível registre formalmente o interesse, entrando em uma fila **por ordem de entrada**.
+**Objetivo:** permitir que o Paciente sem horário disponível registre formalmente o interesse, entrando em uma fila **por ordem de entrada**, consulte a própria posição e possa sair da fila a qualquer momento.
 
 **Atores:** Cliente/Paciente.
 
@@ -106,7 +106,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 **Pré-condições:** ator autenticado; vínculo ATIVO com o psicólogo; **não** existir entrada ativa (`AGUARDANDO` ou `OFERTADA`) do mesmo paciente para o mesmo psicólogo.
 
-**Pós-condições:** existe uma `SolicitacaoEspera` com psicólogo, paciente, período desejado, `dataHoraEntrada` e situação `AGUARDANDO`. A posição do paciente é determinada exclusivamente por `dataHoraEntrada`.
+**Pós-condições:** existe uma `SolicitacaoEspera` com psicólogo, paciente, período desejado, `dataHoraEntrada` e situação `AGUARDANDO`. A posição do paciente é determinada exclusivamente por `dataHoraEntrada`. Se o paciente desistir, a solicitação passa a `DESISTIU` (terminal) e a posição deixa de existir.
 
 **Fluxo principal:**
 
@@ -118,9 +118,17 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 6. O sistema audita o evento (RN-009/AP-02).
 7. O sistema informa a posição na fila.
 
+**Fluxo de consulta e saída (a qualquer momento, enquanto a solicitação estiver ativa):**
+
+1. O paciente solicita consultar a posição (`consultarPosicao`, AP-06).
+2. O sistema calcula a posição pela ordem de `dataHoraEntrada` (`posicaoNaFila`, **OP-28**).
+3. O paciente pode sair da fila (`sairDaFila`, AP-06).
+4. O sistema encerra a solicitação como `DESISTIU` (`encerrar`, OP-27) e audita `"ESPERA_ENCERRADA"` (AP-02).
+
 **Fluxos alternativos:**
 
 - **A1 — Já existe entrada ativa:** o sistema informa a posição atual e não cria duplicata.
+- **A2 — Consulta da posição ou desistência:** a posição é devolvida por `posicaoNaFila` (OP-28); a desistência encerra como `DESISTIU` (OP-27) e audita o encerramento. O paciente pode entrar de novo depois — a desistência não gera punição.
 
 **Exceções:**
 
@@ -129,7 +137,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 **Relacionamentos:** **`<<extend>>` de UC-025** (A1): só acontece quando não há horário.
 
-**Rastreabilidade:** SEQ-004 (primeiro bloco), ATV-001 (`Sem horários: oferecer lista de espera`), DEC-027.
+**Rastreabilidade:** SEQ-004 (primeiro bloco + `opt` "Consulta de posição e saída da fila"), ATV-001 (`Sem horários: oferecer lista de espera`), DEC-027, LAC-13.
 
 ---
 

@@ -38,7 +38,13 @@ sequenceDiagram
         ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CANCELADO", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
         ServicoAgenda->>ServicoEnvioMensagem: notificar(evento=cancelamento) [AP-04 / RF-033]
-        ServicoEnvioMensagem-->>ServicoAgenda: entregue | falha de envio
+        alt Envio aceito pelo servico externo
+            ServicoEnvioMensagem-->>ServicoAgenda: entregue
+        else Falha de envio - nao desfaz o cancelamento [DEC-029]
+            ServicoEnvioMensagem-->>ServicoAgenda: falha de envio
+            ServicoAgenda->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
+            ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+        end
         opt <<extend>> UC-035 - Ofertar vaga ao proximo da lista de espera [RF-035 / DEC-027]
             ServicoAgenda->>ServicoListaEspera: ofertarVaga(agendamento) [AP-06]
             ServicoListaEspera-->>ServicoAgenda: uma oferta aberta ao primeiro da fila (detalhe na SEQ-004)

@@ -1,7 +1,7 @@
 # Especificação das sequências SEQ-001 a SEQ-004 — Fase 6
 
 **Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
-**Data:** 22/10/2026 · **Versão:** v2.0 (proposta para o grupo; revisão do lote de ajustes da Fase 6).
+**Data:** 22/10/2026 · **Versão:** v2.1 (proposta para o grupo; fechamento das ressalvas LAC-13, LAC-14 e LAC-15 da Fase 6).
 **Natureza:** **PROPOSTA.** Não substitui artefato oficial do grupo.
 
 | Diagrama | Fonte editável | Editável (draw.io) | Dossiê (PDF) | Caso de uso | RFs cobertos |
@@ -22,13 +22,13 @@ O plano da AV3 exige "pelo menos três diagramas de sequência para os casos de 
 1. **SEQ-001 — entrar no sistema** (UC-001): precondição de tudo; inclui os desvios de erro E1/E2 e o caso de sucesso.
 2. **SEQ-002 — obter e reservar um horário** (UC-025 + UC-024): caminho feliz de marcação, com a alternativa de conflito de horário e a alternativa de ausência de horários, que encaminha para a lista de espera (A1).
 3. **SEQ-003 — cancelar, concluir e registrar falta** (UC-027): ciclo de vida do `Agendamento` depois de criado, com a guarda "antes do horário marcado", o envio obrigatório de e-mail e a oferta de vaga como `<<extend>>`.
-4. **SEQ-004 — lista de espera e oferta de vaga** (UC-034 a UC-036): entrada na fila, oferta ao primeiro da fila, aceite, recusa e vencimento do prazo (DEC-027).
+4. **SEQ-004 — lista de espera e oferta de vaga** (UC-034 a UC-036): entrada na fila, consulta da posição e saída, oferta ao primeiro da fila com o horário **reservado durante o prazo**, aceite, recusa e vencimento (DEC-027).
 
 Os quatro diagramas são **entrelaçados**: quem lê o conjunto entende o ciclo completo sem precisar decifrar um único diagrama isolado.
 
 ## 2. Regras de elegibilidade das mensagens (plano §6.1)
 
-Toda mensagem de um diagrama de sequência deve corresponder a **uma operação conhecida** (OP-01…OP-27, propostos para o CLS-001 e para o incremento da lista de espera) ou a **uma responsabilidade de aplicação** (AP-01…AP-06, da revisão FASE5-REV-I2 §5.2). Não há mensagem "criada para satisfazer um diagrama futuro".
+Toda mensagem de um diagrama de sequência deve corresponder a **uma operação conhecida** (OP-01…OP-28, propostos para o CLS-001 e para o incremento da lista de espera) ou a **uma responsabilidade de aplicação** (AP-01…AP-06, da revisão FASE5-REV-I2 §5.2). Não há mensagem "criada para satisfazer um diagrama futuro".
 
 | Elemento | Origem da autorização | Onde aparece |
 |---|---|---|
@@ -36,8 +36,9 @@ Toda mensagem de um diagrama de sequência deve corresponder a **uma operação 
 | `registrar(...)` (auditoria) | AP-02 (`ServicoAuditoria`) + `RegistroAuditoria.registrar` (RF-032) | SEQ-001/002/003/004 |
 | `solicitar`/`cancelar`/`concluir`/`registrarFalta` | AP-03 (`ServicoAgenda`) + OP-13…OP-18 | SEQ-002/003/004 |
 | `notificar(...)` | AP-04 (`ServicoEnvioMensagem`, fronteira externa) | SEQ-002/003/004 |
-| `entrarNaFila`, `ofertarVaga`, `aceitarOferta`, `recusarOferta`, `expirarOferta` | AP-06 (`ServicoListaEspera`) — **novo na Fase 6** | SEQ-004 |
+| `entrarNaFila`, `consultarPosicao`, `sairDaFila`, `ofertarVaga`, `aceitarOferta`, `recusarOferta`, `expirarOferta` | AP-06 (`ServicoListaEspera`) — **novo na Fase 6** | SEQ-004 |
 | `registrarEntrada`, `proximoDaFila`, `abrirOferta`, `validarPrazo`, `encerrar` | OP-23…OP-27 (`SolicitacaoEspera`) — **novo na Fase 6** | SEQ-004 |
+| `posicaoNaFila` | **OP-28** (`SolicitacaoEspera`) — **novo no fechamento da Fase 6** (LAC-13) | SEQ-004 |
 | `podeAutenticar`, `confereCredencial` | OP-01, OP-02 | SEQ-001 |
 | `estaAtivo` (vínculo) | OP-22 | SEQ-002 |
 | `consultarHorariosDisponiveis` | OP-11 | SEQ-002 |
@@ -46,7 +47,7 @@ Toda mensagem de um diagrama de sequência deve corresponder a **uma operação 
 | `Atendimento.registrar` | OP-20 | SEQ-003 |
 | `obterPorIdentificacao`, `obterPermissoes` | IR-01, IR-02 (infraestrutura, Fase 7) | SEQ-001 |
 
-**Limite proposital:** *sessão* e *notificação* **não** são entidades de domínio (P-07, DEC-022): aparecem como **comportamento de aplicação** (`AP-01`) ou como **fronteira externa** (`AP-04`), nunca como classe do modelo. A **lista de espera**, ao contrário, **passou a ser domínio** na Fase 6 (DEC-027): tem estado persistente (`AGUARDANDO`/`OFERTADA`/`ACEITA`/`RECUSADA`/`EXPIRADA`), ordem de entrada e prazo, então é modelada como entidade `SolicitacaoEspera` + serviço de aplicação `ServicoListaEspera` (AP-06) — incremento a incorporar pelo Integrante 3.
+**Limite proposital:** *sessão* e *notificação* **não** são entidades de domínio (P-07, DEC-022): aparecem como **comportamento de aplicação** (`AP-01`) ou como **fronteira externa** (`AP-04`), nunca como classe do modelo. A **lista de espera**, ao contrário, **passou a ser domínio** na Fase 6 (DEC-027): tem estado persistente (`AGUARDANDO`/`OFERTADA`/`ACEITA`/`RECUSADA`/`EXPIRADA`/`DESISTIU`), ordem de entrada e prazo, então é modelada como entidade `SolicitacaoEspera` + serviço de aplicação `ServicoListaEspera` (AP-06) — incremento a incorporar pelo Integrante 3.
 
 ## 3. SEQ-001 — Autenticar usuário (UC-001)
 
@@ -103,6 +104,8 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | `Há horários disponíveis` | `alt` (1º ramo) | Caminho feliz: devolve a lista, segue para `solicitar`. |
 | `Horário ainda disponível` | `alt` aninhado | `verificarDisponibilidade` = true → cria **já confirmado**, audita, solicita e-mail. |
 | `E1 - Conflito de horário` | `alt` aninhado | O slot foi tomado entre a consulta e a reserva → recusa e sugere outro horário (RF-025). |
+| `Envio aceito pelo serviço externo` | `alt` aninhado | `notificar` devolve `entregue`; o agendamento permanece `CONFIRMADO`. |
+| `Falha de envio` | `alt` aninhado | `notificar` devolve `falha de envio` → `registrar("FALHA_ENVIO_EMAIL")`; **não desfaz** o agendamento e o envio pode ser repetido (DEC-029 / LAC-14). |
 | `A1 - Nenhum horário disponível` | `alt` (2º ramo) | Informa a ausência de horários e oferece a **lista de espera** (RF-034); o fluxo completo está na SEQ-004. |
 
 ### 4.4 Decisões de modelagem
@@ -111,7 +114,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **O vínculo é consultado antes da agenda** (`estaAtivo`, OP-22): sem vínculo ATIVO o paciente não tem agenda alheia — é a materialização de RN-003/RN-005.
 - **Não há passo de confirmação.** `Agendamento.solicitar` devolve o agendamento **`CONFIRMADO`** (RF-026 / RN-013). A v1.0 tinha um passo `confirmar` separado; ele foi removido porque a situação `SOLICITADO` deixou de existir.
 - **A reserva do slot não aparece como mensagem.** O modelo do horário é **slot discreto** (DEC-018) e a associação A17 `Disponibilidade`—`Agendamento` está habilitada; a reserva é interna a `Agendamento.solicitar` e não gera mensagem própria (§8).
-- **O envio de e-mail é obrigatório e não bloqueante** (RF-033 / DEC-022): a resposta "entregue | falha de envio" deixa explícito que a falha **não desfaz** o agendamento. Não existe mais o caráter "condicional" da v1.0.
+- **O envio de e-mail é obrigatório e não bloqueante** (RF-033 / DEC-022): a resposta "entregue | falha de envio" deixa explícito que a falha **não desfaz** o agendamento. Na falha, o serviço registra `"FALHA_ENVIO_EMAIL"` na auditoria e o envio pode ser repetido (DEC-029 / LAC-14). Não existe mais o caráter "condicional" da v1.0.
 
 ## 5. SEQ-003 — Cancelar / concluir / registrar falta (UC-027 + UC-035)
 
@@ -128,6 +131,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | Fragmento | Tipo | Condição / efeito |
 |---|---|---|
 | `Pode ser cancelado` | `alt` (1º ramo) | `podeSerCancelado()` = true → cancela, audita, solicita e-mail e **abre a oferta de vaga** (`<<extend>>` UC-035). |
+| `Envio aceito pelo serviço externo` / `Falha de envio` | `alt` aninhado | `entregue` mantém o cancelamento; `falha de envio` → `registrar("FALHA_ENVIO_EMAIL")`, sem desfazer o cancelamento e com envio repetível (DEC-029 / LAC-14). |
 | `E1 - Agendamento já realizado ou já cancelado` | `alt` (2º ramo) | Recusa o cancelamento (E1 de UC-027). |
 | `<<extend>> UC-035 - Ofertar vaga` | `opt` aninhado | `ServicoAgenda.ofertarVaga(...)` → `ServicoListaEspera` abre **uma** oferta ao primeiro da fila; detalhamento na SEQ-004. |
 | `RF-030 - Conclusão da sessão realizada` | `opt` | `estaCancelada()` = false → conclui, registra atendimento (OP-20), audita. |
@@ -141,12 +145,13 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **`estaCancelada()` (OP-16) é consultado antes de concluir**, para materializar **RN-006** (não há atendimento de sessão cancelada) sem duplicar a regra no serviço.
 - **`NAO_COMPARECEU` só é alcançável a partir de `CONFIRMADO`** e só por ação do psicólogo (DEC-025 / RF-037). Não há expiração automática.
 - **A oferta de vaga é `<<extend>>`, não um caso de uso independente**: ela só existe quando o cancelamento acontece **e** há fila. Por isso aparece como `opt` rotulado `<<extend>>`, e não como participante obrigatório do fluxo.
+- **A falha de envio é auditada sem desfazer a operação**: o `alt` aninhado registra `"FALHA_ENVIO_EMAIL"` e o cancelamento segue válido; a repetição do envio é operação de suporte (DEC-029 / LAC-14).
 
 ## 6. SEQ-004 — Lista de espera e oferta de vaga (UC-034 a UC-036)
 
 ### 6.1 Cenário
 
-> Sem horário disponível, o paciente entra na lista de espera do psicólogo. A posição é definida **exclusivamente pela ordem de entrada**. Quando um horário é liberado por cancelamento, o sistema oferta a vaga ao **primeiro** da fila, abrindo **uma única oferta** com prazo de aceite. O paciente aceita (o agendamento nasce `CONFIRMADO`), recusa, ou deixa o prazo vencer — nos dois últimos casos a vaga é ofertada ao **próximo**.
+> Sem horário disponível, o paciente entra na lista de espera do psicólogo, pode **consultar a própria posição** e **sair da fila** a qualquer momento. A posição é definida **exclusivamente pela ordem de entrada**. Quando um horário é liberado por cancelamento, o sistema oferta a vaga ao **primeiro** da fila, abrindo **uma única oferta** com prazo de aceite; **enquanto a oferta está aberta, o horário fica reservado**. O paciente aceita (o agendamento nasce `CONFIRMADO`), recusa, ou deixa o prazo vencer — nos dois últimos casos a vaga é ofertada ao **próximo**.
 
 ### 6.2 Participantes
 
@@ -157,9 +162,11 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | Fragmento | Tipo | Condição / efeito |
 |---|---|---|
 | `<<extend>> do cancelamento` | `opt` | `ServicoAgenda.ofertarVaga(horarioLiberado)` → o serviço da fila é acionado (só existe quando há cancelamento e fila). |
-| `Há solicitação na fila e nenhuma oferta aberta` | `alt` (1º ramo) | `proximoDaFila()` (OP-24) + `abrirOferta(prazoAceite)` (OP-25) → `OFERTADA`, audita, solicita e-mail. |
+| `Consulta da posição e saída da fila` | `opt` | `consultarPosicao` → `posicaoNaFila` (OP-28) devolve posição e `dataHoraEntrada`; `sairDaFila` → `encerrar(DESISTIU)` (OP-27), com auditoria `"ESPERA_ENCERRADA"` (LAC-13). |
+| `Há solicitação na fila e nenhuma oferta aberta` | `alt` (1º ramo) | `proximoDaFila()` (OP-24) + `abrirOferta(horario, prazoAceite)` (OP-25) → `OFERTADA` com o **horário reservado até o prazo**, audita, solicita e-mail. |
 | `Fila vazia ou oferta já aberta` | `alt` (2º ramo) | Nenhuma oferta é aberta; o horário permanece no catálogo. Materializa "uma oferta por vez". |
 | `Aceite dentro do prazo` | `alt` (1º ramo) | `validarPrazo()` (OP-26) → `ServicoAgenda.agendar(...)` cria o agendamento `CONFIRMADO`, audita, notifica e encerra a solicitação como `ACEITA` (OP-27). |
+| `Falha de envio na oferta ou no aceite` | `alt` aninhado | `notificar` devolve `falha de envio` → `registrar("FALHA_ENVIO_EMAIL")`; a oferta e o agendamento continuam válidos (DEC-029 / LAC-14). |
 | `Recusa` | `alt` (2º ramo) | `encerrar(RECUSADA)` (OP-27), audita e **reoferta ao próximo** (`ofertarVaga` recursivo). |
 | `Prazo de aceite vencido` | `alt` (3º ramo) | `expirarOferta(prazoAceite)` → `EXPIRADA`, audita e **reoferta ao próximo**. |
 
@@ -171,6 +178,8 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **O aceite reusa o caminho normal de agendamento** (`ServicoAgenda.agendar` → `Agendamento.solicitar`): não há criação "especial" de agendamento pela fila. Isso mantém RN-005/RN-010/RN-013 em um único lugar.
 - **A recusa não pune o paciente**: apenas encerra aquela solicitação. Uma nova entrada futura na fila é permitida (RF-036).
 - **Recusa e vencimento reusam a mesma operação** `encerrar(...)` (OP-27), variando a situação final; a reoferta é o mesmo `ofertarVaga`. Não há duplicação de regra.
+- **A posição é consultável e a desistência é definitiva.** `consultarPosicao` (AP-06) delega a `posicaoNaFila` (OP-28), que lê a ordem por `dataHoraEntrada`; `sairDaFila` encerra como `DESISTIU` (OP-27) e audita `"ESPERA_ENCERRADA"`. Quem desiste pode entrar de novo — a desistência não pune (LAC-13).
+- **A oferta reserva o horário.** `abrirOferta(horario, prazoAceite)` devolve `OFERTADA` com o horário **reservado até o prazo**: enquanto a oferta existir, o slot não aparece como livre. Se a fila acabar (recusa/vencimento sem próximo), o horário volta ao catálogo (LAC-15).
 
 ## 7. Cobertura de requisitos e regras
 
@@ -186,7 +195,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | RF-030 (registrar atendimento) | | | ✔ (`opt`) | |
 | RF-032 (auditoria) | ✔ | ✔ | ✔ | ✔ |
 | **RF-033 (e-mail)** | | ✔ | ✔ | ✔ |
-| **RF-034 (entrar na fila)** | | ✔ (A1) | | ✔ |
+| **RF-034 (entrar na fila, consultar posição e sair)** | | ✔ (A1) | | ✔ (entrada, `posicaoNaFila`/OP-28 e `DESISTIU`) |
 | **RF-035 (ofertar vaga)** | | | ✔ (`<<extend>>`) | ✔ |
 | **RF-036 (responder oferta)** | | | | ✔ |
 | **RF-037 (não comparecimento)** | | | ✔ | |
@@ -207,7 +216,8 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | Pendência | Causa | Efeito no diagrama |
 |---|---|---|
 | **Incremento de domínio `SolicitacaoEspera` + AP-06** | DEC-027 aprovada na Fase 6 | a SEQ-004 já os usa; o Integrante 3 precisa incorporá-los ao CLS-001 (não existem na Fase 5). |
-| **Reserva do slot (A17)** | DEC-018 (slot discreto) — decisão do grupo | a reserva é interna a `Agendamento.solicitar`; não há mensagem própria. |
+| **Reserva do slot (A17)** | DEC-018 (slot discreto) — decisão do grupo | a reserva é interna a `Agendamento.solicitar`; na fila, `abrirOferta` devolve o horário **reservado até o prazo** (LAC-15 fechada). |
+| **Ressalvas LAC-13, LAC-14 e LAC-15** | **fechadas na v2.1** | a SEQ-004 desenha consulta/saída da fila (`posicaoNaFila`/OP-28, `DESISTIU`) e a reserva; as três sequências desenham `"FALHA_ENVIO_EMAIL"` e a repetição do envio. |
 | **Prazo de aceite (valor)** | parâmetro de configuração (DEC-027) | a operação `abrirOferta(prazoAceite)` aparece sem valor numérico; o valor é configuração, não regra de negócio variável por caso. |
 | **Prazo de cancelamento** | resolvido: `[antes do horário marcado]` | a guarda não tem valor numérico **por decisão** (não existe prazo de 2 horas). |
 | **Canal de notificação** | resolvido: e-mail (RF-033) | `ServicoEnvioMensagem` é fronteira externa (interface), não entidade. |
@@ -227,3 +237,4 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **Segurança/autorização:** a autorização é consultada no serviço (`OP-04`, `OP-22`) e não é assumida pelo ator.
 - **Auditoria:** toda operação auditável do plano (RN-009) tem uma mensagem correspondente nos quatro diagramas.
 - **Consistência de nomes:** `ServicoEnvioMensagem` é o único nome da fronteira de envio (DEC-022); `ServicoNotificacao` não é mais usado em nenhum artefato da Fase 6.
+- **Fila:** a consulta de posição (OP-28), a desistência (`DESISTIU`) e a reserva do horário durante o prazo estão desenhadas; a falha de envio é auditada nos três eventos (DEC-029).

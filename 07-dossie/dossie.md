@@ -1,6 +1,6 @@
 # Dossiê de Modelagem Orientada a Objetos — Plataforma para Psicólogos
 
-**Versão:** v0.6 · **Data de montagem:** 28/10/2026 · **Situação:** dossiê em construção — seções 1 a 24 e 27 com conteúdo das Fases 1 a 6; seções 25, 26 e 28 a 36 com estrutura e texto disponível.
+**Versão:** v0.7 · **Data de montagem:** 29/10/2026 · **Situação:** dossiê em construção — seções 1 a 24 e 27 com conteúdo das Fases 1 a 6; seções 25, 26 e 28 a 36 com estrutura e texto disponível.
 **Montagem:** arquivo gerado por `07-dossie/montar-dossie.py` a partir de `07-dossie/secoes/` e de `02-requisitos/`. Não editar este arquivo diretamente: editar a seção de origem e rodar o script.
 **Responsável pela integração:** Integrante 6 — Guilherme Freire.
 
@@ -616,7 +616,9 @@ Cada objeto corresponde a uma linha (ou a um conjunto de linhas) do modelo relac
 ## 21. Diagramas de sequência
 
 > **Nota de integração (Integrante 6, 28/10/2026).** Situação desta seção frente às decisões do grupo; prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O texto desta seção já é a **v2.0** (28/10/2026): aplica DEC-016/017 (o agendamento nasce `CONFIRMADO`), DEC-011/028 (guarda "antes do horário marcado"), DEC-009/029 (e-mail obrigatório, falha não desfaz) e DEC-010/027 (lista de espera, SEQ-004).
+> - O texto desta seção já é a **v2.1** (29/10/2026): aplica DEC-016/017 (o agendamento nasce `CONFIRMADO`), DEC-011/028 (guarda "antes do horário marcado"), DEC-009/029 (e-mail obrigatório, falha auditada e não desfaz) e DEC-010/027 (lista de espera, SEQ-004).
+> - O fechamento da v2.1 desenha o que faltava do lote da fila e do e-mail: consulta de posição (`posicaoNaFila`, OP-28), saída da fila (`DESISTIU`), reserva do horário durante o prazo e `registrar("FALHA_ENVIO_EMAIL")` nos três eventos.
+> - As sequências somam **136 setas** (85 solicitações e 51 retornos), não 114: SEQ-001 31, SEQ-002 21, SEQ-003 32 e SEQ-004 52.
 
 ### 21.1 Identificação e objetivo
 
@@ -645,11 +647,11 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 
 **Linhas de vida (8):** Ator (paciente) · `ServicoAgenda` (AP-03) · `Vinculo` · `Agenda` · `Agendamento` · `ServicoAuditoria` (AP-02) · `RegistroAuditoria` · `ServicoEnvioMensagem` (AP-04).
 
-**Fluxo:** consulta de horários (`consultarHorariosDisponiveis`, OP-11) → validação do vínculo (`estaAtivo`, OP-22) → escolha do horário → `verificarDisponibilidade(horario)` (RN-010) — o horário é um **slot discreto** (DEC-018), de modo que a consulta devolve slots reais e a exclusividade é verificada slot a slot → `Agendamento.solicitar(...)` → **agendamento devolvido já `CONFIRMADO`** (RF-026 / RN-013) → auditoria → **e-mail de confirmação** → resposta ao ator.
+**Fluxo:** consulta de horários (`consultarHorariosDisponiveis`, OP-11) → validação do vínculo (`estaAtivo`, OP-22) → escolha do horário → `verificarDisponibilidade(horario)` (RN-010) — o horário é um **slot discreto** (DEC-018), de modo que a consulta devolve slots reais e a exclusividade é verificada slot a slot → `Agendamento.solicitar(...)` → **agendamento devolvido já `CONFIRMADO`** (RF-026 / RN-013) → auditoria → **e-mail de confirmação** (na falha, `registrar("FALHA_ENVIO_EMAIL")` e o agendamento continua válido — DEC-029) → resposta ao ator.
 
 **Alternativas e exceções:** `alt` **A1 — nenhum horário disponível** (informar e **oferecer a lista de espera**, RF-034 / SEQ-004); `alt` **E1 — conflito de horário** (recusa com sugestão de outro horário).
 
-**Volume:** 18 setas (9 solicitações e 9 retornos).
+**Volume:** 21 setas (11 solicitações e 10 retornos).
 
 > **Não há passo `confirmar`.** A v1.0 tinha `Agendamento.solicitar` → `confirmar(solicitante)` (OP-13) porque o agendamento nascia `SOLICITADO`. Com a remoção dessa situação, criar e confirmar passam a ser o **mesmo ato**: a mensagem `confirmar` desapareceu da sequência e a situação inicial do EST-001 é `CONFIRMADO`.
 
@@ -663,7 +665,7 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 
 **Alternativa:** `alt` **E1 — agendamento já realizado ou já cancelado** (recusa).
 
-**Volume:** 29 setas (18 solicitações e 11 retornos).
+**Volume:** 32 setas (20 solicitações e 12 retornos).
 
 > **A oferta de vaga é `<<extend>>`, não um caso de uso independente.** Ela aparece como `opt` **dentro** do ramo "pode ser cancelado" e só existe quando há cancelamento **e** fila (UC-035 / DEC-027). O detalhamento — uma oferta por vez, prazo de aceite, recusa passa ao próximo — está na SEQ-004.
 >
@@ -675,7 +677,9 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 
 **Fluxo — entrada na fila:** `entrarNaFila(psicologo, paciente, periodo)` → `registrarEntrada(...)` (OP-23) → solicitação `AGUARDANDO` com `dataHoraEntrada` → auditoria → resposta com a posição (ordem de entrada).
 
-**Fluxo — oferta (`opt <<extend>>` do cancelamento):** `ServicoAgenda.ofertarVaga(horarioLiberado)` → `proximoDaFila(psicologo)` (OP-24) → `alt` **há solicitação e nenhuma oferta aberta** → `abrirOferta(prazoAceite)` (OP-25) → `OFERTADA` → **e-mail de oferta** → auditoria; `else` **fila vazia ou oferta já aberta** → nenhuma oferta é criada.
+**Fluxo — consulta da posição e saída da fila (`opt`):** `consultarPosicao(psicologo, paciente)` → `posicaoNaFila(...)` (OP-28) → posição atual e `dataHoraEntrada`; `sairDaFila(solicitacao)` → `encerrar(DESISTIU)` (OP-27) → auditoria `"ESPERA_ENCERRADA"`.
+
+**Fluxo — oferta (`opt <<extend>>` do cancelamento):** `ServicoAgenda.ofertarVaga(horarioLiberado)` → `proximoDaFila(psicologo)` (OP-24) → `alt` **há solicitação e nenhuma oferta aberta** → `abrirOferta(horario, prazoAceite)` (OP-25) → `OFERTADA` com o **horário reservado até o prazo** → **e-mail de oferta** (falha auditada como `"FALHA_ENVIO_EMAIL"`) → auditoria; `else` **fila vazia ou oferta já aberta** → nenhuma oferta é criada.
 
 **Fluxo — resposta (`alt` de três ramos):**
 
@@ -685,16 +689,16 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 | **Recusa** | `encerrar(RECUSADA)` (OP-27) → auditoria → **reoferta ao próximo** (`ofertarVaga` recursivo). |
 | **Prazo vencido** | `expirarOferta(prazoAceite)` → `EXPIRADA` (OP-27) → auditoria → **reoferta ao próximo**. |
 
-**Volume:** 36 setas (25 solicitações e 11 retornos).
+**Volume:** 52 setas (35 solicitações e 17 retornos).
 
 > **Por que a SEQ-004 existe.** Na v1.0 a sequência do "encaixe" estava bloqueada pela DEC-010. A DEC-027 resolveu a questão: o "encaixe" foi **substituído pela lista de espera**, com regras explícitas, e por isso a quarta sequência passou a ser obrigatória — ela é a única que mostra `SolicitacaoEspera`, OP-23…OP-27 e AP-06.
 >
-> **Ressalvas da DEC-027 ainda não desenhadas** (registradas como LAC-13 e LAC-15 na revisão da fase): a **saída da fila** e a **consulta posterior da posição** pelo paciente, e a **reserva do horário durante o prazo** (interna a `abrirOferta`). A SEQ-004 devolve a posição na entrada (`posicao na fila`) e a oferta carrega `prazoAceite`.
+> **Ressalvas da DEC-027 fechadas na v2.1:** a **consulta da posição** (`consultarPosicao` → `posicaoNaFila`, OP-28), a **saída da fila** (`sairDaFila` → `encerrar(DESISTIU)`, OP-27) e a **reserva do horário durante o prazo** (devolvida por `abrirOferta(horario, prazoAceite)`) estão desenhadas. O horário reservado não aparece como livre; se a fila acabar (recusa/vencimento sem próximo), volta ao catálogo. A falha de envio é registrada na auditoria (`"FALHA_ENVIO_EMAIL"`) e não desfaz a oferta nem o agendamento (DEC-029).
 
 ### 21.6 Como interpretar
 
 1. **A linha de vida é a unidade de responsabilidade.** `ServicoAgenda`, `ServicoAuditoria`, `ServicoAutenticacao`, `ServicoListaEspera` e `ServicoEnvioMensagem` são **responsabilidades de aplicação** (AP-01 a AP-06): concentram a orquestração e ficam **fora** do diagrama de classes de domínio, conforme o plano §5.2. As entidades (`Usuario`, `Vinculo`, `Agenda`, `Agendamento`, `Atendimento`, `SolicitacaoEspera`, `RegistroAuditoria`) carregam as regras.
-2. **Toda mensagem remete a uma operação ou responsabilidade conhecida.** As **114 setas** dos quatro diagramas (71 solicitações e 43 retornos) foram conferidas uma a uma contra as operações `OP-01…OP-27`, as responsabilidades `AP-01…AP-06` e as interfaces de infraestrutura `IR-01`/`IR-02`. Não existe mensagem "inventada para satisfazer um diagrama futuro" (plano §8).
+2. **Toda mensagem remete a uma operação ou responsabilidade conhecida.** As **136 setas** dos quatro diagramas (85 solicitações e 51 retornos) foram conferidas uma a uma contra as operações `OP-01…OP-28`, as responsabilidades `AP-01…AP-06` e as interfaces de infraestrutura `IR-01`/`IR-02`. Não existe mensagem "inventada para satisfazer um diagrama futuro" (plano §8).
 3. **A seta tracejada é o retorno** (`-->>`) e não conta como mensagem nova na contagem.
 4. **`alt` é alternativa de fluxo, `opt` é bloco condicional**, e ambos refletem o texto do caso de uso — nenhuma alternativa existe só no diagrama.
 5. **As guardas aparecem entre colchetes** na própria mensagem (`[OP-15 / RN-012]`), de modo que a regra fica legível sem consultar a matriz.
@@ -713,6 +717,9 @@ O objetivo comum é mostrar **quem fala com quem, em que ordem e sob qual condi�
 | Cancelamento exige verificação prévia | `podeSerCancelado()` (OP-15) é consultada antes de `cancelar` (OP-14), com guarda **`[antes do horário marcado]`** | RN-012, DEC-011 + DEC-028 |
 | Oferta de vaga é `<<extend>>` | o `opt` de UC-035 fica **dentro** do ramo de cancelamento, não é participante obrigatório | UC-035, DEC-027 |
 | Lista de espera é domínio | `SolicitacaoEspera` tem estado persistente, ordem e prazo → entidade; `ServicoListaEspera` (AP-06) coordena | DEC-027 |
+| Consulta e saída da fila | `consultarPosicao`/`posicaoNaFila` (OP-28) e `sairDaFila`/`encerrar(DESISTIU)` (OP-27), com auditoria `"ESPERA_ENCERRADA"` | DEC-027, RF-034 |
+| Oferta reserva o horário | `abrirOferta(horario, prazoAceite)` devolve `OFERTADA` com o slot reservado até o prazo | DEC-027, RN-010 |
+| Falha de envio é auditada e repetível | `registrar("FALHA_ENVIO_EMAIL")` nos três eventos; a operação de agenda permanece válida | DEC-029, RF-033 |
 | "Não compareceu" é manual | bloco `opt` próprio, iniciado pelo psicólogo, sem expiração automática | RF-037, DEC-025 |
 
 ### 21.8 Relação com requisitos, classes e banco
@@ -736,7 +743,7 @@ Cada mensagem dos quatro diagramas corresponde a uma **operação do modelo de c
 ## 22. Diagrama de comunicação
 
 > **Nota de integração (Integrante 6, 28/10/2026).** Situação desta seção frente às decisões do grupo; prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O texto desta seção já é a **v2.0**: 14 colaboradores e 17 mensagens, com `ServicoEnvioMensagem` (DEC-022) e `ServicoListaEspera` (DEC-027).
+> - O texto desta seção já é a **v2.1**: 14 colaboradores e 17 mensagens, com `ServicoEnvioMensagem` (DEC-022) e `ServicoListaEspera` (DEC-027). A falha de envio é caminho de exceção nas sequências, não mensagem nova no COM-001.
 
 ### 22.1 Identificação e objetivo
 
@@ -796,6 +803,8 @@ As **17 mensagens** estão numeradas na ordem de ocorrência, e cada seta carreg
 
 **Vínculos com mais de uma mensagem:** 4 e 6 (`ServicoAgenda`—`Agenda`), 7 e 11 (`ServicoAgenda`—`Agendamento`) e 10/12 (`ServicoAgenda`—`E-mail`) percorrem o **mesmo vínculo**. A ordem é dada pela **numeração**, não pela posição da seta — limitação do renderizador offline, que desenha retas sem deslocamento lateral. **Os retornos** (valores devolvidos pelos colaboradores, inclusive "agendamento `CONFIRMADO`" e "entregue | falha de envio") **não** geram seta própria: percorrem o vínculo no sentido inverso, como manda a notação de comunicação.
 
+**A falha de envio não cria mensagem nova no COM-001**: ela é caminho de exceção nas sequências e percorre o mesmo vínculo 10/12/15, com o retorno `entregue | falha de envio`. O registro `"FALHA_ENVIO_EMAIL"` é feito pelo serviço que detectou a falha (SEQ-002/003/004), não pelo colaborador externo.
+
 **O `ServicoAgenda` é o hub** do diagrama: todas as mensagens que disparam regra passam por ele, e é ele que aciona auditoria e envio de mensagem. Isso é proposital — é a materialização da regra do plano §5.2 contra a **classe onipotente**: o poder de decisão fica dividido entre `ServicoAgenda` (orquestração), as entidades (regras), `ServicoAuditoria`/`ServicoEnvioMensagem` (efeitos) e `ServicoListaEspera` (fila).
 
 ### 22.4 Decisões de modelagem
@@ -826,7 +835,7 @@ Os quatorze colaboradores são **dez classes do modelo de domínio** (`Usuario`,
 ## 23. Diagrama de atividades
 
 > **Nota de integração (Integrante 6, 28/10/2026).** Situação desta seção frente às decisões do grupo; prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O texto desta seção já é a **v2.0**: inclui a notificação do cancelamento e a oferta de vaga (DEC-027); 4 pistas, 37 nós e 39 arestas.
+> - O texto desta seção já é a **v2.1**: inclui a notificação do cancelamento e a oferta de vaga (DEC-027); 4 pistas, 37 nós e 39 arestas.
 
 ### 23.1 Identificação e objetivo
 
@@ -885,7 +894,7 @@ Cada atividade do ATV-001 corresponde a uma operação de domínio, a uma respon
 ## 24. Máquina de estados
 
 > **Nota de integração (Integrante 6, 28/10/2026).** Situação desta seção frente às decisões do grupo; prevalecem `01-planejamento/decisoes.md` e a baseline de `02-requisitos/`:
-> - O texto desta seção já é a **v2.0**: 4 situações e 4 transições (T0–T3), sem `SOLICITADO` (DEC-016/017) e com a guarda da DEC-011/028. Falta o Integrante 3 retirar `Agendamento.confirmar()` do CLS-001 (R6-09).
+> - O texto desta seção já é a **v2.1**: 4 situações e 4 transições (T0–T3), sem `SOLICITADO` (DEC-016/017) e com a guarda da DEC-011/028. Falta o Integrante 3 retirar `Agendamento.confirmar()` do CLS-001 (R6-09) e incorporar OP-23…OP-28/AP-06 (LAC-10).
 
 ### 24.1 Identificação e objetivo
 
