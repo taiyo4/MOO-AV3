@@ -18,6 +18,7 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 | [Revisão cruzada do modelo de domínio](analises/fase-05-revisao-cruzada-modelo-dominio.md) | Fase 5 — Modelo OO | Exigências do barema para classes, manutenibilidade, resposta ao R5-15 (composição), segurança estrutural | Concluída · achados Q5-01 a Q5-10 |
 | [Revisão cruzada comportamental](analises/fase-06-revisao-cruzada-comportamental.md) | Fase 6 — Comportamento | Exigências do barema, conformidade com DEC-009/010/011/016/017/025, confiabilidade e segurança, decisão sobre a matriz da Fase 6 | Concluída · achados Q6-01 a Q6-07 |
 | [Arquitetura e persistência](analises/fase-07-revisao-arquitetura-persistencia.md) | Fase 7 — Arquitetura e persistência | CQ-SEG-01, CQ-CON-04, CQ-CON-05, CQ-COM-02, CQ-FLE-03 e ISO/IEC/IEEE 42010 | Concluída · achados Q7-01 a Q7-06 |
+| [Rastreabilidade e autoavaliação](analises/fase-08-verificacao-rastreabilidade-autoavaliacao.md) | Fase 8 — Qualidade e rastreabilidade | Matriz final v0.7, autoavaliação N/P/L/F, gate de qualidade | Parcial · achados Q8-01 a Q8-06 |
 
 ## Documentos transversais
 
