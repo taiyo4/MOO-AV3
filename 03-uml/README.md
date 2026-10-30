@@ -58,8 +58,10 @@ na mesma pasta:
 | Comunicação (COM-001) | `Comunicação/proposta-I2-especificacao-comunicacao.md` |
 | Estados (EST-001) | `Estados/proposta-I2-especificacao-estados.md` |
 
-Todas as especificações da Fase 6 estão em **v2.0**: abrem com **Objetivo** e
-**RFs cobertos** e seguem a ordem do plano §16.1.
+Todas as especificações da Fase 6 estão em **v2.0/v2.1**: abrem com **Objetivo** e
+**RFs cobertos** e seguem a ordem do plano §16.1. A especificação das sequências
+está em **v2.1**, com o fechamento de LAC-13/14/15 (consulta/saída da fila,
+falha de envio auditada e reserva do horário na oferta).
 
 Casos de uso novos e revisados (UC-028, UC-033 a UC-037, revisão de UC-025 e
 UC-027 e as relações `<<extend>>`/`<<include>>` para o diagrama de casos):
@@ -67,6 +69,12 @@ UC-027 e as relações `<<extend>>`/`<<include>>` para o diagrama de casos):
 
 Rastreabilidade e revisão da fase: `06-rastreabilidade/matriz-rastreabilidade-fase6.md`
 e `01-planejamento/revisoes/FASE6-REV-I2-revisao-comportamental.md`.
+
+Revisão de coerência entre arquitetura e casos de uso (Fase 7) e testes
+conceituais dos casos comportamentais (Fase 8):
+`01-planejamento/revisoes/FASE7-REV-I2-coerencia-arquitetura-casos-de-uso.md` e
+`01-planejamento/revisoes/FASE8-REV-I2-testes-conceituais.md`.
+
 Texto pronto para as seções 21 a 24 do dossiê: `07-dossie/secoes/fase6-secao-21-24.md`.
 
 ## Convenções de leitura
@@ -101,18 +109,18 @@ vazias**: os **sete** diagramas comportamentais da Fase 6 já foram entregues
 O grupo decidiu as pendências em 28/10/2026 (DEC-009 a DEC-030). Os itens que
 eram do **Integrante 2** — `SOLICITADO`, guarda de cancelamento, notificação
 condicional, lista de espera e não comparecimento — foram **propagados aos
-diagramas** nesta entrega (v2.0). O que resta depende de outros integrantes;
+diagramas** nesta entrega (v2.1). O que resta depende de outros integrantes;
 a lista completa, com dono, está em
 [`../01-planejamento/etapas-e-responsabilidades.md`](../01-planejamento/etapas-e-responsabilidades.md).
 
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
 | Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016 | Integrante 3 |
-| Operações `OP-01…OP-27`, entidade `SolicitacaoEspera` e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
+| Operações `OP-01…OP-28`, entidade `SolicitacaoEspera` (com `DESISTIU`) e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
 | `Agendamento.confirmar()` ainda declarada no diagrama de classes oficial | contraria a DEC-017 (a criação já nasce confirmada): a operação não é usada por nenhum diagrama da Fase 6 — ver **R6-09** | Integrante 3 |
 | Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |
 | Tabela `solicitacao_espera` (ordem de entrada, situação, `prazoAceite`) no DER | a SEQ-004 pressupõe persistência da fila — ver **R6-10** | Integrante 4 |
-| `CT-033…CT-036` na matriz da Fase 5 | os RFs novos (RF-033 a RF-036) não têm teste conceitual próprio — ver **LAC-11** | Integrante 5 |
+| `CT-033…CT-037` na matriz da Fase 5 | proposta entregue na Fase 8 (`01-planejamento/revisoes/FASE8-REV-I2-testes-conceituais.md`); falta homologar na matriz mestra — ver **LAC-11** | Integrante 5 |
 | Reserva do slot como mensagem explícita | a reserva é interna a `Agendamento.solicitar` e o **modelo do horário já está decidido** (slot discreto, DEC-018) — ver **LAC-02** | fechada na decisão; incorporação pelo I3 |
 
 **Não são mais pendências** (resolvidas pelo grupo ou por esta entrega):
