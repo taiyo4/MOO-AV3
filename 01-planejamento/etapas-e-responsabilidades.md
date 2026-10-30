@@ -44,7 +44,7 @@ Depois de cada correção, o Integrante 5 confirma na tabela de controle de acha
 
 - **Integrante 2:** concluiu P1 a P6, os testes conceituais CT-0RF (15 testes) e a revisão de coerência arquitetura × casos de uso (12 achados R7). Falta o desenho oficial dos casos de uso incorporar UC-028 e UC-033 a UC-037.
 - **Integrante 4:** entregou a Fase 7 (pacotes, componentes, implantação, DER, relacional, dicionário, mapeamento, normalização, DDL). Faltam o PDF dos três diagramas, o teste do DDL e as tabelas de correspondência da ISO/IEC/IEEE 42010 (Q7-01 a Q7-03).
-- **Integrante 3:** sem entrega nova desde 25/09; P7 a P10 abertos. É o item que mais atrasa o grupo, porque o DER-001 já tem relações (A18–A21) que dependem do diagrama de classes oficial.
+- **Integrante 3:** último envio em 25/09 (merge em 19/10); P7 a P10 abertos. É o item que mais atrasa o grupo, porque o DER-001 já tem relações (A18–A21) que dependem do diagrama de classes oficial.
 - **Integrante 5 (executado pelo Integrante 1):** análises das Fases 1 a 7 registradas.
 - **Integrante 6 (executado pelo Integrante 1):** dossiê v0.7; falta escrever o texto das seções 25 e 26 com o Integrante 4.
 
