@@ -213,3 +213,63 @@ Nenhuma destas pendências é resolvível apenas pelo Integrante 4: todas exigem
 | N:N, composição e herança | plano §10.1, §15 (SOLID), §5.2, RF-014 obs., RF-030 |
 | INC-01 a INC-12 | RF-003, RF-014, RF-016, RF-020, RF-021, RF-023, RF-025, RF-026, RF-027, RF-030, RN-003, RN-005, RN-006, RN-007, RN-009, RN-010, RN-011, RN-014, RNF-004, CA-RF-014, CA-RF-020, CA-RF-032, DEC-009, DEC-010 |
 | Pendências P-01 a P-12 | `02-requisitos/rastreabilidade-inicial.md` §"Pendências para fechar a rastreabilidade", RF-002 obs., RF-016 obs., RF-020 obs., RF-021 obs., RF-023 obs., RF-025 obs., RF-026 obs., RF-027 obs., RN-012, RN-013, DEC-009, DEC-010 |
+
+---
+
+## 9. Revisão v2.0 — 29/10/2026
+
+**Motivo.** As pendências P-01 a P-12 e as inconsistências INC-01 a INC-12 que sustentavam a regra de suspensão de §7 foram fechadas pelas decisões **DEC-013 a DEC-030** e pelas regras **RN-001 a RN-022**. A suspensão está **levantada**: o modelo relacional, o dicionário de dados e o DDL foram produzidos.
+
+### 9.1 Fechamento das pendências P-01 a P-12
+
+| ID | Pergunta da v1.0 | Fechamento | Efeito no modelo |
+|---|---|---|---|
+| P-01 | situação inicial do agendamento | DEC-016 + DEC-017: nasce `CONFIRMADO` | `agendamento.situacao DEFAULT 'CONFIRMADO'`; sem `SOLICITADO` |
+| P-02 | efeito da situação sobre a disponibilidade | DEC-018 + RN-005: o slot é ocupado só por `CONFIRMADO` | coluna gerada `slot_ativo` + `UNIQUE` |
+| P-03 | definição de "ativo" para a exclusividade | RN-005: `CONFIRMADO` é o único estado que ocupa | `uk_agendamento_slot_ativo` |
+| P-04 | situações cadastrais do paciente | DEC-014: `ATIVO`, `SUSPENSO`, `INATIVO` | `ck_paciente_situacao` |
+| P-05 | slot discreto ou intervalo contínuo | DEC-018: **slot discreto** | `data`, `hora_inicio`, `duracao_minutos` |
+| P-06 | cardinalidade Usuário × Perfil | DEC-019: 1 perfil por conta, N contas por perfil | `usuario.id_perfil NOT NULL`, sem `UNIQUE` |
+| P-07 | sessão é entidade? | DEC-020: **não** | nenhuma tabela `sessao` |
+| P-08 | catálogo de áreas de atuação | mantido como catálogo | `area_atuacao` + `psicologo_area_atuacao` |
+| P-09 | serviço externo de notificação | DEC-022: interface `ServicoEnvioMensagem`, sem entidade | nenhuma tabela `notificacao`; ver CMP-001 |
+| P-10 | funcionalidade de inovação | DEC-010 + DEC-027: lista de espera com oferta de vaga | `solicitacao_espera` |
+| P-11 | identidade do profissional e do paciente | DEC-021: cadastro próprio com conta **opcional** | `id_usuario` nulo e único em `psicologo` e `paciente` |
+| P-12 | escopo temporal do vínculo | DEC-015 + RN-016 | `data_inicio`, `data_fim`, `situacao`, coluna gerada `vigente` |
+
+### 9.2 Situação das inconsistências INC-01 a INC-12
+
+| ID | Situação em 29/10/2026 |
+|---|---|
+| INC-01 (Usuario × Perfil) | resolvida — DEC-019; detalhe de leitura em INC-14 |
+| INC-02 (situação inicial do agendamento) | resolvida — DEC-016/DEC-017 |
+| INC-03 (efeito de cancelamento no slot) | resolvida — coluna gerada `slot_ativo` |
+| INC-04 (escopo temporal do vínculo) | resolvida — DEC-015 |
+| INC-05 (modelo de tempo da disponibilidade) | resolvida — DEC-018 |
+| INC-06 (unicidade de horário) | resolvida — RN-005 + índice parcial |
+| INC-07 (histórico de situação) | resolvida — DEC-024 (`situacao_anterior`/`situacao_nova`) |
+| INC-08 (catálogo de áreas) | resolvida como catálogo |
+| INC-09 (quem mantém o catálogo) | **aberta** — não afeta a estrutura, apenas o caso de uso administrativo |
+| INC-10 (sessão) | resolvida — DEC-020 |
+| INC-11 (notificação) | resolvida — DEC-022 |
+| INC-12 (lista de espera) | resolvida — DEC-027 + `solicitacao_espera` |
+| INC-13 (não comparecimento) | resolvida — DEC-016 + DEC-025: só a partir de `CONFIRMADO` |
+| INC-14 a INC-17 | **novas**, abertas pela produção do DER; registradas em [`../impacto-requisitos.md`](../impacto-requisitos.md) §9 |
+
+### 9.3 O que a v2.0 acrescenta ao modelo
+
+| Área | Antes (v1.0) | Depois (v2.0) |
+|---|---|---|
+| Situações | genéricas, "a definir" | 5 domínios fechados por `CHECK` (conta, paciente, vínculo, agendamento, fila) |
+| Tempo | intervalo contínuo em discussão | slot discreto, autoridade única do tempo |
+| Auditoria | 4 elementos | 4 elementos + `situacao_anterior`, `situacao_nova`, `entidade`, `id_entidade`, `resultado` |
+| Notificação | entidade em discussão | interface de fronteira; falha registrada em auditoria |
+| Lista de espera | duas tabelas em discussão | uma tabela com máquina de estados de 6 situações |
+| Exclusão | não definida | inativação por situação; nenhuma exclusão de dado de negócio |
+
+### 9.4 Conclusão da revisão
+
+A análise de viabilidade da v1.0 estava correta no método: **classificar, medir cardinalidade e só então decidir a forma relacional**. O que mudou foi o insumo. Nenhuma das 12 pendências exigiu mudança de abordagem; todas exigiram uma decisão que o grupo tomou entre 25 e 28/10/2026.
+
+O resultado está em [`../der/der-001-logico.md`](../der/der-001-logico.md), [`../modelo-relacional.md`](../modelo-relacional.md), [`../dicionario-de-dados.md`](../dicionario-de-dados.md) e [`../ddl/schema-mysql.sql`](../ddl/schema-mysql.sql).
+

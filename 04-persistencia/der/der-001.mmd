@@ -1,0 +1,168 @@
+%% =====================================================================
+%% DER-001 - Modelo Entidade-Relacionamento logico - FASE 7
+%% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
+%% formato editavel; ver der-001-logico.md para as decisoes.
+%%
+%% Convencoes:
+%%   - nomes de entidade em MAIUSCULAS = tabela fisica em minusculas;
+%%   - PK/FK/UK marcados no atributo; os tipos sao os do MySQL 8.0;
+%%   - os rotulos das relacoes citam a associacao do CLS-001 (A01..A16)
+%%     ou a associacao proposta para a lista de espera (A18..A21);
+%%   - A10 (Agenda x Agendamento) NAO aparece como linha: e derivada por
+%%     AGENDAMENTO -> DISPONIBILIDADE -> AGENDA (DEC-018). Ver secao 4.5
+%%     de der-001-logico.md;
+%%   - nao existem tabelas de sessao (DEC-020) nem de notificacao
+%%     (DEC-022).
+%% =====================================================================
+erDiagram
+    PERFIL ||--o{ USUARIO : "A01 1:N"
+    PERFIL ||--o{ PERFIL_PERMISSAO : "A02 1:N"
+    PERMISSAO ||--o{ PERFIL_PERMISSAO : "A02 1:N"
+    USUARIO |o--o| PSICOLOGO : "A03 0..1:0..1"
+    USUARIO |o--o| PACIENTE : "A04 0..1:0..1"
+    PSICOLOGO ||--o{ PSICOLOGO_AREA_ATUACAO : "A05 1:N"
+    AREA_ATUACAO ||--o{ PSICOLOGO_AREA_ATUACAO : "A05 1:N"
+    PSICOLOGO ||--o{ VINCULO : "A06 1:N"
+    PACIENTE ||--o{ VINCULO : "A07 1:N"
+    PSICOLOGO ||--|| AGENDA : "A08 1:1"
+    AGENDA ||--o{ DISPONIBILIDADE : "A09 1:N"
+    DISPONIBILIDADE ||--o| AGENDAMENTO : "A17 1:0..1"
+    PSICOLOGO ||--o{ AGENDAMENTO : "A11 1:N"
+    PACIENTE ||--o{ AGENDAMENTO : "A12 1:N"
+    AGENDAMENTO ||--o| ATENDIMENTO : "A15 1:0..1"
+    PSICOLOGO ||--o{ ATENDIMENTO : "A13 1:N"
+    PACIENTE ||--o{ ATENDIMENTO : "A14 1:N"
+    USUARIO |o--o{ REGISTRO_AUDITORIA : "A16 0..1:N"
+    PSICOLOGO ||--o{ SOLICITACAO_ESPERA : "A18 1:N (proposta)"
+    PACIENTE ||--o{ SOLICITACAO_ESPERA : "A19 1:N (proposta)"
+    DISPONIBILIDADE ||--o{ SOLICITACAO_ESPERA : "A20 1:N (proposta)"
+    SOLICITACAO_ESPERA |o--o| AGENDAMENTO : "A21 0..1:0..1 (proposta)"
+
+    PERFIL {
+        BIGINT id PK
+        VARCHAR nome UK
+        VARCHAR descricao
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    PERMISSAO {
+        BIGINT id PK
+        VARCHAR codigo UK
+        VARCHAR descricao
+        DATETIME criado_em
+    }
+    PERFIL_PERMISSAO {
+        BIGINT id_perfil PK, FK
+        BIGINT id_permissao PK, FK
+    }
+    USUARIO {
+        BIGINT id PK
+        VARCHAR identificacao UK
+        VARCHAR hash_senha
+        VARCHAR situacao_conta
+        BIGINT id_perfil FK
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    AREA_ATUACAO {
+        BIGINT id PK
+        VARCHAR nome UK
+        VARCHAR descricao
+        DATETIME criado_em
+    }
+    PSICOLOGO {
+        BIGINT id PK
+        BIGINT id_usuario FK, UK
+        VARCHAR nome
+        VARCHAR registro_profissional
+        VARCHAR email_contato
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    PSICOLOGO_AREA_ATUACAO {
+        BIGINT id_psicologo PK, FK
+        BIGINT id_area_atuacao PK, FK
+    }
+    PACIENTE {
+        BIGINT id PK
+        BIGINT id_usuario FK, UK
+        VARCHAR nome
+        VARCHAR email_contato
+        VARCHAR situacao_cadastral
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    VINCULO {
+        BIGINT id PK
+        BIGINT id_psicologo FK
+        BIGINT id_paciente FK
+        VARCHAR situacao
+        DATE data_inicio
+        DATE data_fim
+        TINYINT vigente UK "gerada; UK composta (id_psicologo,id_paciente,vigente)"
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    AGENDA {
+        BIGINT id PK
+        BIGINT id_psicologo FK, UK
+        DATETIME criado_em
+        DATETIME atualizado_em
+    }
+    DISPONIBILIDADE {
+        BIGINT id PK
+        BIGINT id_agenda FK
+        BIGINT id_psicologo FK
+        DATE data
+        TIME hora_inicio
+        INT duracao_minutos
+        DATETIME criado_em
+    }
+    AGENDAMENTO {
+        BIGINT id PK
+        BIGINT id_disponibilidade FK
+        BIGINT id_psicologo FK
+        BIGINT id_paciente FK
+        VARCHAR situacao
+        DATETIME data_cancelamento
+        BIGINT id_usuario_cancelamento FK
+        DATETIME data_nao_comparecimento
+        DATETIME criado_em
+        DATETIME atualizado_em
+        BIGINT slot_ativo UK "gerada; UNIQUE simples (um CONFIRMADO por slot)"
+    }
+    ATENDIMENTO {
+        BIGINT id PK
+        BIGINT id_agendamento FK, UK
+        BIGINT id_psicologo FK
+        BIGINT id_paciente FK
+        DATETIME data_hora_registro
+        VARCHAR contexto_sessao
+    }
+    SOLICITACAO_ESPERA {
+        BIGINT id PK
+        BIGINT id_psicologo FK
+        BIGINT id_paciente FK
+        BIGINT id_disponibilidade FK
+        VARCHAR situacao
+        DATETIME data_hora_entrada
+        DATETIME prazo_aceite
+        DATETIME data_hora_encerramento
+        BIGINT id_agendamento FK, UK
+        TINYINT fila_ativa UK "gerada; UK composta (id_disponibilidade,id_paciente,fila_ativa)"
+        TINYINT oferta_aberta UK "gerada; UK composta (id_disponibilidade,oferta_aberta)"
+        DATETIME atualizado_em
+    }
+    REGISTRO_AUDITORIA {
+        BIGINT id PK
+        BIGINT id_usuario FK
+        DATETIME data_hora
+        VARCHAR operacao
+        VARCHAR entidade
+        BIGINT id_entidade
+        VARCHAR situacao_anterior
+        VARCHAR situacao_nova
+        VARCHAR resultado
+        VARCHAR detalhe
+    }

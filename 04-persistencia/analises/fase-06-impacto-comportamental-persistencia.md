@@ -226,3 +226,51 @@ Registrado para evitar retrabalho: o diagrama de atividades (ATV-001) e o diagra
 | IMP-DER-01 a IMP-DER-10 | §3.1, §4.2, §5.1, §5.2, INC-04, INC-06, INC-11, RNF-020, RN-017 (proposta) |
 | IMP-CMP-01 a IMP-CMP-09 | §3.2, §4.1, §4.2, §5.1 |
 | INC-13 e P-13 a P-19 | plano §5.4, RF-002, RF-006, RF-023 obs., RF-026, RF-027, RN-012, RN-013 |
+
+---
+
+## 10. Revisão v2.0 — 29/10/2026
+
+**Motivo.** Os diagramas comportamentais foram oficializados como **SEQ-001 a SEQ-004** e **EST-001**, as decisões **DEC-013 a DEC-030** foram aprovadas e os 37 requisitos funcionais foram fechados. Esta seção fecha as pendências P-13 a P-19 e as inconsistências INC-13 e registra o que os diagramas de arquitetura da Fase 7 entregaram.
+
+### 10.1 Fechamento de P-13 a P-19
+
+| ID | Pergunta da v1.0 | Fechamento | Onde está |
+|---|---|---|---|
+| P-13 | confirmação automática é transição de estado? | DEC-017: sim, `— → CONFIRMADO` no aceite | `ck_agendamento_situacao`; EST-001 |
+| P-14 | cancelamento pelo Administrador | DEC-028: **não existe** | nenhuma coluna de cancelamento administrativo |
+| P-15 | queda de e-mail desfaz a operação? | DEC-029: **não**; falha é auditada | TRS-07; `operacao = 'FALHA_ENVIO_EMAIL'` |
+| P-16 | auditoria de falha de autenticação em transação independente | mantida: `id_usuario` nulo e transação própria | `registro_auditoria.id_usuario` aceita `NULL` |
+| P-17 | sessão é entidade persistida | DEC-020: **não** | nenhuma tabela `sessao` |
+| P-18 | histórico de situação: colunas ou tabela | DEC-024: **colunas** `situacao_anterior`/`situacao_nova` | `registro_auditoria` |
+| P-19 | carimbo de tempo vem do cliente ou do servidor? | **servidor**: `DEFAULT CURRENT_TIMESTAMP` em toda coluna temporal | DDL, todas as tabelas |
+
+### 10.2 Fechamento de INC-13
+
+**INC-13** propunha que "não compareceu" fosse alcançável apenas a partir de `CONFIRMADO`. A decisão **DEC-025** confirma a proposta e **DEC-016** elimina `SOLICITADO` do domínio. Não há mais caminho ambíguo: o estado inicial é `CONFIRMADO`, e `NAO_COMPARECEU` é alcançável apenas a partir dele.
+
+### 10.3 O que os diagramas comportamentais exigem da arquitetura (entregue)
+
+| Exigência da v1.0 | Como a Fase 7 atende | Artefato |
+|---|---|---|
+| DEP-01 a DEP-06 — dependências entre serviços | resolvidas por injeção de dependência; a aplicação depende só de interfaces | PAC-001 |
+| TRS-01 a TRS-06 — fronteiras transacionais | formalizadas como **TRS-01 a TRS-06**, com lock de linha no slot | `modelo-relacional.md` §7 |
+| TRS-05 — auditoria de falha fora da transação | virou **TRS-07**, executada após o `COMMIT` | `modelo-relacional.md` §7 |
+| ARQ-01 a ARQ-08 — decisões de arquitetura | pacote `dominio.fronteira` com `ServicoEnvioMensagem` e `ServicoHashSenha`; infraestrutura realiza as interfaces | PAC-001, CMP-001 |
+| IMP-DER-01 a IMP-DER-10 — impacto no DER | DER-001 com 15 entidades e 22 relações | `der/der-001-logico.md` |
+| IMP-CMP-01 a IMP-CMP-09 — impacto nos componentes | CMP-001 com `AdaptadorEmail` como único componente que fala SMTP | `03-uml/Componentes/` |
+
+### 10.4 O que a v2.0 acrescenta ao comportamento
+
+| Fluxo novo | Impacto na persistência |
+|---|---|
+| envio de e-mail de confirmação (RF-033) | fora da transação (TRS-07); falha vira linha de auditoria |
+| entrada na lista de espera (RF-034) | `INSERT` em `solicitacao_espera` com `AGUARDANDO` |
+| oferta de vaga (RF-035) | `UPDATE` para `OFERTADA` com `prazo_aceite`; lock no slot (TRS-03) |
+| resposta à oferta (RF-036) | aceite: `INSERT` agendamento + `UPDATE` para `ACEITA` (TRS-04) |
+| não comparecimento (RF-037) | `UPDATE` para `NAO_COMPARECEU` + carimbo (TRS-06) |
+
+### 10.5 Conclusão da revisão
+
+Os diagramas comportamentais continuam sendo a fonte das **fronteiras transacionais**. A v2.0 não acrescentou transações novas além de TRS-07 (envio de e-mail), mas tornou explícito algo que a v1.0 deixava implícito: **a serialização acontece no slot, não no agendamento** — porque antes de existir agendamento não há linha para bloquear. Essa é a mudança conceitual mais importante da revisão, e ela vem de DEC-018.
+

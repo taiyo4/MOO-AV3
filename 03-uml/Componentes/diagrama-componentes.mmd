@@ -1,0 +1,82 @@
+%% =====================================================================
+%% CMP-001 - Diagrama de componentes - FASE 7
+%% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
+%% formato editavel.
+%%
+%% O que este diagrama fixa:
+%%   - a interface ServicoEnvioMensagem (DEC-022) e o ponto unico de
+%%     saida de e-mail; o dominio e a aplicacao NAO conhecem SMTP;
+%%   - o AdaptadorEmail e o unico componente que fala com o provedor;
+%%   - a falha de envio nao desfaz a operacao (DEC-029): o componente
+%%     de e-mail responde com resultado e a auditoria registra FALHA;
+%%   - os repositorios sao interfaces do dominio realizadas pelo
+%%     componente de persistencia (DIP);
+%%   - BancoDados e ServicoExternoEmail sao sistemas externos.
+%%
+%% Notacao:
+%%   ([...])  interface fornecida (lollipop)
+%%   -->      dependencia / uso
+%%   ..>      realizacao de interface
+%% =====================================================================
+flowchart TB
+
+    ATOR["Ator<br/>Administrador, Psicologo ou Paciente"]
+
+    subgraph SISTEMA["Sistema: Plataforma para Psicologos"]
+        direction TB
+
+        UI["componente: InterfaceUsuario<br/>telas, formularios e controladores<br/>RF-001 a RF-037 (entrada)"]
+
+        AUT["componente: ServicoAutenticacao<br/>RF-001, RF-002"]
+        CAD["componente: ServicoCadastro<br/>RF-003 a RF-022"]
+        AGD["componente: ServicoAgenda<br/>RF-023 a RF-029, RF-037"]
+        FIL["componente: ServicoListaEspera<br/>RF-034 a RF-036"]
+        AUD["componente: ServicoAuditoria<br/>RF-013, RF-032, DEC-024"]
+        AUTZ["componente: ServicoAutorizacao<br/>RNF-002, RNF-006"]
+        TMP["componente: ServicoTempo<br/>RN-012, DEC-027"]
+        PER["componente: Persistencia<br/>implementa os repositorios<br/>acesso ao MySQL 8.0"]
+        EMA["componente: AdaptadorEmail<br/>traduz a mensagem para SMTP"]
+
+        IMSG(["interface: ServicoEnvioMensagem<br/>enviar(destinatario, assunto, corpo)<br/>resultado: SUCESSO ou FALHA"])
+        IHASH(["interface: ServicoHashSenha<br/>gerar(segredo), verificar(segredo, hash)"])
+        IREP(["interface: IRepositorio*<br/>10 interfaces de repositorio"])
+    end
+
+    EXTEMAIL[["ServicoExternoEmail<br/>provedor SMTP"]]
+    DB[("BancoDados<br/>MySQL 8.0")]
+
+    ATOR --> UI
+
+    UI --> AUT
+    UI --> CAD
+    UI --> AGD
+    UI --> FIL
+
+    AUT --> AUTZ
+    AUT --> AUD
+    AUT --> IHASH
+    CAD --> AUTZ
+    CAD --> AUD
+    AGD --> AUTZ
+    AGD --> AUD
+    AGD --> TMP
+    AGD --> IMSG
+    FIL --> AUTZ
+    FIL --> AUD
+    FIL --> TMP
+    FIL --> IMSG
+    AUD --> IREP
+
+    AUT --> IREP
+    CAD --> IREP
+    AGD --> IREP
+    FIL --> IREP
+
+    PER ..> IREP
+    EMA ..> IMSG
+    PER --> DB
+    EMA --> EXTEMAIL
+
+    AGD -.->|"falha de envio vira FALHA_ENVIO_EMAIL"| AUD
+    FIL -.->|"falha de envio vira FALHA_ENVIO_EMAIL"| AUD

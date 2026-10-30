@@ -119,3 +119,50 @@ As regras abaixo **não estão** formalizadas em `02-requisitos/regras-negocio.m
 | Integrações externas | DEC-007, DEC-009, DEC-010, RF-023 obs., `02-requisitos/escopo.md` §5.2 |
 | Revisão de dados sensíveis | RNF-001, RNF-004, RNF-005, RNF-006, RN-002, RN-003, RN-004, RN-008, RN-014, RES-002, RES-006 |
 | Pendências P-01 a P-12 | `04-persistencia/analises/fase-05-viabilidade-persistencia-dominio.md` §7 |
+
+---
+
+## 9. Revisão v2.0 — 29/10/2026
+
+**Motivo.** A baseline de requisitos e de casos de uso foi fechada depois da primeira versão deste documento: os requisitos passaram a ser **RF-001 a RF-037**, as regras **RN-001 a RN-022**, os casos de uso foram oficializados como **UC-001 a UC-037** (DEC-026) e as decisões **DEC-013 a DEC-030** foram aprovadas. Esta seção registra o que muda na revisão de dados por caso de uso. O corpo do documento (§1 a §8) foi **preservado** como registro histórico da análise sobre a baseline anterior.
+
+### 9.1 O que deixou de valer
+
+| Item da v1.0 | Situação em 29/10/2026 |
+|---|---|
+| Casos de uso `UC-FUT-*` | substituídos por `UC-001` a `UC-037` oficiais (DEC-026); a matriz de §3 é reinterpretada pela tabela 9.2 |
+| Item 1 de §7 ("confirmar nomes e fronteiras dos 32 casos de uso") | **fechado** — UC-001 a UC-037 publicados |
+| Item 5 de §7 ("SEQ-001 a SEQ-004") | **fechado** — SEQ-001 a SEQ-004 especificados |
+| Item 3 de §7 (sessão persistida) | **fechado** — DEC-020: sessão é volátil, não há tabela |
+| Item 4 de §7 (notificação em fluxos alternativos) | **fechado** — DEC-022 e DEC-029: envio é fronteira de aplicação; falha não desfaz a operação |
+| Item 6 de §7 (conteúdo de `atendimento`) | **fechado** — DEC-008 + DEC-030: registro conceitual, sem conteúdo clínico |
+| `ServicoNotificacao` | nome **inexistente** na baseline; o correto é a interface `ServicoEnvioMensagem` (DEC-022) |
+| Situação `SOLICITADO` do agendamento | **inexistente** (DEC-016) |
+
+### 9.2 Casos de uso novos que a v1.0 não cobria
+
+| UC | RF | Dado persistido | Tabela |
+|---|---|---|---|
+| UC de envio de e-mail de confirmação | RF-033 | destinatário, resultado do envio, falha | `psicologo.email_contato`, `paciente.email_contato`, `registro_auditoria` |
+| UC de entrar na lista de espera | RF-034 | entrada na fila, ordem, situação | `solicitacao_espera` |
+| UC de ofertar vaga | RF-035 | slot ofertado, prazo de aceite | `solicitacao_espera` (`OFERTADA`, `prazo_aceite`) |
+| UC de responder à oferta | RF-036 | aceite ou recusa, agendamento gerado | `solicitacao_espera`, `agendamento` |
+| UC de registrar não comparecimento | RF-037 | situação `NAO_COMPARECEU`, carimbo | `agendamento.situacao`, `data_nao_comparecimento` |
+
+### 9.3 Efeito nas regras de persistência implícitas de §5
+
+| Regra implícita da v1.0 | Como a v2.0 resolve |
+|---|---|
+| unicidade de horário por profissional | **RN-005** oficial + `uk_agendamento_slot_ativo` (índice único parcial por coluna gerada) |
+| um vínculo vigente por par | **RN-016** oficial + `uk_vinculo_vigente` |
+| histórico de situação | **DEC-024**: `situacao_anterior` e `situacao_nova` em `registro_auditoria`, sem tabela de histórico |
+| auditoria de operação que falhou | **DEC-029**: `resultado = 'FALHA'` e `operacao = 'FALHA_ENVIO_EMAIL'` |
+| ordem da fila | **RN-023** (proposta) + `data_hora_entrada` imutável, sem coluna de posição |
+| uma oferta aberta por slot | **RN-024** (proposta) + `uk_se_oferta` |
+
+### 9.4 Conclusão da revisão
+
+A revisão de dados por caso de uso **não muda de método**: cada UC continua sendo lido pelo que grava, pelo que consulta e pelo que não pode gravar. O que mudou foi o insumo — de 32 casos provisórios para 37 oficiais, com decisões que fecharam as dúvidas de §7 e acrescentaram três áreas de dado que a v1.0 não previa: **lista de espera**, **não comparecimento** e **falha de envio de e-mail**.
+
+O rastro atualizado está em [`../impacto-requisitos.md`](../impacto-requisitos.md) §2 (RF × persistência) e §3 (RN × restrição).
+

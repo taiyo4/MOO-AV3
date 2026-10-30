@@ -1,0 +1,60 @@
+%% =====================================================================
+%% IMP-001 - Diagrama de implantacao - FASE 7
+%% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
+%% formato editavel.
+%%
+%% Topologia minima coerente com o escopo da AV3:
+%%   Navegador --HTTPS--> ServidorAplicacao --JDBC/TCP 3306--> MySQL
+%%   ServidorAplicacao --SMTP/TLS 587--> ServicoExternoEmail
+%%
+%% Decisoes que restringem a topologia:
+%%   - DEC-003: MySQL 8.0 como SGBD;
+%%   - DEC-020: nao ha servidor de sessao nem estado compartilhado;
+%%   - DEC-022: o envio de e-mail e fronteira de aplicacao, feita pelo
+%%     servidor de aplicacao; nao ha servico de notificacao interno;
+%%   - DEC-029: a indisponibilidade do servico de e-mail nao derruba a
+%%     operacao; a falha fica registrada na auditoria;
+%%   - RNF-016: sem dependencia de servico de fila ou cache externo.
+%%
+%% O diagrama mostra UM servidor de aplicacao e UM servidor de banco.
+%% Escala horizontal e decisao de operacao, nao de arquitetura: nao ha
+%% estado de sessao (DEC-020), entao qualquer instancia serve qualquer
+%% requisicao.
+%% =====================================================================
+flowchart LR
+
+    subgraph CLIENTE["no: Dispositivo do usuario"]
+        direction TB
+        NAV["artefato: Navegador web<br/>HTML, CSS e JavaScript"]
+    end
+
+    subgraph APP["no: ServidorAplicacao<br/>servidor de aplicacao Java"]
+        direction TB
+        ARTAPP["artefato: aplicacao<br/>apresentacao + aplicacao + dominio<br/>+ infraestrutura"]
+        ARTCFG["artefato: configuracao<br/>URL do banco, credenciais<br/>parametros de prazo (DEC-027)"]
+        COMPMSG["componente: AdaptadorEmail<br/>implementa ServicoEnvioMensagem"]
+    end
+
+    subgraph BANCO["no: ServidorBanco"]
+        direction TB
+        SGBD[("DBMS: MySQL 8.0<br/>InnoDB, utf8mb4")]
+        ARTSQL["artefato: schema-mysql.sql<br/>15 tabelas, 3 triggers"]
+    end
+
+    subgraph EMAIL["no: ServicoExternoEmail<br/>(terceiro)"]
+        direction TB
+        SMTP["servico: SMTP<br/>TLS obrigatorio"]
+    end
+
+    NAV -->|"HTTPS / TCP 443<br/>requisicoes e respostas"| ARTAPP
+    ARTAPP -->|"JDBC / TCP 3306<br/>pool de conexoes"| SGBD
+    ARTAPP -->|"SMTP / TCP 587<br/>STARTTLS"| SMTP
+
+    ARTCFG -.->|"parametriza"| ARTAPP
+    ARTSQL -.->|"instala"| SGBD
+    ARTAPP -.->|"delega envio"| COMPMSG
+    COMPMSG -->|"SMTP / TCP 587"| SMTP
+
+    classDef externo fill:#f5f5f5,stroke:#999999,stroke-dasharray: 4 3;
+    class SMTP externo;

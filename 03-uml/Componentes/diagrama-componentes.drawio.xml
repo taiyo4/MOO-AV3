@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="cmp-001-fase7" name="CMP-001">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" value="CMP-001 - Diagrama de componentes" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=17;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="14" width="1200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitulo" value="ServicoEnvioMensagem (DEC-022) e o unico ponto de saida de e-mail; falha de envio nao desfaz a operacao (DEC-029). Fonte da verdade: diagrama-componentes.mmd" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ATOR" value="Administrador&lt;br&gt;Psicologo&lt;br&gt;Paciente" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="130" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="SISTEMA" value="Sistema: Plataforma para Psicologos" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=none;strokeColor=#333333;dashed=1;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="150" y="70" width="1300" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="UI" value="InterfaceUsuario&lt;br&gt;telas, formularios e controladores" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="110" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AUT" value="ServicoAutenticacao&lt;br&gt;RF-001, RF-002" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="210" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CAD" value="ServicoCadastro&lt;br&gt;RF-003 a RF-022" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="490" y="210" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AGD" value="ServicoAgenda&lt;br&gt;RF-023 a RF-029, RF-037" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="800" y="210" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FIL" value="ServicoListaEspera&lt;br&gt;RF-034 a RF-036" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="210" width="300" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AUTZ" value="ServicoAutorizacao&lt;br&gt;RNF-002, RNF-006" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="310" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AUD" value="ServicoAuditoria&lt;br&gt;RF-013, RF-032, DEC-024" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="490" y="310" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TMP" value="ServicoTempo&lt;br&gt;RN-012, DEC-027" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="800" y="310" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PER" value="Persistencia&lt;br&gt;implementa os repositorios&lt;br&gt;acesso ao MySQL 8.0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="410" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EMA" value="AdaptadorEmail&lt;br&gt;traduz a mensagem para SMTP&lt;br&gt;implementa ServicoEnvioMensagem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="410" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IREP" value="interface&lt;br&gt;IRepositorio*&lt;br&gt;10 interfaces" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="530" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="IMSG" value="interface&lt;br&gt;ServicoEnvioMensagem&lt;br&gt;enviar(destinatario, assunto, corpo)&lt;br&gt;resultado: SUCESSO ou FALHA" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="530" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="IHASH" value="interface&lt;br&gt;ServicoHashSenha&lt;br&gt;gerar(segredo)&lt;br&gt;verificar(segredo, hash)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="940" y="530" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="DB" value="BancoDados&lt;br&gt;MySQL 8.0" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="180" y="700" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EXTE" value="ServicoExternoEmail&lt;br&gt;provedor SMTP" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="700" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="ATOR" target="UI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="UI" target="AUT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="UI" target="CAD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="UI" target="AGD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="UI" target="FIL">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUT" target="AUTZ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUT" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUT" target="IHASH">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CAD" target="AUTZ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CAD" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="AUTZ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="TMP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="IMSG">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="AUTZ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="TMP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="IMSG">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUT" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CAD" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUD" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="PER" target="IREP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="EMA" target="IMSG">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="PER" target="DB">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="EMA" target="EXTE">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" value="falha de envio -&gt; FALHA_ENVIO_EMAIL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="AGD" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" value="falha de envio -&gt; FALHA_ENVIO_EMAIL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="FIL" target="AUD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
