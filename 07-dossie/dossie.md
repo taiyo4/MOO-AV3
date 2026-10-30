@@ -316,6 +316,18 @@ Os critérios de verificação completos estão em `02-requisitos/requisitos-nao
 | RNF-010 | Consulta interativa de agenda | Desempenho | Consultas de agenda deverão possuir tempo de resposta compatível com uso interativo normal. |
 | RNF-011 | Rastreabilidade entre artefatos | Rastreabilidade e Qualidade da Modelagem | Os artefatos deverão manter rastreabilidade entre requisitos, regras de negócio, atores, casos de uso futuros e critérios de aceite. |
 | RNF-012 | Consistência terminológica e semântica | Rastreabilidade e Qualidade da Modelagem | Os requisitos e modelos deverão manter termos consistentes com o glossário e respeitar as decisões e fronteiras de escopo aprovadas. |
+| RNF-013 | Integridade referencial com exclusão controlada | Confiabilidade | Nenhuma chave estrangeira deverá usar exclusão em cascata sobre dados históricos; a retirada de um registro deverá ocorrer por mudança de situação. |
+| RNF-014 | Domínios fechados no banco | Confiabilidade | As situações e os enumerados deverão ter domínio fechado verificado no banco de dados. |
+| RNF-015 | Atomicidade entre alteração de situação e auditoria | Confiabilidade | A alteração de situação e o seu registro de auditoria deverão ocorrer na mesma transação. |
+| RNF-016 | Unicidade do horário ativo | Confiabilidade | No máximo um agendamento `Confirmado` deverá ocupar cada horário ofertado (RN-005), inclusive sob acesso concorrente; a confirmação automática deverá revalidar a disponibilidade no momento da gravação (RN-013). |
+| RNF-017 | Imutabilidade da trilha de auditoria | Segurança | A conta da aplicação não deverá poder alterar nem excluir registros de auditoria. |
+| RNF-018 | Consulta de agenda sem varredura completa | Desempenho | Os índices deverão cobrir as consultas de RF-024, RF-028 e RF-029. |
+| RNF-019 | Valor anterior e novo na auditoria | Rastreabilidade e Qualidade da Modelagem | O registro de auditoria de uma mudança de situação deverá conter a situação anterior e a nova (DEC-024). |
+| RNF-020 | Integridade temporal dos vínculos | Confiabilidade | A data de fim do vínculo deverá ser nula se e somente se o vínculo estiver ativo (DEC-015). |
+| RNF-021 | Uma oferta aberta por horário da lista de espera | Confiabilidade | No máximo uma oferta de vaga aberta deverá existir por horário (DEC-027). |
+| RNF-022 | Ordem estável da fila | Confiabilidade | A data e hora de entrada na lista de espera não deverá mudar depois da criação (DEC-027). |
+| RNF-023 | Troca de provedor de e-mail sem alterar o domínio | Compatibilidade | A plataforma deverá se comunicar com o Serviço Externo de E-mail por uma interface própria (`ServicoEnvioMensagem`, DEC-022), de modo que a troca do provedor não altere o domínio. |
+| RNF-024 | Confirmação explícita antes de ação irreversível | Capacidade de interação | Antes de cancelar um agendamento ou aceitar uma oferta de vaga, a operação deverá exigir confirmação explícita do usuário e informar o efeito (liberação do horário ou confirmação do agendamento). |
 
 ---
 

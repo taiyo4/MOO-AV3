@@ -31,7 +31,7 @@ Etapas restantes e responsabilidades: [`01-planejamento/etapas-e-responsabilidad
 | Pasta | Conteúdo |
 |---|---|
 | [`01-planejamento/`](01-planejamento/) | Cronograma, equipe, decisões, atas e revisões das fases |
-| [`02-requisitos/`](02-requisitos/) | Visão, escopo, atores, glossário, RF-001 a RF-037, RNF-001 a RNF-012, RN, critérios de aceite, histórias, matriz inicial |
+| [`02-requisitos/`](02-requisitos/) | Visão, escopo, atores, glossário, RF-001 a RF-037, RNF-001 a RNF-024, RN, critérios de aceite, histórias, matriz inicial |
 | [`03-uml/`](03-uml/) | Diagramas (`.mmd`, `.drawio.xml`, `.pdf`) e especificações — inventário em [`03-uml/README.md`](03-uml/README.md) |
 | [`04-persistencia/`](04-persistencia/) | Análises de persistência e arquitetura (Fases 3 a 6); arquitetura, DER e modelo relacional na Fase 7 |
 | [`05-qualidade/`](05-qualidade/) | Plano ISO/IEC 25010, normas, registro de processo e revisões de qualidade por fase |
