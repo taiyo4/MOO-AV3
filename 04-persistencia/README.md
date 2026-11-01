@@ -4,8 +4,9 @@
 **SGBD de referência:** MySQL 8.0 / InnoDB / `utf8mb4` (DEC-003)
 **Baseline:** RF-001 a RF-037, RN-001 a RN-022, RNF-001 a RNF-012, UC-001 a UC-037, DEC-013 a DEC-030
 
-Esta pasta reúne a modelagem de dados da Fase 7 do Plano de Execução e as análises
-das Fases 4, 5 e 6 que a antecedem e justificam. Os diagramas de arquitetura
+Esta pasta reúne a modelagem de dados da Fase 7 do Plano de Execução, as análises
+das Fases 4, 5 e 6 que a antecedem e justificam e a verificação/encerramento das
+Fases 8 e 9. Os diagramas de arquitetura
 (pacotes, componentes e implantação) ficam em `03-uml/`, porque são diagramas UML
 e seguem a convenção de entrega daquela pasta.
 
@@ -21,6 +22,7 @@ e seguem a convenção de entrega daquela pasta.
 | DDL | [`ddl/schema-mysql.sql`](ddl/schema-mysql.sql) | 15 `CREATE TABLE` MySQL 8.0, `CHECK`s nomeados, colunas geradas, 3 triggers, carga inicial de perfis e permissões |
 | Análises das Fases 4–6 | [`analises/`](analises/) | revisões que antecedem a modelação, cada uma com a seção **"Revisão v2.0 — 29/10/2026"** |
 | Impacto nos requisitos | [`impacto-requisitos.md`](impacto-requisitos.md) | RF/RN/RNF × persistência, mapa de renumeração v1.0 → oficial, pendências e inconsistências |
+| Verificação e encerramento | [`analises/fase-08-verificacao-qualidade-persistencia.md`](analises/fase-08-verificacao-qualidade-persistencia.md) · [`analises/fase-09-encerramento-e-pitch.md`](analises/fase-09-encerramento-e-pitch.md) | censo do DDL, testes TDB-01…TDB-14, achados R8-01…R8-04, evidências CQ, texto das seções 25/26 e pontos técnicos do pitch |
 
 ### Diagramas de arquitetura (em `03-uml/`)
 
@@ -46,9 +48,10 @@ e seguem a convenção de entrega daquela pasta.
 ## Estado
 
 - **Fase 7 concluída** em 29/10/2026: DER-001, modelo relacional, dicionário de dados, mapeamento objeto-relacional, normalização, DDL e os três diagramas de arquitetura.
+- **Fase 8 concluída** em 30/10/2026: censo do DDL, revisão de PK/FK/UNIQUE/NOT NULL/N:N/integridade, verificação de PAC/CMP/IMP contra os 12 achados R7, completude do dicionário e do mapeamento, TDB-01 a TDB-14 e evidências CQ. As correções estão em `analises/fase-08-verificacao-qualidade-persistencia.md` §7.1 (artefatos da Fase 7 em **v1.1**; `impacto-requisitos.md` em **v2.1**).
+- **Fase 9 concluída** em 31/10/2026: versões finais (PAC-001 e CMP-001 em **v1.1** com o par `ServicoAgenda ↔ ServicoListaEspera` e o componente `ServicoHash`), conferência final dicionário × mapeamento × DDL, texto-base das seções 25 e 26 e pontos técnicos do pitch em `analises/fase-09-encerramento-e-pitch.md`.
 - Os diagramas são entregues em `.mmd` (fonte da verdade) e `.drawio.xml` (editável). A **exportação em PDF está pendente**: depende do diagrams.net, que não estava disponível no ambiente e que o grupo decidiu não instalar. Ver a nota em [`../03-uml/README.md`](../03-uml/README.md).
 - O DDL **não foi executado**: não há MySQL no ambiente. A validação foi por revisão textual e por verificação de que o arquivo é sintaticamente consistente com MySQL 8.0.
-- **Fases 8 e 9** (verificação de qualidade e consolidação) ainda não foram executadas.
 
 ## Convenções
 
