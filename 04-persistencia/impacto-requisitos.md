@@ -1,7 +1,7 @@
 # Impacto dos Requisitos em Persistência e Arquitetura (Integrante 4)
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
-**Versão:** v2.0 · **Data:** 29/10/2026
+**Versão:** v2.1 · **Data:** 30/10/2026 (conferência da Fase 8)
 **Fase do plano:** Fase 3 (documento original) com **revisão de alinhamento** feita na entrada da Fase 7
 **Baseline de requisitos:** `02-requisitos/requisitos-funcionais.md` (**RF-001 a RF-037**), `02-requisitos/regras-negocio.md` (**RN-001 a RN-022**), `02-requisitos/requisitos-nao-funcionais.md` (**RNF-001 a RNF-012**), `02-requisitos/criterios-aceite.md` (**CA-RF-001 a CA-RF-037**) e `01-planejamento/decisoes.md` (**DEC-001 a DEC-030**).
 
@@ -49,7 +49,7 @@ Legenda de impacto: **Alto** = exige estrutura de dados própria ou restrição 
 | RF-022 | Consultar informações do próprio cadastro | Médio | Projeção por `paciente.id_usuario` do próprio solicitante (RN-004) |
 | RF-023 | Cadastrar disponibilidade do psicólogo | Alto | `disponibilidade` como **slot discreto** — `data`, `hora_inicio`, `duracao_minutos` (DEC-018); pertence à `agenda` do próprio psicólogo (RN-011) |
 | RF-024 | Consultar horários disponíveis | Alto | Consulta de slots **livres**: sem agendamento `CONFIRMADO` e sem oferta aberta (RN-005, RN-010, DEC-027); exige índice por `(id_agenda, data, hora_inicio)` |
-| RF-025 | Solicitar agendamento | Alto | `INSERT` em `agendamento` **já com `situacao = 'CONFIRMADO'`** (DEC-016, DEC-017); reserva do slot na **mesma transação** (TRS-03, DEP-01) |
+| RF-025 | Solicitar agendamento | Alto | `INSERT` em `agendamento` **já com `situacao = 'CONFIRMADO'`** (DEC-016, DEC-017); reserva do slot na **mesma transação** (TRS-01, DEP-01) |
 | RF-026 | Confirmar agendamento automaticamente | Alto | Não há transição de estado: a confirmação é a própria criação (DEC-016). Exige exclusividade do slot por índice único (RN-005) |
 | RF-027 | Cancelar agendamento | Alto | Transição `CONFIRMADO` → `CANCELADO` com `data_cancelamento`, `id_usuario_cancelamento` e auditoria (RN-009, RN-012, DEC-024, DEC-028); libera o slot e dispara a oferta à fila (RF-035) |
 | RF-028 | Consultar os próprios agendamentos | Médio | Consulta por `agendamento.id_paciente` do solicitante; projeção da `situacao` |
@@ -57,13 +57,13 @@ Legenda de impacto: **Alto** = exige estrutura de dados própria ou restrição 
 | RF-030 | Registrar conceitualmente um atendimento | Alto | `INSERT` em `atendimento` com FK **obrigatória** para `agendamento` (RN-017 proposta); a mesma transação muda `agendamento.situacao` para `REALIZADO` (DEC-030) |
 | RF-031 | Consultar histórico permitido de atendimentos | Médio | Consulta por `(id_psicologo, id_paciente)` mediada por vínculo (RN-003); `contexto_sessao` é texto curto, sem prontuário (DEC-008) |
 | RF-032 | Registrar evento de auditoria | Alto | `registro_auditoria` **append-only** (RN-014), com `data_hora`, `id_usuario`, `operacao`, `situacao_anterior` e `situacao_nova` (DEC-024) |
-| RF-033 | Enviar notificação por e-mail | Médio | **Sem tabela** (DEC-022): a fronteira é a interface `ServicoEnvioMensagem`. Exige `usuario.email` como destino; a falha vira registro de auditoria com `operacao = 'FALHA_ENVIO_EMAIL'` (DEC-029) |
+| RF-033 | Enviar notificação por e-mail | Médio | **Sem tabela** (DEC-022): a fronteira é a interface `ServicoEnvioMensagem`. Exige `psicologo.email_contato` ou `paciente.email_contato` como destino (INC-16); a falha vira registro de auditoria com `operacao = 'FALHA_ENVIO_EMAIL'` (DEC-029) |
 | RF-034 | Entrar na lista de espera | Alto | `solicitacao_espera` com `data_hora_entrada` (ordem da fila), `situacao` e vínculo obrigatório (DEC-027) |
 | RF-035 | Ofertar horário liberado à lista de espera | Alto | Transição `AGUARDANDO` → `OFERTADA` com `id_disponibilidade`, `prazo_aceite` e reserva do slot durante o prazo (DEC-027, LAC-15) |
 | RF-036 | Responder à oferta de vaga | Alto | Transições `OFERTADA` → `ACEITA`/`RECUSADA`/`EXPIRADA`, com `data_hora_encerramento` e `id_agendamento` quando houver aceite |
 | RF-037 | Registrar não comparecimento | Alto | Transição `CONFIRMADO` → `NAO_COMPARECEU` com `data_nao_comparecimento` e auditoria (DEC-025, DEC-024) |
 
-**Resultado:** 24 RF com impacto **Alto**, 12 com impacto **Médio** e 1 sem estrutura própria (RF-002). Nenhum RF fica órfão de persistência: todos aparecem no DER ou em uma decisão explícita de **não persistir** (RF-002 e RF-033).
+**Resultado:** 22 RF com impacto **Alto**, 13 com impacto **Médio** e 2 sem estrutura própria (RF-002 e RF-033). Nenhum RF fica órfão de persistência: todos aparecem no DER ou em uma decisão explícita de **não persistir** (RF-002 e RF-033).
 
 ---
 
@@ -75,13 +75,13 @@ Legenda de impacto: **Alto** = exige estrutura de dados própria ou restrição 
 | RN-002 | Senha nunca em texto puro | Apenas `usuario.hash_senha`; **não existe** coluna de senha original nem de senha recuperável |
 | RN-003 | Psicólogo só acessa paciente vinculado | `vinculo` como **filtro obrigatório** das consultas profissionais; `situacao = 'ATIVO'` e janela `data_inicio`/`data_fim` (DEC-015) |
 | RN-004 | Paciente só acessa o próprio cadastro | Consulta por `paciente.id_usuario = solicitante.id`; nunca por identificador vindo do cliente |
-| RN-005 | Um horário não tem dois agendamentos ativos | Índice único sobre o slot ocupado (`uk_agendamento_slot_ativo`) + `SELECT … FOR UPDATE` na linha de `disponibilidade` (TRS-03) |
+| RN-005 | Um horário não tem dois agendamentos ativos | Índice único sobre o slot ocupado (`uk_agendamento_slot_ativo`) + `SELECT … FOR UPDATE` na linha de `disponibilidade` (TRS-01) |
 | RN-006 | Agendamento cancelado não pode ser realizado | Guarda de transição: `atendimento` só é criado a partir de `agendamento.situacao = 'CONFIRMADO'`; `CHECK` impede `REALIZADO` sem atendimento correspondente |
-| RN-007 | Atendimento exige psicólogo e paciente válidos | `atendimento` com FKs obrigatórias e **FK composta** para o par do `agendamento` (ver §4.3 de `modelo-relacional.md`) |
+| RN-007 | Atendimento exige psicólogo e paciente válidos | `atendimento` com FKs obrigatórias e **FK composta** para o par do `agendamento` (ver §4.13 de `modelo-relacional.md`) |
 | RN-008 | Só o Administrador autorizado consulta auditoria | Controle de acesso na aplicação + ausência de `UPDATE`/`DELETE` para o usuário da aplicação |
 | RN-009 | Alteração de situação preserva rastreabilidade | Toda transição grava `registro_auditoria` na **mesma transação** (RN-015 proposta) |
-| RN-010 | Solicitação só em horário disponível | Slot livre verificado na transação de reserva, não só na consulta (TRS-06) |
-| RN-011 | Disponibilidade só na própria agenda | `disponibilidade.id_agenda` → `agenda.id_psicologo`; a aplicação compara com o solicitante, e o `CHECK` de coerência é feito pela FK composta descrita em `modelo-relacional.md` §4.4 |
+| RN-010 | Solicitação só em horário disponível | Slot livre verificado na transação de reserva, não só na consulta (TRS-01) |
+| RN-011 | Disponibilidade só na própria agenda | `disponibilidade.id_agenda` → `agenda.id_psicologo`; a aplicação compara com o solicitante, e o `CHECK` de coerência é feito pela FK composta descrita em `modelo-relacional.md` §4.11 |
 | RN-012 | Cancelamento só antes do horário, por paciente titular ou psicólogo | Guarda temporal na aplicação (compara `data_hora_inicio` do slot com o instante do cancelamento) + `id_usuario_cancelamento` obrigatório quando `situacao = 'CANCELADO'` |
 | RN-013 | Confirmação automática | `agendamento.situacao` nasce `'CONFIRMADO'`; não existe valor `SOLICITADO` no `CHECK` (DEC-016) |
 | RN-014 | Auditoria imutável | Tabela **append-only**: sem `UPDATE`/`DELETE` para a conta de aplicação; `ON DELETE RESTRICT` na FK para `usuario` |
@@ -89,7 +89,7 @@ Legenda de impacto: **Alto** = exige estrutura de dados própria ou restrição 
 | **RN-016** *(proposta I4)* | No máximo um vínculo vigente por par psicólogo–paciente | Coluna gerada `vinculo.vigente` + `UNIQUE (id_psicologo, id_paciente, vigente)` |
 | **RN-017** *(proposta I4)* | Atendimento referencia o agendamento e não pode vir de cancelado | `atendimento.id_agendamento NOT NULL UNIQUE` + FK `ON DELETE RESTRICT` |
 | **RN-018** *(proposta I4)* | Agendamento referencia o slot efetivamente ocupado, do próprio psicólogo | FK composta `(id_disponibilidade, id_psicologo)` → `disponibilidade (id, id_psicologo)` |
-| **RN-019** *(proposta I4)* | Par do atendimento existe como vínculo autorizado | FK composta `(id_psicologo, id_paciente)` → `agendamento (id_psicologo, id_paciente)`; o vínculo é validado na aplicação (RN-003) |
+| **RN-019** *(proposta I4)* | Par do atendimento existe como vínculo autorizado | FK composta `(id_agendamento, id_psicologo, id_paciente)` → `agendamento (id, id_psicologo, id_paciente)`; o vínculo é validado na aplicação (RN-003) |
 | RN-020 | Situações do agendamento e transições válidas | `CHECK (situacao IN ('CONFIRMADO','CANCELADO','REALIZADO','NAO_COMPARECEU'))`; nenhuma transição a partir de situação terminal |
 | RN-021 | Oferta de horário da lista de espera | `solicitacao_espera` com `id_disponibilidade`, `situacao` e `prazo_aceite`; aceite reusa `agendamento.solicitar` |
 | RN-022 | Eventos notificados por e-mail | Nenhuma tabela (DEC-022); a falha é registrada em `registro_auditoria` (DEC-029) |
@@ -221,8 +221,8 @@ A matriz completa, com coluna, restrição e regra, está em [`dicionario-de-dad
 | **P-21** | Atributos descritivos mínimos de `psicologo` e `paciente` e o **e-mail de contato** de `usuario` | O CLS-001 não fixa atributos escalares (PC-03/PC-04/PC-05). O DER usa o mínimo necessário e registra a origem em `dicionario-de-dados.md` §7 | Integrante 3 (modelo) e Integrante 1 (requisitos) |
 | **INC-14** | Notação da DEC-019 diverge da convenção de leitura do repositório | `Usuario "0..1" — Perfil "1"`, lida pela convenção do `03-uml/README.md`, significa *um perfil atende no máximo uma conta*, o oposto de "um perfil pode ser compartilhado por várias contas". O DER adota a **leitura semântica** (1 perfil por conta, N contas por perfil) e registra a divergência | Integrante 1 e 3 |
 | **INC-15** | `Agendamento.horario` × slot discreto | Com DEC-018, o tempo é atributo do slot; manter `horario` no agendamento criaria dependência transitiva. O DER trata `horario` como **projeção derivada** (ver `mapeamento-objeto-relacional.md` §4) | Integrante 3 |
-| **INC-16** | O modelo de classes não tem atributo de e-mail de contato | RF-033 exige destinatário; sem coluna, o envio não tem para onde ir. O DER cria `usuario.email` e registra a proposta | Integrante 3 e 1 |
-| **INC-17** | `OfertaVaga` como classe (`03-uml/README.md`, P8) × `OFERTADA` como situação de `SolicitacaoEspera` (SEQ-004) | Duas modelagens concorrentes para o mesmo conceito. O DER adota a **situação** (uma tabela), e a alternativa com tabela própria está descrita em `modelo-relacional.md` §4.6 | Integrante 3 |
+| **INC-16** | O modelo de classes não tem atributo de e-mail de contato | RF-033 exige destinatário; sem coluna, o envio não tem para onde ir. O DER cria `psicologo.email_contato` e `paciente.email_contato` (não `usuario.email`: o destinatário é a pessoa do cadastro, que pode existir sem conta — DEC-021) | Integrante 3 e 1 |
+| **INC-17** | `OfertaVaga` como classe (`03-uml/README.md`, P8) × `OFERTADA` como situação de `SolicitacaoEspera` (SEQ-004) | Duas modelagens concorrentes para o mesmo conceito. O DER adota a **situação** (uma tabela), e a alternativa com tabela própria está descrita em `modelo-relacional.md` §5.3 | Integrante 3 |
 
 As pendências **P-01 a P-19** da v1.0 e das Fases 5 e 6 estão fechadas pelas decisões de 25 e 28/10/2026, com a seguinte correspondência: P-01→DEC-016/017, P-02→DEC-011/028, P-03→DEC-016, P-04→DEC-014, P-05→DEC-018, P-06→DEC-019, P-07→DEC-020, P-08→mantida como catálogo simples (INC-09), P-09→DEC-009/022, P-10→DEC-010/027, P-11→DEC-021, P-12→DEC-015, P-13→DEC-025, P-14→DEC-016 (só a partir de `CONFIRMADO`), P-15→DEC-029 (falha não desfaz; retry operacional), P-16→mantida como requisito de implementação (RNF-017), P-17→DEC-020, P-18→DEC-024 (alternativa A), P-19→`data_hora` gerado pelo servidor.
 

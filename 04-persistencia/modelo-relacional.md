@@ -2,7 +2,7 @@
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
 **Fase do plano:** Fase 7 — Persistência
-**Versão:** v1.0 · **Data:** 29/10/2026
+**Versão:** v1.1 · **Data:** 30/10/2026 (conferência da Fase 8)
 **Deriva de:** [`der/der-001-logico.md`](der/der-001-logico.md) (DER-001) e [`impacto-requisitos.md`](impacto-requisitos.md)
 **SGBD de referência:** MySQL 8.0 (DEC-003)
 **Implementação:** [`ddl/schema-mysql.sql`](ddl/schema-mysql.sql) · **Colunas e domínios:** [`dicionario-de-dados.md`](dicionario-de-dados.md)
@@ -132,6 +132,7 @@ INC-09 permanece aberta quanto a **quem** mantém o catálogo; a estrutura não 
 | PK | `pk_psicologo` | `(id)` |
 | UK | `uk_psicologo_usuario` | `(id_usuario)` |
 | FK | `fk_psicologo_usuario` | `id_usuario → usuario(id)` |
+| CK | `ck_psicologo_nome` | `CHAR_LENGTH(TRIM(nome)) > 0` |
 | CK | `ck_psicologo_email` | `email_contato IS NULL OR email_contato LIKE '%_@_%._%'` |
 | NN | — | `nome`, `criado_em`, `atualizado_em` |
 
@@ -156,6 +157,7 @@ Associativa pura do N:N A05. Não há mínimo obrigatório de áreas (a especifi
 | UK | `uk_paciente_usuario` | `(id_usuario)` |
 | FK | `fk_paciente_usuario` | `id_usuario → usuario(id)` |
 | CK | `ck_paciente_situacao` | `situacao_cadastral IN ('ATIVO','SUSPENSO','INATIVO')` |
+| CK | `ck_paciente_nome` | `CHAR_LENGTH(TRIM(nome)) > 0` |
 | CK | `ck_paciente_email` | `email_contato IS NULL OR email_contato LIKE '%_@_%._%'` |
 | NN | — | `nome`, `situacao_cadastral`, `criado_em`, `atualizado_em` |
 
@@ -269,7 +271,7 @@ Associativa pura do N:N A05. Não há mínimo obrigatório de áreas (a especifi
 | gen | `oferta_aberta` | `CASE WHEN situacao = 'OFERTADA' THEN 1 ELSE NULL END` |
 | NN | — | `id_psicologo`, `id_paciente`, `id_disponibilidade`, `situacao`, `data_hora_entrada`, `atualizado_em` |
 
-**RN-023 (ordem da fila).** A posição é determinada por `ORDER BY data_hora_entrada, id` sobre as linhas com `fila_ativa = 1`. Não existe coluna `posicao`: uma posição materializada exigiria reescrever toda a fila a cada entrada, saída ou expiração — e ficaria inconsistente sob concorrência. `data_hora_entrada` é imutável (§8 do DDL).
+**RN-023 (ordem da fila).** A posição é determinada por `ORDER BY data_hora_entrada, id` sobre as linhas com `fila_ativa = 1`. Não existe coluna `posicao`: uma posição materializada exigiria reescrever toda a fila a cada entrada, saída ou expiração — e ficaria inconsistente sob concorrência. `data_hora_entrada` é imutável (§17 do DDL).
 
 **RN-024 (uma oferta aberta por slot).** `oferta_aberta` vale `1` só em `OFERTADA`; `uk_se_oferta` impede duas ofertas simultâneas para o mesmo slot. `uk_se_fila` impede que o mesmo paciente tenha duas entradas ativas para o mesmo slot (dupla entrada por duplo clique).
 
@@ -293,7 +295,7 @@ Associativa pura do N:N A05. Não há mínimo obrigatório de áreas (a especifi
 
 **DEC-029.** A falha de envio é uma linha com `operacao = 'FALHA_ENVIO_EMAIL'` e `resultado = 'FALHA'`. A operação de origem **já foi confirmada** e não é revertida.
 
-**RN-014.** A tabela é *append-only*: nenhuma FK aponta para ela e o `DELETE` é recusado (§8 do DDL). `id_entidade` é polimórfico **de propósito** — a trilha precisa registrar operações sobre entidades que podem ser excluídas do catálogo, e uma FK por tabela auditada exigiria uma coluna por entidade. O preço é que a integridade referencial de `id_entidade` é semântica, não declarada; está registrado como decisão consciente.
+**RN-014.** A tabela é *append-only*: nenhuma FK aponta para ela e o `DELETE` é recusado (§17 do DDL). `id_entidade` é polimórfico **de propósito** — a trilha precisa registrar operações sobre entidades que podem ser excluídas do catálogo, e uma FK por tabela auditada exigiria uma coluna por entidade. O preço é que a integridade referencial de `id_entidade` é semântica, não declarada; está registrado como decisão consciente.
 
 ---
 
@@ -403,9 +405,23 @@ Além das chaves, os índices abaixo cobrem as consultas de RF-024, RF-028, RF-0
 | `ix_atendimento_par` | `atendimento` | `(id_psicologo, id_paciente, data_hora_registro)` | RF-031 |
 | `ix_se_slot` | `solicitacao_espera` | `(id_disponibilidade, situacao, data_hora_entrada)` | RF-035 (próximo da fila) |
 | `ix_se_psicologo` | `solicitacao_espera` | `(id_psicologo, situacao, data_hora_entrada)` | RF-034 (posição) |
+| `ix_se_paciente` | `solicitacao_espera` | `(id_paciente, situacao, data_hora_entrada)` | consultas da fila por paciente (RF-034) |
 | `ix_auditoria_data` | `registro_auditoria` | `(data_hora)` | RF-013 |
 | `ix_auditoria_usuario` | `registro_auditoria` | `(id_usuario, data_hora)` | RF-013 |
 | `ix_auditoria_operacao` | `registro_auditoria` | `(operacao, data_hora)` | RF-013 |
+
+**Índices de suporte a FK e a consultas administrativas** (presentes no DDL e contados no censo da Fase 8; o MySQL exige um índice sobre as colunas de toda FK — quando nenhum dos índices acima cobre, o DDL declara um):
+
+| Índice | Tabela | Colunas | Propósito |
+|---|---|---|---|
+| `ix_pp_permissao` | `perfil_permissao` | `(id_permissao)` | FK e revogação por permissão (RF-008) |
+| `ix_pa_area` | `psicologo_area_atuacao` | `(id_area_atuacao)` | FK (a PK composta já cobre a FK do psicólogo) |
+| `ix_usuario_perfil` | `usuario` | `(id_perfil)` | FK; painel por perfil |
+| `ix_paciente_situacao` | `paciente` | `(situacao_cadastral)` | filtro administrativo por situação (RF-012) |
+| `ix_agendamento_cancelamento` | `agendamento` | `(id_usuario_cancelamento)` | FK; auditoria de cancelamento |
+| `uk_agenda_id_psicologo` | `agenda` | `(id, id_psicologo)` | índice único exclusivo para a FK composta de `disponibilidade` |
+
+Os índices de FK composta de `disponibilidade`, `agendamento`, `atendimento` e `solicitacao_espera` são cobertos pelos `uk_`-chaves candidatas do início de cada tabela (§4.11, §4.12, §4.13, §4.14).
 
 **Índices que não existem de propósito:** nenhum índice em `hash_senha` (nunca é buscado), nenhum índice em `contexto_sessao` (não é pesquisável), nenhum índice de texto livre.
 

@@ -2,7 +2,7 @@
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
 **Fase do plano:** Fase 7 — Persistência
-**Versão:** v1.0 · **Data:** 29/10/2026
+**Versão:** v1.1 · **Data:** 30/10/2026 (conferência da Fase 8)
 **Deriva de:** CLS-001 ([`03-uml/Classes/`](../03-uml/Classes/)) e DER-001 ([`der/der-001-logico.md`](der/der-001-logico.md))
 
 ---
@@ -220,7 +220,7 @@ Cada agregado tem um repositório com interface no domínio e implementação na
 | `IRepositorioSolicitacaoEspera` | `proximoDaFila`, `porPaciente`, `salvar`, `alterarSituacao` | RF-034 a RF-036 |
 | `IRepositorioAuditoria` | `registrar`, `consultar` | RF-013, RF-032 |
 
-**`bloquearSlot`** é a operação que executa `SELECT … FOR UPDATE` (TRS-01/TRS-03). Ela existe no repositório de agenda porque é ali que a serialização do slot acontece — não no serviço.
+**`bloquearSlot`** é a operação que executa `SELECT … FOR UPDATE` (TRS-01 e TRS-04). Ela existe no repositório de agenda porque é ali que a serialização do slot acontece — não no serviço.
 
 ---
 

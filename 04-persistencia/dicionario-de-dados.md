@@ -2,7 +2,7 @@
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
 **Fase do plano:** Fase 7 — Persistência
-**Versão:** v1.0 · **Data:** 29/10/2026
+**Versão:** v1.1 · **Data:** 30/10/2026 (conferência da Fase 8)
 **Deriva de:** [`modelo-relacional.md`](modelo-relacional.md) · **Implementação:** [`ddl/schema-mysql.sql`](ddl/schema-mysql.sql)
 **SGBD:** MySQL 8.0 (DEC-003)
 
@@ -200,7 +200,7 @@ Slot ofertado pelo profissional (RF-023, RF-024). **Origem:** `Disponibilidade`.
 | `duracao_minutos` | `SMALLINT UNSIGNED` | não | — | `BETWEEN 5 AND 480` | DEC-018 |
 | `criado_em` | `DATETIME` | não | `CURRENT_TIMESTAMP` | — | — |
 
-**`id_psicologo` é desnormalizado de propósito.** Ver [`normalizacao.md`](normalizacao.md) §4: a FK composta `(id_agenda, id_psicologo) → agenda(id, id_psicologo)` impede divergência.
+**`id_psicologo` é desnormalizado de propósito.** Ver [`normalizacao.md`](normalizacao.md) §6: a FK composta `(id_agenda, id_psicologo) → agenda(id, id_psicologo)` impede divergência.
 
 ### 3.12 `agendamento`
 
@@ -300,11 +300,14 @@ Não é `CHECK` (o catálogo cresce com o sistema); é **dado** e a aplicação 
 
 | `operacao` | `entidade` | Situações registradas | Origem |
 |---|---|---|---|
+| `LOGIN_CONCEDIDO` | `usuario` | — | RF-001 (SEQ-001 #7) |
+| `LOGIN_NEGADO` | `usuario` | — | RF-001, RN-001 (SEQ-001, tentativa recusada) |
 | `USUARIO_CRIADO` | `usuario` | — | RF-003 |
 | `USUARIO_ATIVADO` | `usuario` | `BLOQUEADO`/`INATIVO` → `ATIVO` | RF-005 |
 | `USUARIO_BLOQUEADO` | `usuario` | `ATIVO` → `BLOQUEADO` | RF-006 |
 | `USUARIO_INATIVADO` | `usuario` | → `INATIVO` | DEC-013 |
 | `PERFIL_ALTERADO` | `usuario` | — | RF-007 |
+| `PSICOLOGO_CRIADO` | `psicologo` | — | RF-014 |
 | `PACIENTE_CRIADO` | `paciente` | — | RF-018 |
 | `PACIENTE_SITUACAO_ALTERADA` | `paciente` | `ATIVO`/`SUSPENSO`/`INATIVO` | RF-020, DEC-014 |
 | `VINCULO_CRIADO` | `vinculo` | — → `ATIVO` | RF-021 |

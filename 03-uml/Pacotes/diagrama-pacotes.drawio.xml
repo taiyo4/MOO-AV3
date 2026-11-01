@@ -203,6 +203,22 @@
         <mxCell id="e40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="BOOT" target="MENSAGERIA">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="e41" value="oferta apos cancelamento (UC-035)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="FILA">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="235" />
+              <mxPoint x="1040" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e42" value="aceite reaproveita agendar (UC-036)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="AGENDA">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="325" />
+              <mxPoint x="820" y="325" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

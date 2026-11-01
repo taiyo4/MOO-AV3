@@ -47,6 +47,9 @@
         <mxCell id="EMA" value="AdaptadorEmail&lt;br&gt;traduz a mensagem para SMTP&lt;br&gt;implementa ServicoEnvioMensagem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="560" y="410" width="340" height="80" as="geometry" />
         </mxCell>
+        <mxCell id="SEG" value="ServicoHash&lt;br&gt;gera e confere hash de senha&lt;br&gt;implementa ServicoHashSenha" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="940" y="410" width="340" height="80" as="geometry" />
+        </mxCell>
         <mxCell id="IREP" value="interface&lt;br&gt;IRepositorio*&lt;br&gt;10 interfaces" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="180" y="530" width="340" height="110" as="geometry" />
         </mxCell>
@@ -148,6 +151,25 @@
         </mxCell>
         <mxCell id="e29" value="falha de envio -&gt; FALHA_ENVIO_EMAIL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="FIL" target="AUD">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="SEG" target="IHASH">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" value="vaga liberada dispara ofertarVaga (UC-035)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGD" target="FIL">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="940" y="190" />
+              <mxPoint x="1260" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e32" value="aceite reaproveita agendar (UC-036)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FIL" target="AGD">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1260" y="290" />
+              <mxPoint x="940" y="290" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

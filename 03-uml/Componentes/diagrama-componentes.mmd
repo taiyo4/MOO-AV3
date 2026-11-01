@@ -1,6 +1,7 @@
 %% =====================================================================
 %% CMP-001 - Diagrama de componentes - FASE 7
 %% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Versao: v1.1 - 31/10/2026 (Fase 8: componente ServicoHash e par AGENDA<->FILA)
 %% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
 %% formato editavel.
 %%
@@ -12,6 +13,12 @@
 %%     de e-mail responde com resultado e a auditoria registra FALHA;
 %%   - os repositorios sao interfaces do dominio realizadas pelo
 %%     componente de persistencia (DIP);
+%%   - o ServicoHash realiza a interface ServicoHashSenha (o PAC-001
+%%     ja mostrava a realizacao no pacote seguranca; aqui estava faltando);
+%%   - ServicoAgenda e ServicoListaEspera chamam um ao outro nos dois
+%%     fluxos aprovados: oferta apos cancelamento (UC-035) e aceite que
+%%     reaproveita agendar (UC-036). O par fica DENTRO do pacote
+%%     aplicacao; nao existe ciclo entre pacotes (CQ-FLE-03).
 %%   - BancoDados e ServicoExternoEmail sao sistemas externos.
 %%
 %% Notacao:
@@ -37,6 +44,7 @@ flowchart TB
         TMP["componente: ServicoTempo<br/>RN-012, DEC-027"]
         PER["componente: Persistencia<br/>implementa os repositorios<br/>acesso ao MySQL 8.0"]
         EMA["componente: AdaptadorEmail<br/>traduz a mensagem para SMTP"]
+        SEG["componente: ServicoHash<br/>gera e confere hash de senha"]
 
         IMSG(["interface: ServicoEnvioMensagem<br/>enviar(destinatario, assunto, corpo)<br/>resultado: SUCESSO ou FALHA"])
         IHASH(["interface: ServicoHashSenha<br/>gerar(segredo), verificar(segredo, hash)"])
@@ -75,8 +83,12 @@ flowchart TB
 
     PER ..> IREP
     EMA ..> IMSG
+    SEG ..> IHASH
     PER --> DB
     EMA --> EXTEMAIL
+
+    AGD -->|"vaga liberada dispara ofertarVaga (UC-035)"| FIL
+    FIL -->|"aceite reaproveita agendar (UC-036)"| AGD
 
     AGD -.->|"falha de envio vira FALHA_ENVIO_EMAIL"| AUD
     FIL -.->|"falha de envio vira FALHA_ENVIO_EMAIL"| AUD

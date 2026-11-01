@@ -1,6 +1,7 @@
 %% =====================================================================
 %% PAC-001 - Diagrama de pacotes - FASE 7
 %% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Versao: v1.1 - 31/10/2026 (Fase 8: par AGENDA<->FILA em UC-035/UC-036)
 %% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
 %% formato editavel.
 %%
@@ -90,6 +91,9 @@ flowchart TB
     CADASTRO --> UOW
     AGENDA --> UOW
     FILA --> UOW
+
+    AGENDA -->|"oferta apos cancelamento (UC-035)"| FILA
+    FILA -->|"aceite reaproveita agendar (UC-036)"| AGENDA
 
     PERSISTENCIA ..> REPOS
     MENSAGERIA ..> FRONTEIRA

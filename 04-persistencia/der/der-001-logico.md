@@ -2,7 +2,7 @@
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
 **Fase do plano:** Fase 7 — Persistência
-**Versão:** v1.0 · **Data:** 29/10/2026
+**Versão:** v1.1 · **Data:** 30/10/2026 (conferência da Fase 8)
 **SGBD de referência:** MySQL 8.0 (DEC-003)
 **Artefatos deste diagrama:**
 
@@ -134,7 +134,7 @@ Três regras de negócio exigem que duas colunas de tabelas diferentes "combinem
 | RN-011 — o slot pertence à agenda do próprio psicólogo | `agenda` declara `UNIQUE (id, id_psicologo)`; `disponibilidade` declara `FOREIGN KEY (id_agenda, id_psicologo) REFERENCES agenda (id, id_psicologo)` |
 | RN-017/RN-019 — psicólogo e paciente do atendimento são os do agendamento | `agendamento` declara `UNIQUE (id, id_psicologo, id_paciente)`; `atendimento` declara `FOREIGN KEY (id_agendamento, id_psicologo, id_paciente) REFERENCES agendamento (id, id_psicologo, id_paciente)` |
 
-**Custo declarado.** Para que a FK composta exista, `disponibilidade` repete `id_psicologo` (já derivável de `agenda`) e `atendimento` repete `id_psicologo` e `id_paciente` (já deriváveis de `agendamento`). É **desnormalização controlada**: a coluna repetida não pode divergir, porque a FK composta a amarra à origem. O ganho é que RN-011, RN-017, RN-018 e RN-019 deixam de depender de código de aplicação. A análise está em [`normalizacao.md`](../normalizacao.md) §4.
+**Custo declarado.** Para que a FK composta exista, `disponibilidade` repete `id_psicologo` (já derivável de `agenda`) e `atendimento` repete `id_psicologo` e `id_paciente` (já deriváveis de `agendamento`). É **desnormalização controlada**: a coluna repetida não pode divergir, porque a FK composta a amarra à origem. O ganho é que RN-011, RN-017, RN-018 e RN-019 deixam de depender de código de aplicação. A análise está em [`normalizacao.md`](../normalizacao.md) §6.
 
 ### 4.5 Diagrama
 
@@ -164,9 +164,9 @@ O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As 
 | RN-005 — um slot não tem dois agendamentos ativos | `UNIQUE (slot_ativo)` em `agendamento`, com `slot_ativo = id_disponibilidade` apenas quando `situacao = 'CONFIRMADO'` |
 | RN-016 — um vínculo vigente por par | `UNIQUE (id_psicologo, id_paciente, vigente)` em `vinculo` |
 | RN-024 — uma oferta aberta por slot | `UNIQUE (id_disponibilidade, oferta_aberta)` em `solicitacao_espera` |
-| RN-023 — fila sem reordenação | `data_hora_entrada` imutável (trigger opcional, §8 do DDL) |
+| RN-023 — fila sem reordenação | `data_hora_entrada` imutável (trigger opcional, §17 do DDL) |
 | RN-014 — auditoria imutável | `ON DELETE RESTRICT` + trigger que recusa `UPDATE`/`DELETE` (opcional) |
-| RN-017 — atendimento não vem de cancelado | `atendimento` só existe se `agendamento.situacao = 'REALIZADO'`; a transição é da aplicação, e a FK impede atendimento órfão |
+| RN-017 — atendimento não vem de cancelado | o `atendimento` só é criado quando `agendamento.situacao = 'CONFIRMADO'`, e a própria transição leva o agendamento para `REALIZADO`; a guarda de transição é da aplicação (TRS-05), e a FK impede atendimento órfão |
 | RN-020 — situações válidas | `CHECK` de domínio |
 | DEC-024 — situação anterior/nova | colunas `situacao_anterior` e `situacao_nova` em `registro_auditoria` |
 
@@ -179,7 +179,7 @@ O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As 
 | Sessão autenticada | DEC-020 | nenhuma tabela `sessao`; o token/estado é volátil |
 | Notificação / outbox | DEC-022 | nenhuma tabela `notificacao`; a fronteira é a interface `ServicoEnvioMensagem` |
 | Histórico de situação por entidade | DEC-024 | a trilha fica em `registro_auditoria` (`situacao_anterior`, `situacao_nova`), sem tabela `historico_situacao` |
-| `OfertaVaga` como entidade | INC-17 | a oferta é a situação `OFERTADA` de `solicitacao_espera`; alternativa descrita em [`modelo-relacional.md`](../modelo-relacional.md) §4.6 |
+| `OfertaVaga` como entidade | INC-17 | a oferta é a situação `OFERTADA` de `solicitacao_espera`; alternativa descrita em [`modelo-relacional.md`](../modelo-relacional.md) §5.3 |
 | Prontuário / conteúdo clínico | DEC-008 | `atendimento.contexto_sessao` é texto curto; não há tabela de evolução clínica |
 
 ---
