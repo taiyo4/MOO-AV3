@@ -90,7 +90,7 @@ Os critérios abaixo descrevem qualidades e restrições da solução modelada. 
 
 **Descrição:** Consultas de agenda deverão possuir tempo de resposta compatível com uso interativo normal.
 
-**Critério de verificação:** **VALOR A DEFINIR NA ETAPA DE QUALIDADE**; não há métrica de tempo ou carga definida nos documentos da Fase 2.
+**Critério de verificação:** inspeção no nível de modelagem, sem número de milissegundos inventado (a Fase 2 não definiu métrica de tempo ou carga): toda consulta de agenda acessa no máximo a agenda de um psicólogo e é atendida por índice sobre psicólogo e data na persistência (RNF-018). Uma meta numérica só entra se o grupo ou o cliente a definir.
 
 ## 6. Rastreabilidade e Qualidade da Modelagem
 
@@ -109,3 +109,103 @@ Os critérios abaixo descrevem qualidades e restrições da solução modelada. 
 **Descrição:** Os requisitos e modelos deverão manter termos consistentes com o glossário e respeitar as decisões e fronteiras de escopo aprovadas.
 
 **Critério de verificação:** A revisão cruzada deverá verificar nomenclatura, atores, escopo negativo, privacidade e ausência de contradição entre artefatos.
+
+## 7. Requisitos incorporados em 30/10/2026 (persistência, integração e interação)
+
+Os requisitos RNF-013 a RNF-022 foram propostos pelo Integrante 4 (`04-persistencia/impacto-requisitos.md` §4.2) e já sustentam o DDL da Fase 7; RNF-023 e RNF-024 respondem aos achados Q3-07 e Q3-08 do Integrante 5. O achado Q3-09 (concorrência) é atendido pelo RNF-016. Foram incorporados à baseline pelo Integrante 1 em 30/10/2026 e podem ser revistos pelo grupo.
+
+### RNF-013 — Integridade referencial com exclusão controlada
+
+**Categoria:** Confiabilidade
+
+**Descrição:** Nenhuma chave estrangeira deverá usar exclusão em cascata sobre dados históricos; a retirada de um registro deverá ocorrer por mudança de situação.
+
+**Critério de verificação:** Inspeção do DDL e tentativa de exclusão, que deverá falhar.
+
+### RNF-014 — Domínios fechados no banco
+
+**Categoria:** Confiabilidade
+
+**Descrição:** As situações e os enumerados deverão ter domínio fechado verificado no banco de dados.
+
+**Critério de verificação:** Inserção com valor fora do domínio deverá ser recusada.
+
+### RNF-015 — Atomicidade entre alteração de situação e auditoria
+
+**Categoria:** Confiabilidade
+
+**Descrição:** A alteração de situação e o seu registro de auditoria deverão ocorrer na mesma transação.
+
+**Critério de verificação:** Teste com falha injetada na auditoria: a alteração não deverá persistir.
+
+### RNF-016 — Unicidade do horário ativo
+
+**Categoria:** Confiabilidade
+
+**Descrição:** No máximo um agendamento `Confirmado` deverá ocupar cada horário ofertado (RN-005), inclusive sob acesso concorrente; a confirmação automática deverá revalidar a disponibilidade no momento da gravação (RN-013).
+
+**Critério de verificação:** Inserção concorrente do mesmo horário deverá violar a restrição.
+
+### RNF-017 — Imutabilidade da trilha de auditoria
+
+**Categoria:** Segurança
+
+**Descrição:** A conta da aplicação não deverá poder alterar nem excluir registros de auditoria.
+
+**Critério de verificação:** Teste de permissão no SGBD.
+
+### RNF-018 — Consulta de agenda sem varredura completa
+
+**Categoria:** Desempenho
+
+**Descrição:** Os índices deverão cobrir as consultas de RF-024, RF-028 e RF-029.
+
+**Critério de verificação:** Plano de execução sem varredura completa da tabela.
+
+### RNF-019 — Valor anterior e novo na auditoria
+
+**Categoria:** Rastreabilidade e Qualidade da Modelagem
+
+**Descrição:** O registro de auditoria de uma mudança de situação deverá conter a situação anterior e a nova (DEC-024).
+
+**Critério de verificação:** Registro de auditoria com os dois valores.
+
+### RNF-020 — Integridade temporal dos vínculos
+
+**Categoria:** Confiabilidade
+
+**Descrição:** A data de fim do vínculo deverá ser nula se e somente se o vínculo estiver ativo (DEC-015).
+
+**Critério de verificação:** Restrição de coerência no banco.
+
+### RNF-021 — Uma oferta aberta por horário da lista de espera
+
+**Categoria:** Confiabilidade
+
+**Descrição:** No máximo uma oferta de vaga aberta deverá existir por horário (DEC-027).
+
+**Critério de verificação:** Restrição de unicidade e teste concorrente.
+
+### RNF-022 — Ordem estável da fila
+
+**Categoria:** Confiabilidade
+
+**Descrição:** A data e hora de entrada na lista de espera não deverá mudar depois da criação (DEC-027).
+
+**Critério de verificação:** Tentativa de alteração deverá ser recusada.
+
+### RNF-023 — Troca de provedor de e-mail sem alterar o domínio
+
+**Categoria:** Compatibilidade
+
+**Descrição:** A plataforma deverá se comunicar com o Serviço Externo de E-mail por uma interface própria (`ServicoEnvioMensagem`, DEC-022), de modo que a troca do provedor não altere o domínio.
+
+**Critério de verificação:** Inspeção: o domínio e a aplicação dependem só da interface; o diagrama de componentes mostra o adaptador na infraestrutura.
+
+### RNF-024 — Confirmação explícita antes de ação irreversível
+
+**Categoria:** Capacidade de interação
+
+**Descrição:** Antes de cancelar um agendamento ou aceitar uma oferta de vaga, a operação deverá exigir confirmação explícita do usuário e informar o efeito (liberação do horário ou confirmação do agendamento).
+
+**Critério de verificação:** Inspeção dos fluxos de UC-027 e UC-036 e dos critérios CA-RF-027 e CA-RF-036.

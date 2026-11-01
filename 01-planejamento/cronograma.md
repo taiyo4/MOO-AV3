@@ -12,12 +12,13 @@ Projeto completamente pronto até 23/11/2026.
 
 | Etapa | Período | Objetivo |
 |---|---|---|
-| Organização inicial | 01/09 a 14/09 | Repositório, visão, escopo e domínio inicial |
-| Requisitos | 15/09 a 28/09 | RF, RNF, RN e critérios de aceite |
-| Casos de uso | 29/09 a 05/10 | Casos e especificações |
-| Modelo OO | 06/10 a 19/10 | Classes, objetos e relações |
-| Comportamento | 20/10 a 02/11 | Sequências, atividades, comunicação e estados |
-| Arquitetura e persistência | 03/11 a 09/11 | Arquitetura, DER e banco |
-| Qualidade e rastreabilidade | 10/11 a 16/11 | ISO, processo e matriz |
-| Consolidação | 17/11 a 23/11 | Dossiê, revisão e pitch |
+| Organização inicial | 05/10 a 07/10 | Repositório, papéis e planejamento |
+| Visão, escopo e contexto | 08/10 a 11/10 | Visão, escopo, contexto e glossário |
+| Requisitos | 12/10 a 18/10 | RF, RNF, RN e critérios de aceite |
+| Casos de uso | 19/10 a 25/10 | Casos e especificações |
+| Modelo OO | 26/10 a 01/11 | Domínio, classes e objetos |
+| Comportamento | 02/11 a 08/11 | Sequências, atividades, comunicação e estados |
+| Arquitetura e persistência | 09/11 a 13/11 | Arquitetura, DER e banco |
+| Qualidade e rastreabilidade | 14/11 a 18/11 | ISO, processo, testes conceituais e matriz |
+| Consolidação e entrega | 19/11 a 24/11 | Dossiê, revisão e pitch; congelar funcionalidades em 19/11 |
 | Entrega | 24/11 | Submissão final |

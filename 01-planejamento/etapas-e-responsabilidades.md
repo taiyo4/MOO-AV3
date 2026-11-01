@@ -22,27 +22,35 @@ Estado das decisões em 28/10/2026: nenhuma pendência PG aberta (DEC-027 a DEC-
 
 As decisões de 25 e 28/10/2026 ainda não chegaram aos diagramas. É a prioridade antes da Fase 7.
 
-| # | Item | Dono | Achados |
-|---|---|---|---|
-| P1 | Tirar `SOLICITADO` de EST-001, SEQ-002 e das seções 19, 21 e 24 (DEC-016) | 2 | Q6-01, INT-11 |
-| P2 | Trocar a guarda `[prazo]` por "antes do horário marcado" (DEC-011, DEC-028) | 2 | Q6-02 |
-| P3 | Notificação por e-mail deixa de ser condicional (DEC-009, DEC-029) | 2 | Q6-03, Q6-04 |
-| P4 | Casos de uso para RF-028 e RF-033 a RF-037; ator Serviço Externo de E-mail; `«extend»` da oferta ao cancelamento | 2 | Q4-03 a Q4-05, INT-07 |
-| P5 | Campo "Objetivo" e "RFs cobertos" nas especificações; IDs UC dos casos "demais" (DEC-026 pendente de aprovação) | 2, com 1 | Q4-01, Q4-02, Q4-08 |
-| P6 | Diagrama comportamental da lista de espera (SEQ-004) com os parâmetros da DEC-027 | 2 | Q6-05 |
-| P7 | Fechar `PENDENTE` nas multiplicidades do diagrama oficial de classes; tirar `SOLICITADO` do enumerado | 3 | Q5-01, Q5-02 |
-| P8 | Classes da lista de espera (`EntradaListaEspera`, `OfertaVaga`) e do registro de atendimento ligado ao agendamento (DEC-030) | 3 | Q5-05 |
-| P9 | Corrigir as justificativas OO/SOLID da seção 27 que não correspondem ao modelo; decidir a composição Agendamento–Atendimento; decidir se o cenário OBJ-002 entra no OBJ-001 | 3 | Q5-09, Q5-10 |
-| P10 | Operações duplicadas (`adicionarDisponibilidade`/`cadastrarDisponibilidade`, `estaAutorizado`/`estaAtivo`) | 3 | Q5-09 |
-| P11 | Alinhar a numeração de RF de `04-persistencia/impacto-requisitos.md` com a baseline; refletir lista de espera, `Não compareceu` e e-mail na persistência | 4 | Q3-11, INT-06 |
-| P12 | Corrigir os textos antigos (CTX-001, atores, README de requisitos) | 1 e 2 | INT-03 a INT-05 |
-| P13 | Aplicar as DEC aprovadas em 28/10/2026: situações de conta, paciente e vínculo (013, 014, 015), slot de disponibilidade (018), cardinalidades (019, 021), sessão fora do domínio (020), `ServicoEnvioMensagem` como único nome (022), auditoria por serviço (024) e numeração UC-0RF/CT-0RF (026) | 2 (UC, nomes), 3 (classes), 4 (persistência), 1 (IDs) | — |
+| # | Item | Dono | Achados | Situação em 30/10/2026 |
+|---|---|---|---|---|
+| P1 | Tirar `SOLICITADO` de EST-001, SEQ-002 e das seções 19, 21 e 24 (DEC-016) | 2 | Q6-01, INT-11 | Feito (I2, 29/10): EST-001 com 4 situações; falta o desenho oficial incorporar |
+| P2 | Trocar a guarda `[prazo]` por "antes do horário marcado" (DEC-011, DEC-028) | 2 | Q6-02 | Feito (I2, 29/10) |
+| P3 | Notificação por e-mail deixa de ser condicional (DEC-009, DEC-029) | 2 | Q6-03, Q6-04 | Feito (I2, 29/10) |
+| P4 | Casos de uso para RF-028 e RF-033 a RF-037; ator Serviço Externo de E-mail; `«extend»` da oferta ao cancelamento | 2 | Q4-03 a Q4-05, INT-07 | Feito nas especificações (UC-028, UC-033 a UC-037, proposta I2); falta o desenho oficial dos casos de uso |
+| P5 | Campo "Objetivo" e "RFs cobertos" nas especificações; IDs UC dos casos "demais" (DEC-026 pendente de aprovação) | 2, com 1 | Q4-01, Q4-02, Q4-08 | Feito (I2, 29/10): Objetivo, RFs cobertos e UC-0RF |
+| P6 | Diagrama comportamental da lista de espera (SEQ-004) com os parâmetros da DEC-027 | 2 | Q6-05 | Feito (I2): SEQ-004 criada |
+| P7 | Fechar `PENDENTE` nas multiplicidades do diagrama oficial de classes; tirar `SOLICITADO` do enumerado | 3 | Q5-01, Q5-02 | **Aberto** (I3): diagrama oficial ainda com `PENDENTE` |
+| P8 | Classes da lista de espera (`EntradaListaEspera`, `OfertaVaga`) e do registro de atendimento ligado ao agendamento (DEC-030) | 3 | Q5-05 | **Aberto** (I3): sem classes da lista de espera no diagrama oficial (a persistência já tem `solicitacao_espera`) |
+| P9 | Corrigir as justificativas OO/SOLID da seção 27 que não correspondem ao modelo; decidir a composição Agendamento–Atendimento; decidir se o cenário OBJ-002 entra no OBJ-001 | 3 | Q5-09, Q5-10 | **Aberto** (I3) |
+| P10 | Operações duplicadas (`adicionarDisponibilidade`/`cadastrarDisponibilidade`, `estaAutorizado`/`estaAtivo`) | 3 | Q5-09 | **Aberto** (I3) |
+| P11 | Alinhar a numeração de RF de `04-persistencia/impacto-requisitos.md` com a baseline; refletir lista de espera, `Não compareceu` e e-mail na persistência | 4 | Q3-11, INT-06 | Feito (I4, 29/10): numeração alinhada e Fase 7 entregue |
+| P12 | Corrigir os textos antigos (CTX-001, atores, README de requisitos) | 1 e 2 | INT-03 a INT-05 | **Aberto** (I1 e I2): textos antigos como CTX-001 |
+| P13 | Aplicar as DEC aprovadas em 28/10/2026: situações de conta, paciente e vínculo (013, 014, 015), slot de disponibilidade (018), cardinalidades (019, 021), sessão fora do domínio (020), `ServicoEnvioMensagem` como único nome (022), auditoria por serviço (024) e numeração UC-0RF/CT-0RF (026) | 2 (UC, nomes), 3 (classes), 4 (persistência), 1 (IDs) | — | Parcial: I4 aplicou DEC-013 a DEC-030 na persistência; I3 ainda não nas classes |
 
 Depois de cada correção, o Integrante 5 confirma na tabela de controle de achados (Aberto → Corrigido) e o Integrante 6 regera o dossiê.
 
+## 2.1 Andamento em 30/10/2026
+
+- **Integrante 2:** concluiu P1 a P6, os testes conceituais CT-0RF (15 testes) e a revisão de coerência arquitetura × casos de uso (12 achados R7). Falta o desenho oficial dos casos de uso incorporar UC-028 e UC-033 a UC-037.
+- **Integrante 4:** entregou a Fase 7 (pacotes, componentes, implantação, DER, relacional, dicionário, mapeamento, normalização, DDL). Faltam o PDF dos três diagramas, o teste do DDL e as tabelas de correspondência da ISO/IEC/IEEE 42010 (Q7-01 a Q7-03).
+- **Integrante 3:** último envio em 25/09 (merge em 19/10); P7 a P10 abertos. É o item que mais atrasa o grupo, porque o DER-001 já tem relações (A18–A21) que dependem do diagrama de classes oficial.
+- **Integrante 5 (executado pelo Integrante 1):** análises das Fases 1 a 7 registradas.
+- **Integrante 6 (executado pelo Integrante 1):** dossiê v0.7; falta escrever o texto das seções 25 e 26 com o Integrante 4.
+
 ## 3. Fases restantes
 
-**Atenção às datas:** `cronograma.md` (Fase 7 de 03 a 09/11, Fase 8 de 10 a 16/11, Fase 9 de 17 a 23/11) e o PDF do plano de execução (janelas abaixo) diferem; vale uma só. Janelas conforme o PDF: Fase 7 de 09 a 13/11, Fase 8 de 14 a 18/11, Fase 9 de 19 a 24/11. Congelar novas funcionalidades em 19/11. Entrega em 24/11/2026.
+Janelas conforme o plano de execução (`cronograma.md` e README foram alinhados a elas em 30/10/2026): Fase 7 de 09 a 13/11, Fase 8 de 14 a 18/11, Fase 9 de 19 a 24/11. Congelar novas funcionalidades em 19/11. Entrega em 24/11/2026.
 
 ### Fase 7 — Arquitetura e persistência (09 a 13/11)
 

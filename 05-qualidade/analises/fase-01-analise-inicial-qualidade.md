@@ -29,7 +29,7 @@ O Integrante 5 também faz a **revisão cruzada de qualidade** dos artefatos de 
 | Registro de processo e evidências | Fase 1 | Fase 8 (seção 30 do dossiê — autoavaliação) |
 | Verificação final da matriz de rastreabilidade (sem órfãos) | Fase 3 (critério) | Fase 8 |
 
-Nenhum artefato definitivo de qualidade é congelado antes da Fase 8, conforme o cronograma (`01-planejamento/cronograma.md`: "Qualidade e rastreabilidade — 10/11 a 16/11").
+Nenhum artefato definitivo de qualidade é congelado antes da Fase 8, conforme o cronograma (`01-planejamento/cronograma.md`: "Qualidade e rastreabilidade — 14/11 a 18/11").
 
 ## 3. Dependências com os outros integrantes
 

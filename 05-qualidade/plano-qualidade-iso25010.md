@@ -1,8 +1,8 @@
 # Plano de Qualidade — ISO/IEC 25010:2023 (versão preliminar)
 
 **Responsável:** Integrante 5 — Franklin Reis (Qualidade, normas e processo)
-**Versão:** v0.6 — preliminar, atualizada até a Fase 6 (28/10/2026)
-**Fecha em:** Fase 8 — Qualidade e rastreabilidade (10/11 a 16/11), como seção 28 do dossiê
+**Versão:** v0.7 — preliminar, atualizada até a Fase 7 (30/10/2026)
+**Fecha em:** Fase 8 — Qualidade e rastreabilidade (14/11 a 18/11), como seção 28 do dossiê
 **Base:** barema §13; seleção preliminar em `analises/fase-02-qualidade-visao-escopo-contexto.md` §5; classificação dos RNF em `analises/fase-03-verificacao-requisitos.md` §6.
 
 > **Natureza deste documento:** o plano avalia a **qualidade do modelo** (dossiê), não de um software executável. Cada critério é verificável por **inspeção de artefato** ou por **contagem** no repositório. Valores-alvo marcados como "proposta" dependem de aprovação do grupo.
@@ -33,7 +33,7 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 
 | ID | Subcaracterística | Critério | Medida / alvo | Evidência | Situação na Fase 6 |
 |---|---|---|---|---|---|
-| CQ-SEG-01 | Confidencialidade | Nenhum atributo, coluna, mensagem ou exemplo contém senha em texto puro | 0 ocorrências | CLS-001 (`credencialProtegida`); dicionário de dados (Fase 7) | **Atende** no modelo de classes; dicionário pendente |
+| CQ-SEG-01 | Confidencialidade | Nenhum atributo, coluna, mensagem ou exemplo contém senha em texto puro | 0 ocorrências | CLS-001 (`credencialProtegida`); dicionário de dados (Fase 7) | **Atende** — `hash_senha` com CHECK de tamanho no DDL e dicionário (Fase 7) sem coluna de senha em texto puro |
 | CQ-SEG-02 | Confidencialidade | Toda consulta de paciente por psicólogo passa pelo vínculo (RN-003) | 100% dos fluxos de consulta profissional | UC "Atender pacientes vinculados" E1; DEP-04 do Integrante 4 | **Atende** nos UC; validar no DER |
 | CQ-SEG-03 | Confidencialidade | Paciente só acessa dados próprios (RN-004, RNF-005) | 100% dos UC do paciente com restrição explícita | UC-025, UC-027, "Consultar meu cadastro" | **Atende**; faltam cenários negativos nos CA (Q3-06) |
 | CQ-SEG-04 | Autenticidade | Conta bloqueada não autentica (RN-001) | Fluxo de recusa presente | SEQ-001 E2 | **Atende** |
@@ -58,8 +58,8 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 | CQ-CON-01 | Maturidade | Todo estado do ciclo do agendamento tem evento de entrada e toda transição tem evento | 100% | EST-001 | **Atende** na forma (rever após Q6-01) |
 | CQ-CON-02 | Tolerância a falhas | Exceções dos casos críticos aparecem nos diagramas de sequência | 100% das exceções de UC-001, UC-025, UC-027 | SEQ-001/002/003 | **Atende** |
 | CQ-CON-03 | Tolerância a falhas | Falha de envio de e-mail tem efeito definido | Decisão registrada | DEC-029 (28/10/2026) | **Atende** (decisão registrada; falta propagar aos diagramas) |
-| CQ-CON-04 | Integridade dos dados | FKs e restrições respeitam as multiplicidades (RNF-007) | 100% das associações com FK/restrição correspondente | DER (Fase 7) | **Não medível ainda** — multiplicidades oficiais `PENDENTE` (Q5-01) |
-| CQ-CON-05 | Integridade sob concorrência | Dois agendamentos ativos nunca ocupam o mesmo horário (RN-005) | Restrição de unicidade + revalidação na confirmação | SEQ-002 (revalidação); DER (Fase 7) | **Parcial** (Q3-09) |
+| CQ-CON-04 | Integridade dos dados | FKs e restrições respeitam as multiplicidades (RNF-007) | 100% das associações com FK/restrição correspondente | DER (Fase 7) | **Parcial** — DDL com 24 chaves estrangeiras para as associações do DER-001; as multiplicidades do diagrama de classes oficial seguem `PENDENTE` (Q5-01), então a conferência 1 a 1 depende do Integrante 3 |
+| CQ-CON-05 | Integridade sob concorrência | Dois agendamentos ativos nunca ocupam o mesmo horário (RN-005) | Restrição de unicidade + revalidação na confirmação | SEQ-002 (revalidação); DER (Fase 7) | **Atende** — `UNIQUE (slot_ativo)` em `agendamento` + `SELECT … FOR UPDATE` no slot (TRS-01, TRS-04); falta teste real, pois o DDL não foi executado |
 
 ### 2.4 CQ-MAN — Manutenibilidade
 
@@ -78,14 +78,14 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 |---|---|---|---|---|---|
 | CQ-FLE-01 | Adaptabilidade | Nova área de atuação entra por dado (catálogo), sem mudar classes | Sim/Não | `AreaAtuacao` como catálogo (A05) | **Atende** |
 | CQ-FLE-02 | Adaptabilidade | Novo papel de acesso entra por `Perfil`/`Permissao`, sem subclasse de `Usuario` | Sim/Não | OO-01, OO-02 | **Atende** |
-| CQ-FLE-03 | Escalabilidade | Módulos com dependências declaradas (RNF-009) | Diagrama de pacotes sem ciclo | Fase 7 | **Não medível ainda** |
+| CQ-FLE-03 | Escalabilidade | Módulos com dependências declaradas (RNF-009) | Diagrama de pacotes sem ciclo | Fase 7 | **Pendente** — PAC-001 declara a regra de dependência, mas a ausência de ciclo ainda não foi conferida pelo Integrante 5 (fica para a Fase 8) |
 
 ### 2.6 CQ-COM — Compatibilidade
 
 | ID | Subcaracterística | Critério | Medida / alvo | Evidência | Situação na Fase 6 |
 |---|---|---|---|---|---|
 | CQ-COM-01 | Interoperabilidade | O e-mail é acessado por interface de fronteira, sem classe de domínio ou tabela de notificação | Sim/Não | `ServicoNotificacao` (AP-04); DEC-022 (proposta) | **Atende** como proposta |
-| CQ-COM-02 | Coexistência | O Serviço Externo de E-mail aparece no contexto, nos casos de uso, nos componentes e na implantação | 4 de 4 | CTX-001 ("Pendente"), UC-001 (ausente), Fase 7 | **Não atende** — 0 de 4 conformes (Q2-01, Q4-05) |
+| CQ-COM-02 | Coexistência | O Serviço Externo de E-mail aparece no contexto, nos casos de uso, nos componentes e na implantação | 4 de 4 | CTX-001 ("Pendente"), UC-001 (ausente), Fase 7 | **Parcial** — 2 de 4: implantação (IMP-001) e componentes (CMP-001) trazem o serviço; CTX-001 e o diagrama de casos de uso oficial ainda não (Q2-01, Q4-05) |
 
 ### 2.7 CQ-INT — Capacidade de interação
 
@@ -100,14 +100,14 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 |---|---|---|---|
 | CQ-SEC-01 | Eficiência de desempenho | RNF-010 com critério de inspeção: consulta de agenda restrita a uma agenda e apoiada por índice (proposta Q3-02) | **Pendente** (Integrante 1 + Integrante 4) |
 
-## 3. Resumo da medição na Fase 6
+## 3. Resumo da medição (atualizado em 30/10/2026, após a Fase 7)
 
 | Situação | Quantidade de critérios |
 |---|---|
-| Atende (inclui "atende como proposta" e "atende na forma") | 19 |
-| Parcial | 2 |
-| Não atende | 6 |
-| Pendente de decisão do grupo, em andamento ou não medível ainda | 4 |
+| Atende (inclui "atende como proposta" e "atende na forma") | 20 |
+| Parcial | 3 |
+| Não atende | 5 |
+| Pendente de decisão do grupo, em andamento ou não medível ainda | 3 |
 | **Total** | **31** |
 
 Os seis "Não atende" têm três causas: **decisões aprovadas ainda não propagadas aos diagramas** (CQ-ADE-04, CQ-MAN-04, CQ-COM-02), **casos de uso faltando para os requisitos novos, inclusive a inovação** (CQ-ADE-02, CQ-ADE-03) e **prevenção de erro sem requisito** (CQ-INT-01). As duas primeiras são o foco recomendado antes da Fase 7.

@@ -17,12 +17,14 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 | [Qualidade dos casos de uso](analises/fase-04-revisao-qualidade-casos-de-uso.md) | Fase 4 — Casos de uso | Completude das especificações, cobertura de RF, `include`/`extend`/generalização, coerência com decisões de 25/10 | Concluída · achados Q4-01 a Q4-10 |
 | [Revisão cruzada do modelo de domínio](analises/fase-05-revisao-cruzada-modelo-dominio.md) | Fase 5 — Modelo OO | Exigências do barema para classes, manutenibilidade, resposta ao R5-15 (composição), segurança estrutural | Concluída · achados Q5-01 a Q5-10 |
 | [Revisão cruzada comportamental](analises/fase-06-revisao-cruzada-comportamental.md) | Fase 6 — Comportamento | Exigências do barema, conformidade com DEC-009/010/011/016/017/025, confiabilidade e segurança, decisão sobre a matriz da Fase 6 | Concluída · achados Q6-01 a Q6-07 |
+| [Arquitetura e persistência](analises/fase-07-revisao-arquitetura-persistencia.md) | Fase 7 — Arquitetura e persistência | CQ-SEG-01, CQ-CON-04, CQ-CON-05, CQ-COM-02, CQ-FLE-03 e ISO/IEC/IEEE 42010 | Concluída · achados Q7-01 a Q7-06 |
+| [Rastreabilidade e autoavaliação](analises/fase-08-verificacao-rastreabilidade-autoavaliacao.md) | Fase 8 — Qualidade e rastreabilidade | Matriz final v0.7, autoavaliação N/P/L/F, gate de qualidade | Parcial · achados Q8-01 a Q8-06 |
 
 ## Documentos transversais
 
 | Documento | Conteúdo | Versão |
 |---|---|---|
-| [Plano de qualidade ISO/IEC 25010:2023](plano-qualidade-iso25010.md) | 7 características, 31 critérios com medida, alvo, evidência e situação na Fase 6 | v0.6 (preliminar; fecha na Fase 8) |
+| [Plano de qualidade ISO/IEC 25010:2023](plano-qualidade-iso25010.md) | 7 características, 31 critérios com medida, alvo, evidência e situação na Fase 6 | v0.7 (preliminar; fecha na Fase 8) |
 | [Referências normativas](normas-referencias.md) | Situação (atual/retirada), aplicação e evidência de cada norma do enunciado; referências completas | v0.6 |
 | [Registro de processo](registro-processo.md) | Evidências por fase e quadro `Processo → Objetivo → Atividades → Produto → Evidência → Situação → Melhoria` | v0.6 |
 
@@ -30,7 +32,7 @@ As atividades do Integrante 5 nas **Fases 1 a 6** foram registradas em **28/10/2
 
 | Fase | Tarefas do Integrante 5 | Artefato previsto |
 |---|---|---|
-| Fase 7 — Arquitetura e persistência | Fornecer ao Integrante 4 os critérios CQ-SEG-01, CQ-CON-04, CQ-CON-05, CQ-COM-02 e CQ-FLE-03; verificar a descrição de arquitetura segundo a ISO/IEC/IEEE 42010 | `analises/fase-07-*.md` |
+| Fase 7 — Arquitetura e persistência | (feito em 30/10/2026: [`analises/fase-07-revisao-arquitetura-persistencia.md`](analises/fase-07-revisao-arquitetura-persistencia.md), achados Q7-01 a Q7-06) Fornecer ao Integrante 4 os critérios CQ-SEG-01, CQ-CON-04, CQ-CON-05, CQ-COM-02 e CQ-FLE-03; verificar a descrição de arquitetura segundo a ISO/IEC/IEEE 42010 | `analises/fase-07-*.md` |
 | Fase 8 — Qualidade e rastreabilidade | Medição final do plano; matriz final sem órfãos; autoavaliação N/P/L/F; textos das seções 28, 29 e 30 do dossiê | `plano-qualidade-iso25010.md` v1.0, `registro-processo.md` v1.0, `06-rastreabilidade/matriz-rastreabilidade-final.md` |
 | Fase 9 — Consolidação e pitch | Parte "Qualidade" do pitch; auditoria final do checklist do barema | `analises/fase-09-*.md` |
 
