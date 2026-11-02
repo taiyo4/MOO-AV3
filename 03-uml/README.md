@@ -129,7 +129,7 @@ a lista completa, com dono, está em
 |---|---|---|
 | Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016 | Integrante 3 |
 | Operações `OP-01…OP-28`, entidade `SolicitacaoEspera` (com `DESISTIU`) e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
-| `Agendamento.confirmar()` ainda declarada no diagrama de classes oficial | contraria a DEC-017 (a criação já nasce confirmada): a operação não é usada por nenhum diagrama da Fase 6 — ver **R6-09** | Integrante 3 |
+| `Agendamento.confirmar()` foi removida do diagrama oficial de classes | alinhada com DEC-016/DEC-017: criação e confirmação ocorrem no mesmo ato | Integrante 3 |
 | Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |
 | Tabela `solicitacao_espera` (ordem de entrada, situação, `prazoAceite`) no DER | a SEQ-004 pressupõe persistência da fila — ver **R6-10** | Integrante 4 |
 | `CT-033…CT-037` na matriz da Fase 5 | proposta entregue na Fase 8 (`01-planejamento/revisoes/FASE8-REV-I2-testes-conceituais.md`); falta homologar na matriz mestra — ver **LAC-11** | Integrante 5 |

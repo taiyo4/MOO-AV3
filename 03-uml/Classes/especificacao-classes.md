@@ -18,8 +18,7 @@ Consultar [diagrama-classes.mmd](diagrama-classes.mmd) e [decisoes-modelagem.md]
 - Associações representam propriedades dos objetos, encapsuladas, sem duplicação em atributos de IDs, listas ou chaves estrangeiras.
 - `Data`, `Hora` e `Booleano` são tipos conceituais independentes de tecnologia: RF-032 exige data/hora; verificações têm resultado lógico. Precisão, fuso e armazenamento permanecem pendentes.
 - Atributo ou parâmetro sem tipo tem **tipo PENDENTE**: não equivale a Texto, objeto genérico ou campo livre. Retorno omitido está **PENDENTE**, não significa void.
-- `confirmar()` tem **assinatura incompleta**, pois o ator/mecanismo autorizado ainda não foi decidido; não significa confirmação sem contexto ou autorização.
-- O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes.
+- O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes. A criação de `Agendamento` já produz um agendamento `CONFIRMADO`, conforme DEC-016 e DEC-017.
 - `PENDENTE` nos extremos é anotação editorial, não multiplicidade UML válida. O modelo ainda não é um diagrama UML finalizado.
 - Não se fecham enumerações com exemplos de estados. Situação da conta, cadastro e agendamento são distintas.
 - A alocação de responsabilidades e os nomes de membros são decisões OO desta etapa, fundamentadas nos requisitos citados; não se afirma que as fontes já continham essas assinaturas.
@@ -259,9 +258,9 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 ### Agendamento
 
-**Finalidade e responsabilidade:** Representar solicitação/reserva de horário e controlar confirmação/cancelamento sem confundir reserva com sessão realizada.
+**Finalidade e responsabilidade:** Representar a reserva de horário e controlar o cancelamento sem confundir a sessão agendada com a sessão realizada.
 
-**Fundamentação:** RF-025–029; RN-005–006, RN-009–010, RN-012–013.
+**Fundamentação:** RF-025–029; RN-005–006, RN-009–010, RN-012–013; DEC-016 e DEC-017.
 
 **Atributos privados:**
 
@@ -274,8 +273,7 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 | Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
 |---|---|---|---|---|
-| `solicitar(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) Agendamento$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: situação inicial, reserva e tipos. | RF-025; RN-003, RN-005, RN-010 | Criação condicionada: exige conta autenticada do paciente indicado, vínculo autorizado com o profissional e horário disponível no momento da solicitação. Associa os participantes e horário. Estado inicial e bloqueio do horário: PC-07. Não publica agendamento conflitante. |
-| `confirmar()` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: assinatura incompleta, ator e estados. | RF-026; RN-005, RN-013; CA-RF-026 | Contrato condicionado: exige solicitação confirmável e ator/mecanismo autorizado ainda a definir. Passa à situação confirmada preservando par e horário sem criar conflito. Parâmetros/contexto da autorização e estados prévios: PC-07/PC-12; parênteses não significam operação sem autorização. |
+| `solicitar(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) Agendamento$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: situação inicial, reserva e tipos. | RF-025; RN-003, RN-005, RN-010; DEC-016, DEC-017 | Criação condicionada: exige conta autenticada do paciente indicado, vínculo autorizado com o profissional e horário disponível no momento da solicitação. O agendamento é criado diretamente em `CONFIRMADO`, sem passo separado de confirmação. Associa os participantes e o horário. Estado inicial, bloqueio do horário e tipos temporais: PC-07. Não publica agendamento conflitante. |
 | `cancelar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: assinatura provisória, prazo, atores e estados. | RF-027; RN-006, RN-009, RN-012 | Contrato condicionado: paciente deve ser dono do agendamento, ou outro ator ter autorização aprovada. Exige estado e antecedência permitidos. Passa a cancelado, preserva rastreabilidade e impede posterior registro como atendimento realizado. Não concede cancelamento a Psicólogo/Administrador enquanto pendente. |
 
 **Relacionamentos:** A10, A11, A12 e A15.

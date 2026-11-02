@@ -45,7 +45,6 @@ classDiagram
         -horario
         -situacao
         +solicitar(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) Agendamento$
-        +confirmar()
         +cancelar(solicitante: Usuario)
     }
     class Atendimento {
@@ -80,7 +79,7 @@ classDiagram
     note for Perfil "Perfil de acesso. adicionarPermissao e removerPermissao: REFINAMENTOS A VALIDAR; remover revoga associacao, nao exclui Permissao."
     note for Vinculo "estaAutorizado: PROPOSTA DERIVADA; criterio/representacao pendentes. Formalizar tem contrato condicionado; sem estado ATIVO presumido."
     note for Agenda "adicionarDisponibilidade: criacao/validacao temporal incompletas. verificarDisponibilidade: REFINAMENTO, nao substitui consulta RF-024. A08/A09 a validar."
-    note for Agendamento "confirmar(): ASSINATURA INCOMPLETA. cancelar e solicitar: ASSINATURAS PROVISORIAS, contratos condicionados PC-07/PC-12. Sem novos parametros."
+    note for Agendamento "solicitar(): cria e confirma no mesmo ato (DEC-016/DEC-017); cancelar e solicitar permanecem contratos condicionados PC-07/PC-12. Sem novos parametros."
     note for Paciente "alterarSituacao e atualizacoes: ASSINATURAS PROVISORIAS; estados, campos e contratos pendentes."
     note for Psicologo "Atualizacao e consultas: campos/retornos provisorios. Administrador e papel, sem subclasses por permissao."
     note for Atendimento "registrar: ASSINATURA PROVISORIA. Contrato contempla RN-003/RN-006/RN-007; conteudo e contextoSessao pendentes."
