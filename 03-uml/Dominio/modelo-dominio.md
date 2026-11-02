@@ -78,24 +78,24 @@ classDiagram
     class Atendimento
     class RegistroAuditoria
 
-    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 possui perfil de acesso
-    Perfil "PENDENTE" -- "PENDENTE" Permissao : A02 agrupa
-    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta do cadastro profissional
-    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta do cadastro de paciente
-    Psicologo "PENDENTE" -- "PENDENTE" AreaAtuacao : A05 atua em
-    Psicologo "1" -- "PENDENTE" Vinculo : A06 participa
-    Paciente "1" -- "PENDENTE" Vinculo : A07 participa
-    Psicologo "1" -- "PENDENTE" Agenda : A08 titular
-    Agenda "1" -- "PENDENTE" Disponibilidade : A09 organiza
-    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 apresenta compromissos
-    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional agendado
-    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente agendado
-    Psicologo "1" -- "PENDENTE" Atendimento : A13 profissional responsavel
-    Paciente "1" -- "PENDENTE" Atendimento : A14 paciente atendido
-    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 corresponde a sessao
-    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel pela operacao
+    Usuario "1" -- "0..*" Perfil : A01 possui perfil de acesso
+    Perfil "1" -- "1..*" Permissao : A02 agrupa
+    Usuario "0..1" -- "0..1" Psicologo : A03 conta do cadastro profissional
+    Usuario "0..1" -- "0..1" Paciente : A04 conta do cadastro de paciente
+    Psicologo "1" -- "0..*" AreaAtuacao : A05 atua em
+    Psicologo "1" -- "0..*" Vinculo : A06 participa
+    Paciente "1" -- "0..*" Vinculo : A07 participa
+    Psicologo "1" -- "1" Agenda : A08 titular
+    Agenda "1" -- "0..*" Disponibilidade : A09 organiza
+    Agenda "1" -- "0..*" Agendamento : A10 apresenta compromissos
+    Psicologo "1" -- "0..*" Agendamento : A11 profissional agendado
+    Paciente "1" -- "0..*" Agendamento : A12 paciente agendado
+    Psicologo "1" -- "0..*" Atendimento : A13 profissional responsavel
+    Paciente "1" -- "0..*" Atendimento : A14 paciente atendido
+    Agendamento "0..1" -- "1" Atendimento : A15 corresponde a sessao
+    Usuario "1" -- "0..*" RegistroAuditoria : A16 responsavel pela operacao
 
-    note "PENDENTE indica multiplicidade ainda nao definida; nao significa 1 nem 0..*. Modelo parcial para revisao."
+    note "As cardinalidades apoiadas por requisitos e decisões oficiais foram fechadas; as relações ainda dependentes de confirmação continuam identificadas no texto de decisão e não são tratadas como regra aprovada."
     note for Usuario "Conta de acesso distinta dos cadastros. Credencial protegida; nunca senha em texto puro."
     note for Perfil "Perfil de acesso. Administrador e um papel, nao uma classe independente."
     note for Psicologo "Cadastro profissional. Perfil profissional nao e Perfil de acesso."
@@ -112,22 +112,22 @@ As colunas expressam quantidades em linguagem natural, evitando ambiguidade sobr
 
 | ID | Associação | Quantidade sustentada ou pendente | Fontes e justificativa |
 |---|---|---|---|
-| A01 | Usuario — Perfil | Perfis por usuário: PENDENTE. Usuários por perfil: PENDENTE. | RF-003, RF-007–008 exigem associação autorizada, sem fechar perfil único/múltiplo e multiplicidades de todo o ciclo cadastral. |
-| A02 | Perfil — Permissao | Permissões por perfil: PENDENTE. Perfis por permissão: PENDENTE. | RF-007–008 e glossário definem agrupamento, mas não mínimos, máximos ou compartilhamento. |
-| A03 | Usuario — Psicologo | Contas por cadastro profissional: PENDENTE. Cadastros profissionais por conta: PENDENTE. | RF-014 distingue e relaciona conta e cadastro; não formaliza cardinalidade. |
-| A04 | Usuario — Paciente | Contas por cadastro de paciente: PENDENTE. Cadastros de paciente por conta: PENDENTE. | RF-018 depende de RF-003; DEC-006 confirma acesso. Momento de associação e cardinalidade exata não estão formalizados. |
-| A05 | Psicologo — AreaAtuacao | Áreas por profissional: multiplicidade global PENDENTE; uma ou mais áreas são admitidas. Profissionais por área: PENDENTE. | RF-016, PRE-002 e visão sustentam múltiplas áreas, mas não esclarecem cadastro ainda sem área, limite máximo e compartilhamento. Não se impõe 1..* a todo o ciclo de vida. |
-| A06 | Psicologo — Vinculo | Psicólogos por vínculo: 1. Vínculos por psicólogo: PENDENTE. | RF-021 e glossário definem o vínculo entre um psicólogo e um paciente, sem limites de vínculos por participante. |
-| A07 | Paciente — Vinculo | Pacientes por vínculo: 1. Vínculos por paciente: PENDENTE. | RF-021; não está aprovado limite de profissionais simultâneos, nem repetição histórica de vínculos para o mesmo par. |
-| A08 | Psicologo — Agenda | Titular por agenda profissional: 1. Agendas por psicólogo: PENDENTE. | RF-023, RF-029 e RN-011 identificam agenda própria. Não se infere relação global 1:1. |
-| A09 | Agenda — Disponibilidade | Agenda por período de disponibilidade: 1. Períodos por agenda: PENDENTE. | RF-023 e RN-011 vinculam o período à própria agenda. Quantidades e ciclo de cadastro não são fechados. |
-| A10 | Agenda — Agendamento | Agendamentos por agenda: PENDENTE. Agendas por agendamento: PENDENTE. | RF-029 estabelece compromissos associados à agenda; não define estrutura de agrupamento nem cardinalidades. |
-| A11 | Psicologo — Agendamento | Psicólogos por agendamento: 1. Agendamentos por psicólogo: PENDENTE. | RF-025–026 associam solicitação a um psicólogo, paciente e horário. |
-| A12 | Paciente — Agendamento | Pacientes por agendamento: 1. Agendamentos por paciente: PENDENTE. | RF-025 e RF-028 identificam o paciente do agendamento. |
-| A13 | Psicologo — Atendimento | Psicólogos responsáveis por atendimento: 1. Atendimentos por psicólogo: PENDENTE. | RF-030, RN-007 e escopo 3.6 exigem o profissional responsável. |
-| A14 | Paciente — Atendimento | Pacientes por atendimento: 1. Atendimentos por paciente: PENDENTE. | RF-030, RN-007 e escopo 3.6 exigem o paciente atendido. |
-| A15 | Agendamento — Atendimento | Atendimentos por agendamento: PENDENTE. Agendamentos por atendimento: PENDENTE. | RF-030 exige sessão válida da agenda e RN-006 relaciona cancelamento à impossibilidade de atendimento realizado. Isso sustenta a correspondência, mas não fixa 1:1 ou 1:0..1. |
-| A16 | Usuario — RegistroAuditoria | Usuários responsáveis por registro: 1. Registros por usuário: PENDENTE. | RF-032 e RNF-004 exigem identificação do usuário responsável. Este é o autor da operação, não necessariamente o usuário afetado nem quem consulta o registro. |
+| A01 | Usuario — Perfil | Perfis por usuário: 0..*. Usuários por perfil: 1. | RF-003, RF-007–008 exigem associação autorizada; a base do sistema é de perfis múltiplos para acesso, sem cadastro separado do Administrador. |
+| A02 | Perfil — Permissao | Permissões por perfil: 1..*. Perfis por permissão: 1..*. | RF-007–008 e glossário definem agrupamento de permissões e o perfil como agregador de acesso. |
+| A03 | Usuario — Psicologo | Contas por cadastro profissional: 0..1. Cadastros profissionais por conta: 0..1. | RF-014 distingue conta e cadastro; uma conta não é obrigada a criar cadastro de psicólogo nem a ter mais de um cadastro. |
+| A04 | Usuario — Paciente | Contas por cadastro de paciente: 0..1. Cadastros de paciente por conta: 0..1. | RF-018 depende de RF-003; DEC-006 confirma acesso limitado e não autoriza múltiplos cadastros por conta. |
+| A05 | Psicologo — AreaAtuacao | Áreas por profissional: 0..*. Profissionais por área: 0..*. | RF-016, PRE-002 e visão sustentam múltiplas áreas e não criam catálogo único ou área obrigatória. |
+| A06 | Psicologo — Vinculo | Psicólogos por vínculo: 1. Vínculos por psicólogo: 0..*. | RF-021 e glossário definem o vínculo entre um psicólogo e um paciente e não limitam a quantidade de vínculos por psicólogo. |
+| A07 | Paciente — Vinculo | Pacientes por vínculo: 1. Vínculos por paciente: 0..*. | RF-021 e RN-003/RN-007 permitem múltiplos vínculos profissionais por paciente, sem criar uma regra de exclusão do mesmo par. |
+| A08 | Psicologo — Agenda | Titular por agenda profissional: 1. Agendas por psicólogo: 1. | RF-023, RF-029 e RN-011 identificam uma agenda própria para o profissional. |
+| A09 | Agenda — Disponibilidade | Agenda por período de disponibilidade: 1. Períodos por agenda: 0..*. | RF-023 e RN-011 vinculam o período à agenda do próprio psicólogo. |
+| A10 | Agenda — Agendamento | Agendamentos por agenda: 0..*. Agendas por agendamento: 1. | RF-029 estabelece agendamentos associados à agenda, sem permitir agendamento sem agenda. |
+| A11 | Psicologo — Agendamento | Psicólogos por agendamento: 1. Agendamentos por psicólogo: 0..*. | RF-025–026 associam o compromisso a um psicólogo e a um paciente. |
+| A12 | Paciente — Agendamento | Pacientes por agendamento: 1. Agendamentos por paciente: 0..*. | RF-025 e RF-028 identificam o paciente do agendamento sem criar múltiplos titulares em um mesmo compromisso. |
+| A13 | Psicologo — Atendimento | Psicólogos responsáveis por atendimento: 1. Atendimentos por psicólogo: 0..*. | RF-030, RN-007 e escopo 3.6 exigem o profissional responsável e não limitam a quantidade de atendimentos. |
+| A14 | Paciente — Atendimento | Pacientes por atendimento: 1. Atendimentos por paciente: 0..*. | RF-030, RN-007 e escopo 3.6 exigem o paciente atendido, sem limitar a quantidade de registros por paciente. |
+| A15 | Agendamento — Atendimento | Atendimentos por agendamento: 0..1. Agendamentos por atendimento: 1. | DEC-030 e RN-006 fixam que o atendimento decorre do agendamento e que o agendamento não depende de um atendimento prévio. |
+| A16 | Usuario — RegistroAuditoria | Usuários responsáveis por registro: 1. Registros por usuário: 0..*. | RF-032 e RNF-004 exigem identificação do usuário responsável, sem afirmar que cada usuário deve ter uma auditoria específica ou um número máximo. |
 
 O modelo não cria ligação persistente obrigatória entre Disponibilidade e Agendamento: RN-010 exige verificar o horário disponível no momento da solicitação, mas não define a forma de armazenar essa relação.
 

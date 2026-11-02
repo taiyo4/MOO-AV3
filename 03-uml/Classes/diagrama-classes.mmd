@@ -70,28 +70,28 @@ classDiagram
         +registrar(responsavel: Usuario, data: Data, hora: Hora, operacao) RegistroAuditoria$
     }
 
-    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 possui perfil de acesso
-    Perfil "PENDENTE" -- "PENDENTE" Permissao : A02 agrupa
-    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta do cadastro profissional
-    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta do cadastro de paciente
-    Psicologo "PENDENTE" -- "PENDENTE" AreaAtuacao : A05 atua em
-    Psicologo "1" -- "PENDENTE" Vinculo : A06 participa
-    Paciente "1" -- "PENDENTE" Vinculo : A07 participa
-    Psicologo "1" -- "PENDENTE" Agenda : A08 titular
-    Agenda "1" -- "PENDENTE" Disponibilidade : A09 organiza
-    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 apresenta compromissos
-    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional agendado
-    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente agendado
-    Psicologo "1" -- "PENDENTE" Atendimento : A13 profissional responsavel
-    Paciente "1" -- "PENDENTE" Atendimento : A14 paciente atendido
+    Usuario "1" -- "0..*" Perfil : A01 possui perfil de acesso
+    Perfil "1" -- "1..*" Permissao : A02 agrupa
+    Usuario "0..1" -- "0..1" Psicologo : A03 conta do cadastro profissional
+    Usuario "0..1" -- "0..1" Paciente : A04 conta do cadastro de paciente
+    Psicologo "1" -- "0..*" AreaAtuacao : A05 atua em
+    Psicologo "1" -- "0..*" Vinculo : A06 participa
+    Paciente "1" -- "0..*" Vinculo : A07 participa
+    Psicologo "1" -- "1" Agenda : A08 titular
+    Agenda "1" -- "0..*" Disponibilidade : A09 organiza
+    Agenda "1" -- "0..*" Agendamento : A10 apresenta compromissos
+    Psicologo "1" -- "0..*" Agendamento : A11 profissional agendado
+    Paciente "1" -- "0..*" Agendamento : A12 paciente agendado
+    Psicologo "1" -- "0..*" Atendimento : A13 profissional responsavel
+    Paciente "1" -- "0..*" Atendimento : A14 paciente atendido
     Agendamento "0..1" -- "1" Atendimento : A15 corresponde a sessao
-    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel pela operacao
-    Psicologo "1" -- "PENDENTE" SolicitacaoEspera : A18 registra interesse
-    Paciente "1" -- "PENDENTE" SolicitacaoEspera : A19 participa da fila
-    Disponibilidade "1" -- "PENDENTE" SolicitacaoEspera : A20 vincula o slot
+    Usuario "1" -- "0..*" RegistroAuditoria : A16 responsavel pela operacao
+    Psicologo "1" -- "0..*" SolicitacaoEspera : A18 registra interesse
+    Paciente "1" -- "0..*" SolicitacaoEspera : A19 participa da fila
+    Disponibilidade "1" -- "0..*" SolicitacaoEspera : A20 vincula o slot
     SolicitacaoEspera "0..1" -- "0..1" Agendamento : A21 converte em agendamento
 
-    note "ASSINATURAS PROVISORIAS: tipos/retornos omitidos continuam pendentes. Contratos declarados nao demonstram mecanismos. PENDENTE nao e multiplicidade UML."
+    note "A01-A05 e A10 continuam sem fechamento total em fontes; as associações com suporte documental foram fixadas e as demais continuam explicitadas como dependentes de confirmação."
     note for Usuario "Conta de acesso. associarPerfil: suporte no cadastro RF-003; manutencao posterior pendente. Atualizacao e tipos provisorios."
     note for Perfil "Perfil de acesso. adicionarPermissao e removerPermissao: REFINAMENTOS A VALIDAR; remover revoga associacao, nao exclui Permissao."
     note for Vinculo "estaAutorizado: PROPOSTA DERIVADA; criterio/representacao pendentes. Formalizar tem contrato condicionado; sem estado ATIVO presumido."

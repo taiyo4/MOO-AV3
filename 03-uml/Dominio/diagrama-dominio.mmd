@@ -15,24 +15,24 @@ classDiagram
     class Atendimento
     class RegistroAuditoria
 
-    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 possui perfil de acesso
-    Perfil "PENDENTE" -- "PENDENTE" Permissao : A02 agrupa
-    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta do cadastro profissional
-    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta do cadastro de paciente
-    Psicologo "PENDENTE" -- "PENDENTE" AreaAtuacao : A05 atua em
-    Psicologo "1" -- "PENDENTE" Vinculo : A06 participa
-    Paciente "1" -- "PENDENTE" Vinculo : A07 participa
-    Psicologo "1" -- "PENDENTE" Agenda : A08 titular
-    Agenda "1" -- "PENDENTE" Disponibilidade : A09 organiza
-    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 apresenta compromissos
-    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional agendado
-    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente agendado
-    Psicologo "1" -- "PENDENTE" Atendimento : A13 profissional responsavel
-    Paciente "1" -- "PENDENTE" Atendimento : A14 paciente atendido
-    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 corresponde a sessao
-    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel pela operacao
+    Usuario "1" -- "0..*" Perfil : A01 possui perfil de acesso
+    Perfil "1" -- "1..*" Permissao : A02 agrupa
+    Usuario "0..1" -- "0..1" Psicologo : A03 conta do cadastro profissional
+    Usuario "0..1" -- "0..1" Paciente : A04 conta do cadastro de paciente
+    Psicologo "1" -- "0..*" AreaAtuacao : A05 atua em
+    Psicologo "1" -- "0..*" Vinculo : A06 participa
+    Paciente "1" -- "0..*" Vinculo : A07 participa
+    Psicologo "1" -- "1" Agenda : A08 titular
+    Agenda "1" -- "0..*" Disponibilidade : A09 organiza
+    Agenda "1" -- "0..*" Agendamento : A10 apresenta compromissos
+    Psicologo "1" -- "0..*" Agendamento : A11 profissional agendado
+    Paciente "1" -- "0..*" Agendamento : A12 paciente agendado
+    Psicologo "1" -- "0..*" Atendimento : A13 profissional responsavel
+    Paciente "1" -- "0..*" Atendimento : A14 paciente atendido
+    Agendamento "0..1" -- "1" Atendimento : A15 corresponde a sessao
+    Usuario "1" -- "0..*" RegistroAuditoria : A16 responsavel pela operacao
 
-    note "PENDENTE indica multiplicidade ainda nao definida; nao significa 1 nem 0..*. Modelo parcial para revisao."
+    note "A01-A05 e A10 continuam condicionalmente revisados; as cardinalidades que tem evidência oficial foram fechadas sem inventar regras não aprovadas."
     note for Usuario "Conta de acesso distinta dos cadastros. Credencial protegida; nunca senha em texto puro."
     note for Perfil "Perfil de acesso. Administrador e um papel, nao uma classe independente."
     note for Psicologo "Cadastro profissional. Perfil profissional nao e Perfil de acesso."

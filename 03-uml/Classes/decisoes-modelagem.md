@@ -34,7 +34,20 @@ As 22 operações preservadas são classificadas individualmente na especificaç
 
 Usuario.associarPerfil tem suporte direto em RF-003 durante o cadastro. RF-007 apenas reforça a disponibilidade de perfis para associação; não detalha fluxo completo de alteração posterior. Manutenção posterior permanece condicionada à definição/validação em PC-09/PC-12.
 
-Assinaturas incompletas ou provisórias, incluindo confirmar e cancelar, não são decisões definitivas. Os valores 1 nas associações refletem interpretação semântica documentada no domínio. A08 e A09 merecem validação explícita do grupo, sem alteração nesta etapa. PENDENTE é anotação de modelagem, não multiplicidade UML válida.
+Assinaturas incompletas ou provisórias, incluindo confirmar e cancelar, não são decisões definitivas. Os valores fechados abaixo refletem a evidência do domínio e dos requisitos; A01-A05 e A10 foram mantidas em nível de decisão condicionada quando a fonte não fecha o total de associações. A08 e A09 foram fixadas como um profissional por agenda e múltiplas disponibilidades por agenda, sem inventar recorrência ou estados técnicos. PENDENTE é anotação de modelagem, não multiplicidade UML válida.
+
+### Fechamento documental com evidência
+
+| Associação | Decisão adotada | Evidência |
+|---|---|---|
+| A06, A07 | Um vínculo mantém exatamente um Psicólogo e um Paciente; o participante pode ter vários vínculos. | RF-021; RN-003; RN-007. |
+| A08 | Um Psicologo tem uma Agenda e uma Agenda é de um único Psicologo. | RF-023; RF-029; RN-011. |
+| A09 | Uma Agenda contém várias Disponibilidades; cada Disponibilidade pertence a uma Agenda. | RF-023; RN-011. |
+| A10 | Uma Agenda apresenta vários Agendamentos; cada Agendamento pertence a exatamente uma Agenda. | RF-029; regra de agendamento e conflito de agenda. |
+| A11, A12 | Um Agendamento é de um único Psicologo e de um único Paciente. | RF-025; RF-026; RN-005; RN-010. |
+| A13, A14 | Um Atendimento é de um único Psicologo e de um único Paciente. | RF-030; RN-007; DEC-030. |
+| A15 | O Agendamento pode ter no máximo um Atendimento correspondente; o Atendimento sempre se refere a um agendamento. | DEC-030; RN-006. |
+| A18–A21 | `SolicitacaoEspera` e `OfertaVaga` modelam a fila aprovada em DEC-027; a conversão em `Agendamento` exige aceite e disponibilidade. | DEC-027; RF-034 a RF-036; RN-021. |
 
 A ausência de herança, composição e agregação vale para a evidência atual. Administrador continua papel; Usuario, Psicologo e Paciente mantêm responsabilidades separadas. Nada disso autoriza subclasses apenas por permissões.
 
