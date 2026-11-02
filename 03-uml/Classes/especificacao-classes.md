@@ -19,6 +19,7 @@ Consultar [diagrama-classes.mmd](diagrama-classes.mmd) e [decisoes-modelagem.md]
 - `Data`, `Hora` e `Booleano` são tipos conceituais independentes de tecnologia: RF-032 exige data/hora; verificações têm resultado lógico. Precisão, fuso e armazenamento permanecem pendentes.
 - Atributo ou parâmetro sem tipo tem **tipo PENDENTE**: não equivale a Texto, objeto genérico ou campo livre. Retorno omitido está **PENDENTE**, não significa void.
 - O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes. A criação de `Agendamento` já produz um agendamento `CONFIRMADO`, conforme DEC-016 e DEC-017.
+- A fila aprovada em DEC-027 entra como `SolicitacaoEspera` e `OfertaVaga` no domínio e mantém a regra de que a conversão em `Agendamento` depende da aceitação do paciente e da manutenção da disponibilidade. Essa parte do domínio foi incorporada como proposta de extensão e não substitui a decisão de criação confirmada.
 - `PENDENTE` nos extremos é anotação editorial, não multiplicidade UML válida. O modelo ainda não é um diagrama UML finalizado.
 - Não se fecham enumerações com exemplos de estados. Situação da conta, cadastro e agendamento são distintas.
 - A alocação de responsabilidades e os nomes de membros são decisões OO desta etapa, fundamentadas nos requisitos citados; não se afirma que as fontes já continham essas assinaturas.
@@ -256,6 +257,55 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 **Pendências:** PC-07 e PC-09. Não foram inventados setters, métodos de recorrência ou propriedades inicio/fim tipadas sem decisão temporal.
 
+### SolicitacaoEspera
+
+**Finalidade e responsabilidade:** Representar a inscrição do paciente em uma fila de interesse para um horário do psicólogo, conforme DEC-027 e RF-034 a RF-036.
+
+**Fundamentação:** DEC-027; RF-034; RN-021; UC-034 a UC-036.
+
+**Atributos privados:**
+
+| Atributo | Tipo | Semântica e fundamento |
+|---|---|---|
+| `situacao` | PENDENTE | Estado da fila (aguardando, ofertada, aceita, recusada, expirada, desistiu). Estrutura e valores: DEC-027. |
+| `prazoAceite` | PENDENTE | Prazo configurável para aceitar a oferta. A regra do prazo é aprovada em DEC-027. |
+
+**Operações públicas e contratos:**
+
+| Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
+|---|---|---|---|---|
+| `registrarEntrada(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) SolicitacaoEspera$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: fila por ordem e prazo. | DEC-027; RF-034 | Cria a inscrição do paciente para um horário específico. Seu fluxo depende da fila por ordem de entrada e da regra de oferta por cancelamento. A disponibilidade concreta do slot continua sendo validada no momento do processamento. |
+| `consultarPosicao() Booleano` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: ordenação e atualização do estado. | RF-034; DEC-027 | Consulta a posição do paciente na fila. O cálculo da posição depende de ordem de entrada e do estado atual da fila. |
+| `encerrar(motivo, solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: motivo e regras de saída. | RF-034; DEC-027 | Encerramento da fila por desistência, recusa ou expiração. O motivo deve ser rastreável e não deve gerar agendamento sem informação válida. |
+
+**Relacionamentos:** A18, A19, A20 e A21.
+
+**Restrições/invariantes:** A fila não substitui o agendamento; ela existe para dar continuidade à disponibilidade após cancelamento. A conversão em `Agendamento` exige aceitar a oferta e manter a disponibilidade.
+
+### OfertaVaga
+
+**Finalidade e responsabilidade:** Representar a oferta de um horário liberado para o próximo paciente da fila, conforme DEC-027 e RF-035.
+
+**Fundamentação:** DEC-027; RF-035; UC-035.
+
+**Atributos privados:**
+
+| Atributo | Tipo | Semântica e fundamento |
+|---|---|---|
+| `situacao` | PENDENTE | Estado da oferta: aberta, aceita, recusada, expirada. Estrutura e conjunto: DEC-027. |
+| `prazoAceite` | PENDENTE | Prazo configurável para o paciente aceitar a vaga. |
+
+**Operações públicas e contratos:**
+
+| Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
+|---|---|---|---|---|
+| `abrirOferta(solicitacao: SolicitacaoEspera, horario, solicitante: Usuario) OfertaVaga$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: regra do prazo e confirmação do horário. | DEC-027; RF-035 | Abre a oferta ao primeiro da fila quando a vaga foi liberada. O slot deve continuar disponível e o prazo deve ser validado. |
+| `aceitar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: aceitação e segurança do vínculo. | DEC-027; RF-036 | Gera o agendamento a partir da oferta válida e preserva o fluxo de criação confirmada. |
+
+**Relacionamentos:** A20 e A21.
+
+**Restrições/invariantes:** A oferta não é um novo agendamento antes da aceitação; ela é uma extensão do cancelamento e depende da fila e do horário restante.
+
 ### Agendamento
 
 **Finalidade e responsabilidade:** Representar a reserva de horário e controlar o cancelamento sem confundir a sessão agendada com a sessão realizada.
@@ -276,9 +326,9 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 | `solicitar(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) Agendamento$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: situação inicial, reserva e tipos. | RF-025; RN-003, RN-005, RN-010; DEC-016, DEC-017 | Criação condicionada: exige conta autenticada do paciente indicado, vínculo autorizado com o profissional e horário disponível no momento da solicitação. O agendamento é criado diretamente em `CONFIRMADO`, sem passo separado de confirmação. Associa os participantes e o horário. Estado inicial, bloqueio do horário e tipos temporais: PC-07. Não publica agendamento conflitante. |
 | `cancelar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: assinatura provisória, prazo, atores e estados. | RF-027; RN-006, RN-009, RN-012 | Contrato condicionado: paciente deve ser dono do agendamento, ou outro ator ter autorização aprovada. Exige estado e antecedência permitidos. Passa a cancelado, preserva rastreabilidade e impede posterior registro como atendimento realizado. Não concede cancelamento a Psicólogo/Administrador enquanto pendente. |
 
-**Relacionamentos:** A10, A11, A12 e A15.
+**Relacionamentos:** A10, A11, A12, A15, A21.
 
-**Restrições/invariantes:** Não há setSituacao(). Confirmação/solicitação devem preservar ausência de conflitos; consulta anterior não garante disponibilidade atual. Cancelamento não pode ser usado para contornar regras da realização.
+**Restrições/invariantes:** Não há setSituacao(). Confirmação/solicitação devem preservar ausência de conflitos; consulta anterior não garante disponibilidade atual. A relação A15 com `Atendimento` é tratada como 0..1 para cada agendamento válido; não existe atendimento sem o agendamento correspondente. Cancelamento não pode ser usado para contornar regras da realização.
 
 **Pendências:** PC-07, PC-09, PC-12. Não se presumem remarcação, confirmação automática, falta ou expiração.
 
@@ -350,8 +400,12 @@ Preservam-se as 16 associações simples A01–A16. Não há herança, agregaç�
 | A12 | Paciente — Agendamento | 1 | PENDENTE | RF-025, RF-028 |
 | A13 | Psicologo — Atendimento | 1 | PENDENTE | RF-030; RN-007 |
 | A14 | Paciente — Atendimento | 1 | PENDENTE | RF-030; RN-007 |
-| A15 | Agendamento — Atendimento | PENDENTE | PENDENTE | RF-030; RN-006 |
+| A15 | Agendamento — Atendimento | 0..1 | 1 | RF-030; RN-006; DEC-030 |
 | A16 | Usuario — RegistroAuditoria | 1 | PENDENTE | RF-032; RNF-004 |
+| A18 | Psicologo — SolicitacaoEspera | 1 | PENDENTE | DEC-027; RF-034 |
+| A19 | Paciente — SolicitacaoEspera | 1 | PENDENTE | DEC-027; RF-034 |
+| A20 | Disponibilidade — SolicitacaoEspera | 1 | PENDENTE | DEC-027; RF-035 |
+| A21 | SolicitacaoEspera — Agendamento | 0..1 | 0..1 | DEC-027; RF-035; RF-036 |
 
 Os valores 1 herdados decorrem da interpretação semântica documentada no domínio, não de cardinalidades numéricas literais nos RFs. A08 (titular por agenda) e A09 (agenda por disponibilidade) ainda merecem validação explícita do grupo; seus extremos foram preservados, sem aprovar novas cardinalidades.
 

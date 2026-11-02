@@ -16,6 +16,14 @@ classDiagram
     class disponibilidadeCenario["disponibilidadeCenario : Disponibilidade"] {
         periodo = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00
     }
+    class agendamentoCenario["agendamentoCenario : Agendamento"] {
+        horario = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00
+        situacao = CONFIRMADO
+    }
+    class atendimentoCenario["atendimentoCenario : Atendimento"]
+    class registroAuditoriaCenario["registroAuditoriaCenario : RegistroAuditoria"] {
+        operacao = AGENDAMENTO_CONFIRMADO
+    }
 
     contaProfissionalCenario -- profissionalCenario : A03
     contaPacienteCenario -- pacienteCenario : A04
@@ -23,9 +31,13 @@ classDiagram
     pacienteCenario -- vinculoCenario : A07
     profissionalCenario -- agendaCenario : A08
     agendaCenario -- disponibilidadeCenario : A09
+    agendamentoCenario -- atendimentoCenario : A15
+    contaProfissionalCenario -- registroAuditoriaCenario : A16
 
     note "FOTOGRAFIA FICTICIA PARCIAL. Caixas sao objetos das classes existentes. Contagens observadas nao definem multiplicidades."
     note for contaProfissionalCenario "Identificacao ilustrativa, sem tipo/formato aprovado. Credencial, situacao e perfis omitidos da vista."
     note for contaPacienteCenario "Identificacao ilustrativa. Conta separada do cadastro; nao representa login ou acesso autorizado."
     note for vinculoCenario "Vinculo formalizado no cenario. Sem atributo de estado nem resultado de estaAutorizado."
+    note for agendamentoCenario "Agendamento criado no mesmo ato da confirmacao (DEC-016/DEC-017). A15 e a confirmacao do atendimento sao distintos; o agendamento pode existir sem atendimento registrado."
+    note for atendimentoCenario "Atendimento registrado somente apos o agendamento valido e o contexto da sessao; nao e criado automaticamente na confirmacao."
     note for disponibilidadeCenario "Periodo ficticio, sem fixar tipo, formato, fuso, recorrencia ou duracao padrao. Nao comprova horario livre."

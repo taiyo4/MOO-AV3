@@ -36,7 +36,7 @@ Regras:
 | Contexto | CTX-001 | — (Fase 2) | `Contexto/diagrama-contexto.drawio.xml` | `Contexto/diagrama-contexto.pdf` | reconstrução editável; o PDF original da Fase 2 (`Contexto/Diagrama de contexto fase 2.pdf`) foi preservado |
 | Casos de uso | UC-001 | — (Fase 3) | `Casos de uso/Diagrama casos de uso uc001/Diagrama casos de uso uc001 .drawio.xml` | `Casos de uso/Diagrama casos de uso uc001/Cópia de Diagrama casos de uso uc001 .pdf` | oficial do grupo (Fase 3, nomes preservados) |
 | Domínio | CLS-DOM | `Dominio/diagrama-dominio.mmd` | `Dominio/diagrama-dominio.drawio.xml` | `Dominio/diagrama-dominio.pdf` | oficial do Integrante 3 |
-| Classes | CLS-001 | `Classes/diagrama-classes.mmd` | `Classes/diagrama-classes.drawio.xml` | `Classes/diagrama-classes.pdf` | oficial do Integrante 3 (multiplicidades `PENDENTE`) |
+| Classes | CLS-001 | `Classes/diagrama-classes.mmd` | `Classes/diagrama-classes.drawio.xml` | `Classes/diagrama-classes.pdf` | oficial do Integrante 3 (A15 e A18–A21 incorporados; multiplicidades finais continuam condicionadas à validação e à fila) |
 | Objetos | OBJ-001 | `Objetos/diagrama-objetos.mmd` | `Objetos/diagrama-objetos.drawio.xml` | `Objetos/diagrama-objetos.pdf` | oficial do Integrante 3 |
 | Sequência — autenticar | SEQ-001 | `Sequências/proposta-I2-sequencia-seq-001-autenticar.mmd` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-001-autenticar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-001 |
 | Sequência — agendar | SEQ-002 | `Sequências/proposta-I2-sequencia-seq-002-agendar.mmd` | `Sequências/proposta-I2-sequencia-seq-002-agendar.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-002-agendar.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-025 |
@@ -127,7 +127,7 @@ a lista completa, com dono, está em
 
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
-| Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016 | Integrante 3 |
+| Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016; a fila de espera e a relação `A15` foram alinhadas no diagrama oficial do I3 | Integrante 3 |
 | Operações `OP-01…OP-28`, entidade `SolicitacaoEspera` (com `DESISTIU`) e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
 | `Agendamento.confirmar()` foi removida do diagrama oficial de classes | alinhada com DEC-016/DEC-017: criação e confirmação ocorrem no mesmo ato | Integrante 3 |
 | Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |

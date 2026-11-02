@@ -41,6 +41,19 @@ classDiagram
     class Disponibilidade {
         -periodo
     }
+    class SolicitacaoEspera {
+        -situacao
+        -prazoAceite
+        +registrarEntrada(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) SolicitacaoEspera$
+        +consultarPosicao() Booleano
+        +encerrar(motivo, solicitante: Usuario)
+    }
+    class OfertaVaga {
+        -situacao
+        -prazoAceite
+        +abrirOferta(solicitacao: SolicitacaoEspera, horario, solicitante: Usuario) OfertaVaga$
+        +aceitar(solicitante: Usuario)
+    }
     class Agendamento {
         -horario
         -situacao
@@ -71,15 +84,20 @@ classDiagram
     Paciente "1" -- "PENDENTE" Agendamento : A12 paciente agendado
     Psicologo "1" -- "PENDENTE" Atendimento : A13 profissional responsavel
     Paciente "1" -- "PENDENTE" Atendimento : A14 paciente atendido
-    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 corresponde a sessao
+    Agendamento "0..1" -- "1" Atendimento : A15 corresponde a sessao
     Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel pela operacao
+    Psicologo "1" -- "PENDENTE" SolicitacaoEspera : A18 registra interesse
+    Paciente "1" -- "PENDENTE" SolicitacaoEspera : A19 participa da fila
+    Disponibilidade "1" -- "PENDENTE" SolicitacaoEspera : A20 vincula o slot
+    SolicitacaoEspera "0..1" -- "0..1" Agendamento : A21 converte em agendamento
 
     note "ASSINATURAS PROVISORIAS: tipos/retornos omitidos continuam pendentes. Contratos declarados nao demonstram mecanismos. PENDENTE nao e multiplicidade UML."
     note for Usuario "Conta de acesso. associarPerfil: suporte no cadastro RF-003; manutencao posterior pendente. Atualizacao e tipos provisorios."
     note for Perfil "Perfil de acesso. adicionarPermissao e removerPermissao: REFINAMENTOS A VALIDAR; remover revoga associacao, nao exclui Permissao."
     note for Vinculo "estaAutorizado: PROPOSTA DERIVADA; criterio/representacao pendentes. Formalizar tem contrato condicionado; sem estado ATIVO presumido."
     note for Agenda "adicionarDisponibilidade: criacao/validacao temporal incompletas. verificarDisponibilidade: REFINAMENTO, nao substitui consulta RF-024. A08/A09 a validar."
-    note for Agendamento "solicitar(): cria e confirma no mesmo ato (DEC-016/DEC-017); cancelar e solicitar permanecem contratos condicionados PC-07/PC-12. Sem novos parametros."
+    note for SolicitacaoEspera "DEC-027: fila por ordem de entrada; prazo e oferta sao parametros da fila. A conversao em agendamento ocorre apenas apos aceitacao do paciente e a disponibilidade mantida."
+    note for Agendamento "solicitar(): cria e confirma no mesmo ato (DEC-016/DEC-017); A15 fixa a relacao com Atendimento como 0..1:1, sem criar um atendimento antecipado; cancelar e solicitar permanecem contratos condicionados PC-07/PC-12."
     note for Paciente "alterarSituacao e atualizacoes: ASSINATURAS PROVISORIAS; estados, campos e contratos pendentes."
     note for Psicologo "Atualizacao e consultas: campos/retornos provisorios. Administrador e papel, sem subclasses por permissao."
     note for Atendimento "registrar: ASSINATURA PROVISORIA. Contrato contempla RN-003/RN-006/RN-007; conteudo e contextoSessao pendentes."

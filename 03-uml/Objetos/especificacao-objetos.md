@@ -21,11 +21,9 @@ Os nomes diagrama-objetos.mmd e especificacao-objetos.md seguem o padrão diagra
 
 ## 2. Cenário fictício
 
-Uma conta fictícia está associada a um cadastro profissional e outra a um cadastro de paciente. Os dois cadastros participam de um vínculo formalizado. O profissional é titular da agenda representada, que contém um período de disponibilidade ilustrativo.
+Uma conta fictícia está associada a um cadastro profissional e outra a um cadastro de paciente. Os dois cadastros participam de um vínculo formalizado. O profissional é titular da agenda representada, que contém um período de disponibilidade ilustrativo. O mesmo cenário inclui um agendamento confirmado e um atendimento correspondente, preservando a regra de que a confirmação é o ato de criação (DEC-016/DEC-017) e que a sessão registrada é a atividade do atendimento (DEC-030).
 
-É uma fotografia de objetos já existentes, não uma sequência de execução dos cadastros ou de formalização. Não há chamada de métodos, nova alteração de situação, demonstração de autenticação ou concessão de autorização.
-
-Não são exibidos agendamento nem atendimento: o cenário não depende de estado inicial da solicitação, confirmação, cancelamento ou realização de sessão. Também não instancia RegistroAuditoria. O recorte não afirma ausência de registros de auditoria dos eventos anteriores; RF-032 e RN-009/RN-014 continuam aplicáveis às operações auditáveis fora da vista.
+É uma fotografia de objetos já existentes, não uma sequência de execução dos cadastros ou de formalização. Não há chamada de métodos, nova alteração de situação, demonstração de autenticação ou concessão de autorização; o recorte mostra apenas a coesão estrutural do modelo. Também aparece um registro de auditoria genérico, sem criar nova conversão de estado ou regra de persistência fora do modelo.
 
 Perfil, Permissao e AreaAtuacao também não são projetados. Isso não significa que as contas não tenham perfis/permissões ou que o profissional não tenha áreas. O cenário é uma vista parcial, não um inventário completo de todo o sistema.
 
@@ -47,7 +45,7 @@ Esta representação não deve ser confundida com notação UML integral de Inst
 
 ## 4. Objetos e slots
 
-São sete objetos de seis classes existentes, com três slots exibidos: duas ocorrências de Usuario.identificacao e uma de Disponibilidade.periodo. Nenhum método é representado.
+São dez objetos de nove classes existentes, com cinco slots exibidos: duas ocorrências de `Usuario.identificacao`, uma de `Disponibilidade.periodo`, uma de `Agendamento.horario`, uma de `Agendamento.situacao` e uma de `RegistroAuditoria.operacao`. Nenhum método é representado.
 
 | Objeto | Classe | Valor exibido |
 |---|---|---|
@@ -58,6 +56,9 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 | vinculoCenario | Vinculo | Nenhum atributo escalar representado. |
 | agendaCenario | Agenda | Nenhum atributo escalar representado. |
 | disponibilidadeCenario | Disponibilidade | periodo = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00 |
+| agendamentoCenario | Agendamento | horario = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00; situacao = CONFIRMADO |
+| atendimentoCenario | Atendimento | Nenhum atributo escalar representado. |
+| registroAuditoriaCenario | RegistroAuditoria | operacao = AGENDAMENTO_CONFIRMADO |
 
 ### contaProfissionalCenario
 
@@ -113,6 +114,39 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 **Fundamentação:** RF-021; glossário de Vínculo; RN-003; A06/A07.
 
 **Limitação:** Não há slot ativo, autorizado ou data de início. Não se executa estaAutorizado() nem se afirma resultado de verificação. A fotografia não descreve formalização, encerramento ou autorização de consulta.
+
+### agendamentoCenario
+
+**Objeto:** agendamentoCenario
+**Classe:** Agendamento
+**Papel no cenário:** Compromisso confirmado e já vinculado ao horário disponível.
+**Atributos representados:** horario = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00; situacao = CONFIRMADO
+**Relacionamentos:** A15 com atendimentoCenario.
+**Fundamentação:** RF-025; RF-026; DEC-016; DEC-017; DEC-030.
+
+**Limitação:** O objeto mostra a criação confirmada, não um passo de confirmação separado nem uma etapa de agendamento pendente.
+
+### atendimentoCenario
+
+**Objeto:** atendimentoCenario
+**Classe:** Atendimento
+**Papel no cenário:** Registro conceitual da sessão correspondente ao agendamento autenticado.
+**Atributos representados:** Nenhum atributo escalar representado.
+**Relacionamentos:** A15 com agendamentoCenario; A13/A14 na relação com psicólogo e paciente.
+**Fundamentação:** RF-030; DEC-030.
+
+**Limitação:** A estrutura do contextoSessao, estado e associação com o agendamento continuam pendentes de refinamento de domínio e persistência.
+
+### registroAuditoriaCenario
+
+**Objeto:** registroAuditoriaCenario
+**Classe:** RegistroAuditoria
+**Papel no cenário:** Evento de registro do agendamento confirmado.
+**Atributos representados:** operacao = AGENDAMENTO_CONFIRMADO
+**Relacionamentos:** A16 com contaProfissionalCenario.
+**Fundamentação:** RF-032; RN-009; RN-014; DEC-024.
+
+**Limitação:** A operação precisa ser definida pelo catálogo oficial de auditoria; isso não adiciona novo estado ao agendamento nem cria outra regra de negócio.
 
 ### agendaCenario
 
