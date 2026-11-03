@@ -1,0 +1,63 @@
+%% =====================================================================
+%% SEQ-002 - Agendar atendimento (UC-025 + UC-024/RF-024) - FASE 6
+%% PROPOSTA DO INTEGRANTE 2 (casos de uso e diagramas comportamentais).
+%% Natureza: PROPOSTA. Nao substitui artefato oficial do grupo.
+%% Fonte da verdade do CONTEUDO.
+%%
+%% Rastreabilidade das mensagens:
+%%   AP-03 ServicoAgenda (coordena regra, auditoria e envio de mensagem)
+%%   AP-02 ServicoAuditoria.registrar   |  AP-04 ServicoEnvioMensagem.notificar
+%%   OP-11 Agenda.consultarHorariosDisponiveis | OP-22 Vinculo.estaAtivo
+%%   Agendamento.solicitar (cria JA CONFIRMADO) | OP-13 confirmar (efeito)
+%%   Falha de envio: registrar("FALHA_ENVIO_EMAIL") e repetivel (DEC-029)
+%% Regras: RN-003, RN-005, RN-009, RN-010, RN-013
+%% Requisitos: RF-024, RF-025, RF-026, RF-032, RF-033, RF-034
+%% Casos: UC-024, UC-025
+%% =====================================================================
+%% label: SEQ-002 - Agendar atendimento (UC-025)
+%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-002-agendar.mmd | PROPOSTA do Integrante 2 (Fase 6) | nasce CONFIRMADO (RN-013) | e-mail sempre enviado (RF-033/DEC-022) | falha auditada e repetivel (DEC-029)
+
+sequenceDiagram
+    actor Ator as Ator (Paciente)
+    participant ServicoAgenda as ServicoAgenda
+    participant Vinculo as Vinculo
+    participant Agenda as Agenda
+    participant Agendamento as Agendamento
+    participant ServicoAuditoria as ServicoAuditoria
+    participant RegistroAuditoria as RegistroAuditoria
+    participant ServicoEnvioMensagem as ServicoEnvioMensagem
+
+    Ator->>ServicoAgenda: consultarHorariosDisponiveis(periodo) [RF-024 / UC-024]
+    ServicoAgenda->>Vinculo: estaAtivo() [OP-22 / RN-003]
+    Vinculo-->>ServicoAgenda: true - vinculo autorizado
+    ServicoAgenda->>Agenda: consultarHorariosDisponiveis(paciente, periodo) [OP-11]
+    Agenda-->>ServicoAgenda: lista de Disponibilidade livres
+
+    alt Ha horarios disponiveis
+        ServicoAgenda-->>Ator: horarios disponiveis
+        Ator->>ServicoAgenda: solicitar(psicologo, paciente, horario) [RF-025]
+        ServicoAgenda->>Agenda: verificarDisponibilidade(horario) [RN-005 / RN-010]
+        Agenda-->>ServicoAgenda: true
+        alt Horario ainda disponivel
+            ServicoAgenda->>Agendamento: solicitar(psicologo, paciente, horario, solicitante) [RF-025]
+            Agendamento-->>ServicoAgenda: agendamento (CONFIRMADO) [RF-026 / RN-013]
+            ServicoAgenda->>ServicoAuditoria: registrar("AGENDAMENTO_CONFIRMADO", responsavel, detalhes) [AP-02]
+            ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+            ServicoAgenda->>ServicoEnvioMensagem: notificar(evento=confirmacao) [AP-04 / RF-033]
+            alt Envio aceito pelo servico externo
+                ServicoEnvioMensagem-->>ServicoAgenda: entregue
+            else Falha de envio - nao desfaz a confirmacao [DEC-029]
+                ServicoEnvioMensagem-->>ServicoAgenda: falha de envio
+                ServicoAgenda->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
+                ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
+            end
+            ServicoAgenda-->>Ator: agendamento confirmado (UC-025)
+        else E1 - Conflito de horario
+            ServicoAgenda-->>Ator: horario indisponivel - sugerir outro horario
+        end
+    else A1 - Nenhum horario disponivel
+        ServicoAgenda-->>Ator: informar ausencia de horarios e oferecer lista de espera (RF-034 / SEQ-004)
+    end
+
+    note over Agenda,Agendamento: O agendamento nasce CONFIRMADO: a criacao e a confirmacao ocorrem no mesmo ato (RF-025 + RF-026 / RN-013). Nao ha passo separado de confirmacao nem situacao pendente.
+    note over ServicoEnvioMensagem: Envio pos-commit (TRS-02 do I4) e OBRIGATORIO nos tres eventos de agenda (RF-033). Se o envio falhar, o agendamento continua valido: a falha e registrada na auditoria ("FALHA_ENVIO_EMAIL") e o envio pode ser repetido (DEC-029).

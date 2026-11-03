@@ -1,0 +1,37 @@
+%% =====================================================================
+%% EST-001 - Maquina de estados do Agendamento - FASE 6
+%% PROPOSTA DO INTEGRANTE 2 (casos de uso e diagramas comportamentais).
+%% Natureza: PROPOSTA. Nao substitui artefato oficial do grupo.
+%% Fonte da verdade do CONTEUDO.
+%%
+%% Rastreabilidade:
+%%   Agendamento.solicitar (RF-025) - cria JA CONFIRMADO (RF-026 / RN-013)
+%%   OP-14 cancelar (RN-012) | OP-17 concluir (RF-030) | OP-18 registrarFalta
+%%   (RF-037 / DEC-025)
+%% Situacoes: CONFIRMADO, REALIZADO, CANCELADO, NAO_COMPARECEU.
+%%   SOLICITADO NAO EXISTE MAIS (lote de ajustes da Fase 6, revoga DEC-016
+%%   e LAC-05/P-01).
+%% Guarda do cancelamento: [antes do horario marcado] - nao existe prazo de
+%%   2 horas (revoga o valor da DEC-012).
+%%
+%% Convencao de layout: "%% pos: ID x y" -> posicao do centro do estado (px).
+%% =====================================================================
+%% label: EST-001 - Maquina de estados de Agendamento
+%% sub: Fonte editavel: 03-uml/Estados/proposta-I2-estados-est-001.mmd | PROPOSTA do Integrante 2 (Fase 6) | 4 situacoes, 4 transicoes de saida + criacao | nasce confirmado
+
+%% pos: CONFIRMADO 620 200
+%% pos: REALIZADO 1080 160
+%% pos: CANCELADO 700 420
+%% pos: NAO_COMPARECEU 1120 420
+
+stateDiagram-v2
+    [*] --> CONFIRMADO : solicitar
+    CONFIRMADO --> CANCELADO : cancelar [antes do horario marcado]
+    CONFIRMADO --> REALIZADO : concluir [atendimento]
+    CONFIRMADO --> NAO_COMPARECEU : registrarFalta
+    REALIZADO --> [*]
+    CANCELADO --> [*]
+    NAO_COMPARECEU --> [*]
+
+    note left of CONFIRMADO : Situacao inicial: o agendamento nasce CONFIRMADO em Agendamento.solicitar (RF-025 + RF-026 / RN-013). Nao existe situacao intermediaria de pendencia nem aprovacao manual de outro ator.
+    note right of NAO_COMPARECEU : Guardas: cancelar so vale de CONFIRMADO e antes do horario marcado (OP-15 / RN-012) - nao existe prazo de 2 horas. registrarFalta e manual, pelo psicologo (OP-18 / DEC-025). Realizado, Cancelado e Nao Compareceu sao terminais.

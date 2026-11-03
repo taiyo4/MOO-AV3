@@ -1,6 +1,17 @@
+# Especificações dos casos de uso demais
+
+**Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
+**Versão:** v1.1 (29/10/2026) — acrescentados **Objetivo** por caso (P5 / DEC-026) e atualizados os dois `<<include>>` (UC-032 e UC-033).
+**Numeração (DEC-026):** quando o caso realiza **um** RF, recebe `UC-0RF`; os blocos administrativos que agrupam vários RFs (RF-003 a RF-010 e RF-011 a RF-020) mantêm o nome do bloco, porque não correspondem a um único requisito.
+**Natureza:** artefato oficial do grupo (Fase 4), revisado pelo dono na Fase 9.
+
+---
+
 Gerenciar usuários e permissões
 -
 Ator: Administrador
+
+**Objetivo:** manter contas de acesso, perfis e permissões, garantindo que ninguém receba permissão superior à do Administrador que a concede.
 
 RFs cobertos: RF-003, RF-004, RF-005, RF-006, RF-007, RF-008, RF-009, RF-010
 
@@ -28,6 +39,8 @@ Gerenciar psicólogos e pacientes
 -
 Ator: Administrador
 
+**Objetivo:** manter os cadastros de Psicólogo e de Cliente/Paciente, inclusive a situação cadastral, com auditoria das alterações relevantes.
+
 RFs cobertos: RF-011, RF-012, RF-014, RF-018, RF-019, RF-020
 
 Pré-condição: Administrador autenticado.
@@ -51,9 +64,11 @@ Regras de negócio aplicadas: RN-009 (rastreabilidade de alterações relevantes
 
 Observação: por não usar dados reais de pacientes (restrição do enunciado), os cadastros de teste devem usar sempre informação fictícia.
 
-Consultar auditoria
+UC-013 — Consultar auditoria
 -
 Ator: Administrador
+
+**Objetivo:** permitir que o Administrador consulte a trilha de auditoria por filtros, em ordem cronológica e sem poder alterá-la.
 
 RFs cobertos: RF-013
 
@@ -78,6 +93,8 @@ Regras de negócio aplicadas: RN-008 (consulta restrita à auditoria), RN-014 (i
 Gerenciar perfil e agenda
 -
 Ator: Psicólogo
+
+**Objetivo:** permitir que o Psicólogo mantenha o próprio perfil profissional, as áreas de atuação e a disponibilidade da própria agenda.
 
 RFs cobertos: RF-015, RF-016, RF-023, RF-029
 
@@ -106,6 +123,8 @@ Atender pacientes vinculados
 -
 Ator: Psicólogo
 
+**Objetivo:** permitir que o Psicólogo consulte os pacientes vinculados, registre o atendimento realizado e consulte o histórico permitido — sempre condicionado ao vínculo.
+
 RFs cobertos: RF-017, RF-030, RF-031
 
 Pré-condição: Psicólogo autenticado; vínculo autorizado com o(s) paciente(s) consultado(s) (RN-003).
@@ -127,9 +146,11 @@ E1: Psicólogo tenta acessar paciente sem vínculo — sistema recusa (RN-003).
 
 Regras de negócio aplicadas: RN-003 (acesso profissional condicionado a vínculo), RN-007 (vínculos obrigatórios do atendimento).
 
-Consultar meu cadastro
+UC-022 — Consultar meu cadastro
 -
 Ator: Paciente
+
+**Objetivo:** permitir que o Paciente veja somente as informações liberadas do próprio cadastro.
 
 RFs cobertos: RF-022
 
@@ -148,7 +169,9 @@ Exceções: nenhuma identificada além da autenticação (UC-001).
 
 Regras de negócio aplicadas: RN-004 (acesso do paciente ao próprio cadastro), RNF-005 (isolamento dos dados de pacientes).
 
-Registrar evento de auditoria — <<include>>, sem ator próprio
+UC-032 — Registrar evento de auditoria — <<include>>, sem ator próprio
+
+**Objetivo:** garantir que toda operação relevante deixe rastro com responsável, data, hora e operação, sem senha em texto puro.
 
 RFs cobertos: RF-032
 
@@ -158,12 +181,14 @@ Fluxo: ao ser incluído, o sistema registra usuário responsável, data, hora e 
 
 Regras de negócio aplicadas: RN-009 (rastreabilidade de alterações relevantes), RN-014 (imutabilidade lógica de auditoria).
 
-Notificar paciente por e-mail — <<include>>, sem ator próprio
+UC-033 — Notificar os interessados por e-mail — <<include>>, sem ator próprio
 
-RFs cobertos: nenhum RF oficial ainda — decorre do DEC-009 (resolvido: sim, para confirmação de agendamento).
+**Objetivo:** avisar os envolvidos, por e-mail, na confirmação, no cancelamento e na oferta de vaga, sem que a falha de envio desfaça a operação de agenda.
 
-Observação: incluído automaticamente pelo caso de uso "Agendar consulta" quando um agendamento é criado e confirmado.
+RFs cobertos: RF-033 (DEC-009).
 
-Fluxo: ao ser incluído, o sistema aciona o serviço externo de e-mail, que entrega a mensagem de confirmação ao endereço cadastrado do Paciente.
+Observação: incluído automaticamente pelos casos de uso de agendamento (confirmação), de cancelamento e de oferta de vaga de lista de espera (DEC-027). É uma **fronteira**: o nome usado é `ServicoEnvioMensagem` e não existe classe de domínio nem tabela de notificação (DEC-022).
 
-Pendência: ainda não formalizado como RF numerado — recomendo que o Integrante 1 numere assim que o grupo confirmar o alcance (só confirmação, ou também cancelamento/lembrete).
+Fluxo: ao ser incluído, o sistema aciona o serviço externo de e-mail, que entrega a mensagem correspondente ao endereço cadastrado. Se o envio falhar, a falha é registrada na auditoria como `"FALHA_ENVIO_EMAIL"`, a operação de agenda permanece válida e o envio pode ser repetido (DEC-029).
+
+Regras de negócio aplicadas: RN-009 (auditoria da falha), RNF-004 (rastreabilidade), DEC-009, DEC-022 e DEC-029.

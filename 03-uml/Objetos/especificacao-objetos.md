@@ -21,13 +21,15 @@ Os nomes diagrama-objetos.mmd e especificacao-objetos.md seguem o padrão diagra
 
 ## 2. Cenário fictício
 
-Uma conta fictícia está associada a um cadastro profissional e outra a um cadastro de paciente. Os dois cadastros participam de um vínculo formalizado. O profissional é titular da agenda representada, que contém um período de disponibilidade ilustrativo.
+Uma conta fictícia está associada a um cadastro profissional e outra a um cadastro de paciente. Os dois cadastros participam de um vínculo formalizado. O profissional é titular da agenda representada, que contém um slot de disponibilidade ilustrativo. O cenário inclui um agendamento confirmado e um atendimento correspondente, conforme DEC-016/DEC-017 e DEC-030.
 
-É uma fotografia de objetos já existentes, não uma sequência de execução dos cadastros ou de formalização. Não há chamada de métodos, nova alteração de situação, demonstração de autenticação ou concessão de autorização.
-
-Não são exibidos agendamento nem atendimento: o cenário não depende de estado inicial da solicitação, confirmação, cancelamento ou realização de sessão. Também não instancia RegistroAuditoria. O recorte não afirma ausência de registros de auditoria dos eventos anteriores; RF-032 e RN-009/RN-014 continuam aplicáveis às operações auditáveis fora da vista.
+É uma fotografia de objetos já existentes, não uma sequência de execução dos cadastros ou de formalização. Não há chamada de métodos, nova alteração de situação, demonstração de autenticação ou concessão de autorização; o recorte mostra apenas a coesão estrutural do modelo. Também aparece um registro de auditoria genérico, sem criar nova conversão de estado ou regra de persistência fora do modelo.
 
 Perfil, Permissao e AreaAtuacao também não são projetados. Isso não significa que as contas não tenham perfis/permissões ou que o profissional não tenha áreas. O cenário é uma vista parcial, não um inventário completo de todo o sistema.
+
+### Decisão sobre OBJ-002
+
+OBJ-002 permanece separado de OBJ-001. OBJ-001 é uma fotografia estrutural com um agendamento confirmado; OBJ-002 descreve o ciclo com agendamentos em situações distintas (`REALIZADO` e `CANCELADO`), atendimento e auditoria. Manter os recortes separados evita representar duas histórias de ciclo de vida como se fossem uma única fotografia do diagrama atual. A decisão e a justificativa devem permanecer alinhadas à seção 20 do dossiê.
 
 ## 3. Notação e limites do Mermaid
 
@@ -35,7 +37,7 @@ Fonte editável: [diagrama-objetos.mmd](diagrama-objetos.mmd).
 
 Utiliza-se a gramática classDiagram já empregada no repositório como **representação adaptada de objetos**: o identificador técnico da caixa é o nome da instância, e seu rótulo exibe nomeInstancia : Classe. Os membros exibidos são slots atributo = valor, não declarações de novos atributos ou métodos.
 
-A palavra class na fonte é uma construção da gramática Mermaid; ela não introduz novas classes no modelo do projeto. As seis classes usadas permanecem exatamente as do modelo de classes.
+A palavra class na fonte é uma construção da gramática Mermaid; ela não introduz novas classes no modelo do projeto. Todas as classes usadas são classes já existentes no modelo de classes.
 
 Esta representação não deve ser confundida com notação UML integral de InstanceSpecification: não reproduz o sublinhado convencional do cabeçalho e não declara conformidade UML estrita. O nome/classe no rótulo, os slots e as ligações tornam explícita a leitura como instâncias. Se a avaliação exigir notação integral, essa limitação deve ser considerada antes da entrega final, sem alterar o modelo de classes.
 
@@ -47,7 +49,7 @@ Esta representação não deve ser confundida com notação UML integral de Inst
 
 ## 4. Objetos e slots
 
-São sete objetos de seis classes existentes, com três slots exibidos: duas ocorrências de Usuario.identificacao e uma de Disponibilidade.periodo. Nenhum método é representado.
+São dez objetos de nove classes existentes, com seis slots exibidos: duas ocorrências de `Usuario.identificacao`, uma de `Disponibilidade.periodo`, uma de `Agendamento.horario`, uma de `Agendamento.situacao` e uma de `RegistroAuditoria.operacao`. Nenhum método é representado.
 
 | Objeto | Classe | Valor exibido |
 |---|---|---|
@@ -57,7 +59,10 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 | pacienteCenario | Paciente | Nenhum atributo escalar representado. |
 | vinculoCenario | Vinculo | Nenhum atributo escalar representado. |
 | agendaCenario | Agenda | Nenhum atributo escalar representado. |
-| disponibilidadeCenario | Disponibilidade | periodo = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00 |
+| disponibilidadeCenario | Disponibilidade | periodo = SLOT-FICTICIO 2040-08-17 09h00 |
+| agendamentoCenario | Agendamento | horario = SLOT-FICTICIO 2040-08-17 09h00; situacao = CONFIRMADO |
+| atendimentoCenario | Atendimento | Nenhum atributo escalar representado. |
+| registroAuditoriaCenario | RegistroAuditoria | operacao = AGENDAMENTO_CONFIRMADO |
 
 ### contaProfissionalCenario
 
@@ -101,7 +106,7 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 **Relacionamentos:** A04 com contaPacienteCenario; A07 com vinculoCenario.  
 **Fundamentação:** RF-018 e RF-021; DEC-006; A04/A07.
 
-**Limitação:** situacaoCadastral existe no modelo, mas não é exibida porque o vocabulário de estados está pendente. Não se inventam nome, documento, contato ou histórico clínico.
+**Limitação:** situacaoCadastral existe no modelo, mas não é exibida nesta fotografia. Não se inventam nome, documento, contato ou histórico clínico.
 
 ### vinculoCenario
 
@@ -112,7 +117,40 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 **Relacionamentos:** A06 com profissionalCenario; A07 com pacienteCenario.  
 **Fundamentação:** RF-021; glossário de Vínculo; RN-003; A06/A07.
 
-**Limitação:** Não há slot ativo, autorizado ou data de início. Não se executa estaAutorizado() nem se afirma resultado de verificação. A fotografia não descreve formalização, encerramento ou autorização de consulta.
+**Limitação:** Os slots `situacao`, `dataInicio` e `dataFim` são omitidos nesta fotografia. Não se executa estaAutorizado() nem se afirma resultado de verificação ou autorização de consulta.
+
+### agendamentoCenario
+
+**Objeto:** agendamentoCenario
+**Classe:** Agendamento
+**Papel no cenário:** Compromisso confirmado e já vinculado ao horário disponível.
+**Atributos representados:** horario = SLOT-FICTICIO 2040-08-17 09h00; situacao = CONFIRMADO
+**Relacionamentos:** A15 com atendimentoCenario.
+**Fundamentação:** RF-025; RF-026; DEC-016; DEC-017; DEC-030.
+
+**Limitação:** O objeto mostra a criação confirmada, não um passo de confirmação separado nem uma etapa de agendamento pendente.
+
+### atendimentoCenario
+
+**Objeto:** atendimentoCenario
+**Classe:** Atendimento
+**Papel no cenário:** Registro conceitual da sessão correspondente ao agendamento autenticado.
+**Atributos representados:** Nenhum atributo escalar representado.
+**Relacionamentos:** A15 com agendamentoCenario; A13/A14 na relação com psicólogo e paciente.
+**Fundamentação:** RF-030; DEC-030.
+
+**Limitação:** A estrutura do contextoSessao, estado e associação com o agendamento continuam pendentes de refinamento de domínio e persistência.
+
+### registroAuditoriaCenario
+
+**Objeto:** registroAuditoriaCenario
+**Classe:** RegistroAuditoria
+**Papel no cenário:** Evento de registro do agendamento confirmado.
+**Atributos representados:** operacao = AGENDAMENTO_CONFIRMADO
+**Relacionamentos:** A16 com contaProfissionalCenario.
+**Fundamentação:** RF-032; RN-009; RN-014; DEC-024.
+
+**Limitação:** A operação precisa ser definida pelo catálogo oficial de auditoria; isso não adiciona novo estado ao agendamento nem cria outra regra de negócio.
 
 ### agendaCenario
 
@@ -130,11 +168,11 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 **Objeto:** disponibilidadeCenario  
 **Classe:** Disponibilidade  
 **Papel no cenário:** Período oferecido na agenda do profissional fictício.  
-**Atributos representados:** periodo = FAIXA-FICTICIA 2040-08-17 09h00 a 10h00  
+**Atributos representados:** periodo = SLOT-FICTICIO 2040-08-17 09h00  
 **Relacionamentos:** A09 com agendaCenario.  
 **Fundamentação:** RF-023; RN-011; glossário de Disponibilidade; atributo periodo e A09.
 
-**Limitação:** A faixa é apenas uma apresentação textual fictícia do slot. Não é tipo Texto aprovado, formato de armazenamento, duração de sessão ou regra de recorrência. Não equivale a reserva nem comprova horário livre.
+**Limitação:** O horário é um slot fictício em DataHora (DEC-018), não formato de armazenamento. O exemplo não define o valor da duração fixa ou o fuso, nem comprova disponibilidade fora desta fotografia.
 
 ## 5. Valores ilustrativos e ausência de dados reais
 
@@ -142,9 +180,9 @@ São sete objetos de seis classes existentes, com três slots exibidos: duas oco
 |---|---|---|
 | contaProfissionalCenario.identificacao | CONTA-FICTICIA-P01 | Identificador arbitrário criado apenas para este desenho; não é login, e-mail, chave técnica ou formato aprovado. |
 | contaPacienteCenario.identificacao | CONTA-FICTICIA-C01 | Identificador arbitrário distinto do anterior, sem correspondência com pessoa real. |
-| disponibilidadeCenario.periodo | FAIXA-FICTICIA 2040-08-17 09h00 a 10h00 | Data e faixa totalmente ilustrativas, sem vínculo com agenda real. Uma faixa de uma hora neste exemplo não define duração de atendimento, granularidade, formato, fuso, recorrência ou intervalo padrão. |
+| disponibilidadeCenario.periodo | SLOT-FICTICIO 2040-08-17 09h00 | Horário ilustrativo, sem vínculo com agenda real. Não define fuso, formato de armazenamento ou valor da duração fixa. |
 
-PC-01 e PC-07 continuam abertas: apresentação textual de um valor não resolve seu tipo ou formato. O marcador FAIXA-FICTICIA integra somente a ilustração do slot, não é um novo campo ou valor de enumeração.
+PC-01 permanece aberta quanto à identificação da conta. O slot tem tipo conceitual `DataHora` e segue DEC-018; esta apresentação não define formato técnico ou fuso.
 
 Não são usados nomes de pessoas, nomes de integrantes, CPF, e-mail, CRP, credenciais ou informações pessoais reais. Nenhuma conta é apresentada como ativa ou bloqueada; nenhum estado cadastral do paciente ou do vínculo foi criado.
 
@@ -158,12 +196,14 @@ Não são usados nomes de pessoas, nomes de integrantes, CPF, e-mail, CRP, crede
 | A07 — Paciente–Vinculo | pacienteCenario — vinculoCenario | RF-021; glossário. O mesmo vínculo tem o paciente indicado. |
 | A08 — Psicologo–Agenda | profissionalCenario — agendaCenario | RF-023, RF-029 e RN-011; titularidade conforme interpretação já presente no domínio. |
 | A09 — Agenda–Disponibilidade | agendaCenario — disponibilidadeCenario | RF-023 e RN-011; o período pertence à agenda do profissional representado. |
+| A15 — Agendamento–Atendimento | agendamentoCenario — atendimentoCenario | DEC-030; associação simples `0..1–1`, sem composição. |
+| A16 — Usuario–RegistroAuditoria | contaProfissionalCenario — registroAuditoriaCenario | RF-032; identifica o responsável pela operação. |
 
 Nenhuma ligação direta Psicologo–Paciente ou Paciente–Agenda foi acrescentada. O par profissional/paciente é expresso pelas duas ligações ao objeto Vinculo, conforme o modelo existente.
 
-Os extremos 1 já existentes são respeitados neste recorte: um profissional e um paciente para vinculoCenario, um titular para agendaCenario e uma agenda para disponibilidadeCenario. As quantidades nos extremos PENDENTE não são determinadas pela fotografia.
+Os extremos 1 já existentes são respeitados neste recorte: um profissional e um paciente para vinculoCenario, um titular para agendaCenario, uma agenda para disponibilidadeCenario e um agendamento para atendimentoCenario. Quantidades de objetos exibidos não alteram as cardinalidades.
 
-A03 e A04 apresentam uma ocorrência cada, sem declarar que somente uma seja permitida. A08/A09 continuam com a necessidade de validação explícita do grupo registrada em PC-09. A fotografia apenas exemplifica a interpretação atual; não a aprova definitivamente.
+A03 e A04 exibem uma associação cada, dentro das cardinalidades 0..1–0..1 definidas em DEC-021. A08/A09 seguem as cardinalidades fechadas no modelo de domínio.
 
 ## 7. Regras consideradas e limites de demonstração
 
@@ -171,7 +211,7 @@ A03 e A04 apresentam uma ocorrência cada, sem declarar que somente uma seja per
 - **RN-003 / RNF-006:** o vínculo entre os cadastros aparece estruturalmente. Não se executa consulta nem se afirma que a presença do link basta para autorizar acesso.
 - **RN-004 / RNF-005 / DEC-006:** cadastro e conta do paciente são distintos; a vista acadêmica não é uma tela de autoatendimento nem concede acesso aos dados de terceiros.
 - **RN-011:** disponibilidade liga-se à agenda do profissional titular representado.
-- **RN-005 e RN-010:** sem agendamento ou solicitação no recorte, não se testa conflito nem se conclui que o período está livre. A disponibilidade deve ser confrontada com compromissos fora desta vista.
+- **RN-005, RN-010 e DEC-018:** o agendamento ocupa o slot mostrado; o recorte não testa conflitos com outros slots.
 - **RF-024 / CA-RF-024:** não se demonstra consulta de horários ou reserva.
 - **RN-006, RN-007, RN-012 e RN-013:** não se exercitam cancelamento, atendimento ou confirmação; seus contratos e pendências permanecem intactos.
 - **RN-009 e RN-014:** a omissão de eventos da vista não dispensa auditoria ou permite editar registros; não há transição sendo representada.
@@ -185,31 +225,31 @@ Este diagrama demonstra compatibilidade estrutural de um recorte com o conhecime
 | Pendência existente em Classes | Tratamento no exemplo |
 |---|---|
 | PC-01 | identificacao tem apenas valor ilustrativo; tipo, geração e formato não fixados. Credencial omitida. |
-| PC-02 e PC-05 | Situação de conta e situação cadastral não exibidas; nenhuma enumeração ou transição criada. |
+| PC-02 e PC-05 | Situações aprovadas não são exibidas nesta fotografia; nenhuma nova transição é criada. |
 | PC-03 e PC-04 | Perfis, permissões, áreas e campos profissionais não detalhados; não se conclui que estejam ausentes do sistema. |
-| PC-06 | Nenhum estado de vínculo, algoritmo de autorização, resultado booleano ou encerramento. Formalização é contexto da fotografia, não novo fluxo aprovado. |
-| PC-07 | periodo ilustrativo, sem regra temporal aprovada. Agendamento, solicitação, confirmação e cancelamento fora do recorte. |
+| PC-06 | Slots de vínculo e autorização são omitidos; formalização é contexto da fotografia, não demonstração de acesso. |
+| PC-07 | O slot segue DEC-018; o recorte não demonstra solicitação/cancelamento nem define fuso/formato técnico. |
 | PC-08 | Atendimento e conteúdo clínico não projetados. |
-| PC-09 | Nenhuma cardinalidade nova. Uma ocorrência desenhada não fecha multiplicidade pendente; A08/A09 continuam sujeitas à validação. |
+| PC-09 | Nenhuma cardinalidade nova. Uma ocorrência desenhada não altera as cardinalidades documentadas. |
 | PC-10 | Sem evento de auditoria ilustrado; vocabulário de operações, precisão e eventos adicionais não definidos. |
 | PC-11 | Inovação e serviço externo não incluídos. |
 | PC-12 | Sem operações, assinaturas, colaboradores ou mecanismos novos. |
 
 ## 9. Como a fotografia exemplifica o modelo de classes
 
-Os rótulos separam identidade da instância e classe. As duas contas demonstram que Usuario não é o próprio cadastro profissional/paciente. O objeto Vinculo concretiza as associações A06 e A07, sem criar uma associação direta entre seus participantes. Agenda e Disponibilidade concretizam a organização prevista em A08/A09.
+Os rótulos separam identidade da instância e classe. As duas contas demonstram que Usuario não é o próprio cadastro profissional/paciente. O objeto Vinculo concretiza as associações A06 e A07, sem criar uma associação direta entre seus participantes. Agenda e Disponibilidade concretizam A08/A09; Agendamento e Atendimento concretizam A15; a conta e a auditoria concretizam A16.
 
-Atribuir valores fictícios a identificacao e periodo ilustra slots dos atributos já modelados. A ausência de slots nos objetos cujas classes não possuem atributos escalares definidos evita inventar dados. Omitir situacaoCadastral e situacaoConta mantém os estados pendentes.
+Atribuir valores fictícios a identificacao, periodo, horario, situacao e operacao ilustra slots já modelados. A ausência de slots nos objetos cujas classes não possuem atributos escalares definidos evita inventar dados. Omitir situacaoCadastral e situacaoConta não altera os estados aprovados.
 
-O recorte não exige instanciar as 12 classes ou fornecer todos os valores. Sua compatibilidade final continua condicionada às definições futuras dos modelos de origem.
+O recorte não exige instanciar as 13 classes ou fornecer todos os valores. Sua compatibilidade final continua subordinada aos modelos de origem.
 
 ## 10. Revisão e validação
 
 Critérios de revisão deste artefato:
 
-1. Sete objetos tipados somente por seis classes existentes: Usuario, Psicologo, Paciente, Vinculo, Agenda e Disponibilidade.
-2. Três slots, usando exclusivamente identificacao e periodo das respectivas classes.
-3. Seis links, correspondentes a A03, A04, A06, A07, A08 e A09, sem novas associações.
+1. Dez objetos tipados por nove classes existentes: Usuario, Psicologo, Paciente, Vinculo, Agenda, Disponibilidade, Agendamento, Atendimento e RegistroAuditoria.
+2. Seis slots, usando somente atributos existentes nas classes.
+3. Oito links, correspondentes a A03, A04, A06, A07, A08, A09, A15 e A16.
 4. Nenhuma operação, estado ou multiplicidade acrescentada.
 5. Somente dados ilustrativos, com limites de formato/tipo explícitos.
 6. Fontes de Dominio e Classes mantidas em leitura.

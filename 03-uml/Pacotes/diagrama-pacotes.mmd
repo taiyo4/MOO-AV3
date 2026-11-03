@@ -1,0 +1,105 @@
+%% =====================================================================
+%% PAC-001 - Diagrama de pacotes - FASE 7
+%% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
+%% Versao: v1.1 - 31/10/2026 (Fase 8: par AGENDA<->FILA em UC-035/UC-036)
+%% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
+%% formato editavel.
+%%
+%% Estilo arquitetural: em camadas com inversao de dependencia (DIP).
+%%   apresentacao -> aplicacao -> dominio <- infraestrutura
+%% A aplicacao NAO conhece a infraestrutura: depende das interfaces de
+%% repositorio e da interface ServicoEnvioMensagem, ambas no dominio.
+%% Quem liga as duas pontas e o pacote 'configuracao' (composition root).
+%%
+%% Dependencias:
+%%   -->  dependencia de compilacao
+%%   ..>  realizacao de interface (implementa)
+%%   -.-> dependencia de injecao (montada em tempo de execucao)
+%% =====================================================================
+flowchart TB
+
+    subgraph APRESENTACAO["package: apresentacao"]
+        direction LR
+        WEB["package: web<br/>controladores HTTP<br/>validacao de entrada<br/>DTO de requisicao e resposta"]
+        VIEW["package: view<br/>telas e formularios<br/>nenhuma regra de negocio"]
+    end
+
+    subgraph APLICACAO["package: aplicacao"]
+        direction TB
+        AUTENTICACAO["ServicoAutenticacao<br/>RF-001, RF-002"]
+        CADASTRO["ServicoCadastro<br/>RF-003 a RF-022"]
+        AUTORIZACAO["ServicoAutorizacao<br/>RNF-002, RNF-006"]
+        AGENDA["ServicoAgenda<br/>RF-023 a RF-029, RF-037"]
+        FILA["ServicoListaEspera<br/>RF-034 a RF-036"]
+        AUDITORIA["ServicoAuditoria<br/>RF-013, RF-032, DEC-024"]
+        TEMPO["ServicoTempo<br/>RN-012, DEC-027"]
+        UOW["UnidadeTrabalho<br/>TRS-01 a TRS-07"]
+    end
+
+    subgraph DOMINIO["package: dominio"]
+        direction TB
+        ENTIDADES["package: entidades<br/>Usuario, Perfil, Permissao, Psicologo,<br/>AreaAtuacao, Paciente, Vinculo, Agenda,<br/>Disponibilidade, Agendamento, Atendimento,<br/>SolicitacaoEspera, RegistroAuditoria"]
+        VALORES["package: objetos de valor<br/>Periodo, CredencialProtegida,<br/>SituacaoAgendamento, SituacaoConta"]
+        REPOS["package: repositorios (interfaces)<br/>IRepositorioUsuario, IRepositorioPerfil,<br/>IRepositorioPsicologo, IRepositorioPaciente,<br/>IRepositorioVinculo, IRepositorioAgenda,<br/>IRepositorioAgendamento, IRepositorioAtendimento,<br/>IRepositorioSolicitacaoEspera, IRepositorioAuditoria"]
+        FRONTEIRA["package: fronteira<br/>interface ServicoEnvioMensagem (DEC-022)<br/>interface ServicoHashSenha"]
+    end
+
+    subgraph INFRAESTRUTURA["package: infraestrutura"]
+        direction TB
+        PERSISTENCIA["package: persistencia<br/>implementacoes dos repositorios<br/>mapeamento objeto-relacional<br/>acesso ao MySQL 8.0"]
+        MENSAGERIA["package: mensageria<br/>AdaptadorEmail<br/>implementa ServicoEnvioMensagem"]
+        SEGURANCA["package: seguranca<br/>hash de senha<br/>emissao e validacao de token"]
+    end
+
+    subgraph CONFIGURACAO["package: configuracao"]
+        BOOT["composition root<br/>injecao de dependencia<br/>leitura de parametros"]
+    end
+
+    BANCO[("MySQL 8.0<br/>SGBD externo")]
+
+    VIEW --> WEB
+    WEB --> AUTENTICACAO
+    WEB --> CADASTRO
+    WEB --> AGENDA
+    WEB --> FILA
+
+    AUTENTICACAO --> AUTORIZACAO
+    AUTENTICACAO --> AUDITORIA
+    AUTENTICACAO --> FRONTEIRA
+    CADASTRO --> AUTORIZACAO
+    CADASTRO --> AUDITORIA
+    AGENDA --> AUTORIZACAO
+    AGENDA --> AUDITORIA
+    AGENDA --> TEMPO
+    AGENDA --> FRONTEIRA
+    FILA --> AUTORIZACAO
+    FILA --> AUDITORIA
+    FILA --> TEMPO
+    FILA --> FRONTEIRA
+    AUDITORIA --> REPOS
+
+    AUTENTICACAO --> REPOS
+    AUTENTICACAO --> ENTIDADES
+    CADASTRO --> REPOS
+    CADASTRO --> ENTIDADES
+    CADASTRO --> VALORES
+    AGENDA --> ENTIDADES
+    AGENDA --> VALORES
+    FILA --> ENTIDADES
+    FILA --> VALORES
+    AUDITORIA --> ENTIDADES
+    CADASTRO --> UOW
+    AGENDA --> UOW
+    FILA --> UOW
+
+    AGENDA -->|"oferta apos cancelamento (UC-035)"| FILA
+    FILA -->|"aceite reaproveita agendar (UC-036)"| AGENDA
+
+    PERSISTENCIA ..> REPOS
+    MENSAGERIA ..> FRONTEIRA
+    SEGURANCA ..> FRONTEIRA
+    PERSISTENCIA --> BANCO
+
+    BOOT -.-> APRESENTACAO
+    BOOT -.-> APLICACAO
+    BOOT -.-> INFRAESTRUTURA

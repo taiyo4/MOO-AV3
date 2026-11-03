@@ -1,11 +1,11 @@
 # Especificação de classes — Plataforma para Psicólogos
 
 **Responsável:** Integrante 3.  
-**Status:** modelo detalhado até o limite documental, com tipos e contratos pendentes; não é implementação executável nem aprovação das pendências do grupo.
+**Status:** modelo OO alinhado às decisões aprovadas; tipos conceituais e contratos ainda não especificados permanecem pendentes. Não é implementação executável.
 
 ## 1. Escopo e fontes
 
-Refinamento dos 12 conceitos do [modelo de domínio](../Dominio/modelo-dominio.md), preservando as associações da [fonte do domínio](../Dominio/diagrama-dominio.mmd), sem alterar esses arquivos.
+Refinamento das 13 classes do [modelo de domínio](../Dominio/modelo-dominio.md), incluindo a lista de espera, preservando as associações da [fonte do domínio](../Dominio/diagrama-dominio.mmd).
 
 Fontes: [RF](../../02-requisitos/requisitos-funcionais.md), [RN](../../02-requisitos/regras-negocio.md), [RNF](../../02-requisitos/requisitos-nao-funcionais.md), [critérios de aceite](../../02-requisitos/criterios-aceite.md), [glossário](../../02-requisitos/glossario.md), [decisões oficiais](../../01-planejamento/decisoes.md) e [escopo](../../02-requisitos/escopo.md). As [interações/processos](../Contexto/Interações_Processos.md) e a [revisão de casos futuros](../Casos%20de%20uso/CasosDeUsoFuturo.md) são fontes complementares; sugestões não equivalem a decisões aprovadas.
 
@@ -16,12 +16,12 @@ Consultar [diagrama-classes.mmd](diagrama-classes.mmd) e [decisoes-modelagem.md]
 - Classes em PascalCase; atributos, parâmetros e operações em camelCase, em português.
 - Atributos privados (`-`); operações públicas no nível OO (`+`). Público não significa endpoint exposto ou acesso sem autorização.
 - Associações representam propriedades dos objetos, encapsuladas, sem duplicação em atributos de IDs, listas ou chaves estrangeiras.
-- `Data`, `Hora` e `Booleano` são tipos conceituais independentes de tecnologia: RF-032 exige data/hora; verificações têm resultado lógico. Precisão, fuso e armazenamento permanecem pendentes.
+- `Data`, `Hora`, `DataHora`, `Texto`, `Inteiro`, `Booleano`, `SituacaoConta` e `SituacaoAgendamento` são tipos conceituais independentes de tecnologia. Precisão, fuso e armazenamento permanecem pendentes.
 - Atributo ou parâmetro sem tipo tem **tipo PENDENTE**: não equivale a Texto, objeto genérico ou campo livre. Retorno omitido está **PENDENTE**, não significa void.
-- `confirmar()` tem **assinatura incompleta**, pois o ator/mecanismo autorizado ainda não foi decidido; não significa confirmação sem contexto ou autorização.
-- O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes.
+- O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes. A criação de `Agendamento` já produz um agendamento `CONFIRMADO`, conforme DEC-016 e DEC-017.
+- A fila aprovada em DEC-027 é representada somente por `SolicitacaoEspera`; a situação `OFERTADA` representa uma oferta em andamento. A conversão em `Agendamento` depende da aceitação e da disponibilidade, sem classe independente `OfertaVaga`.
 - `PENDENTE` nos extremos é anotação editorial, não multiplicidade UML válida. O modelo ainda não é um diagrama UML finalizado.
-- Não se fecham enumerações com exemplos de estados. Situação da conta, cadastro e agendamento são distintas.
+- Situações aprovadas são registradas conforme DEC-013, DEC-014, DEC-015 e DEC-027; as enumerações não são intercambiáveis.
 - A alocação de responsabilidades e os nomes de membros são decisões OO desta etapa, fundamentadas nos requisitos citados; não se afirma que as fontes já continham essas assinaturas.
 
 ### Classificação das operações
@@ -32,7 +32,7 @@ As tabelas de cada classe distinguem **natureza documental** e **condicionamento
 - **Refinamento OO derivado:** decomposição proposta de uma responsabilidade/regra. Não equivale a operação literal exigida e requer validação dos Integrantes 1 e 2.
 - **Contrato condicionado a definição pendente:** comportamento com regras, dados ou colaboração ainda incompletos, identificado na coluna Condicionamento. Pode coexistir com qualquer natureza anterior.
 
-Há 18 objetivos diretamente sustentados e quatro refinamentos derivados. Isso não significa 18 assinaturas finalizadas. Tipos/retornos omitidos permanecem provisórios, inclusive quando a regra principal já está descrita. Nenhuma classificação comprova execução das regras.
+Os objetivos e refinamentos são classificados individualmente nas tabelas por classe. Tipos/retornos omitidos permanecem provisórios, inclusive quando a regra principal já está descrita. Nenhuma classificação comprova execução das regras.
 
 ## 3. Contratos transversais
 
@@ -58,7 +58,7 @@ Consultas não devolvem automaticamente dados integrais ou referências mutávei
 |---|---|---|
 | `identificacao` | PENDENTE | Identificação própria da conta (RF-003; PRE-001). Formato, geração e relação com login: PC-01. |
 | `credencialProtegida` | PENDENTE | Representação segura exigida por RF-003 e RNF-001. Não é senha em texto puro; estrutura e mecanismo: PC-01. |
-| `situacaoConta` | PENDENTE | Condição de acesso considerada por RF-001, RF-005 e RF-006. Valores completos e transições: PC-02. |
+| `situacaoConta` | `SituacaoConta` | `ATIVO`, `BLOQUEADO`, `INATIVO` (DEC-013); apenas `ATIVO` permite autenticação. |
 
 **Operações públicas e contratos:**
 
@@ -71,7 +71,7 @@ Consultas não devolvem automaticamente dados integrais ou referências mutávei
 
 **Relacionamentos:** A01, A03, A04 e A16.
 
-**Restrições/invariantes:** Conta bloqueada não inicia autenticação. Credencial não é exposta por consultas nem auditoria. Alteração de dados não concede perfil adicional. A identificação do solicitante deve provir de autenticação confiável, não de uma identidade arbitrária fornecida pelo cliente.
+**Restrições/invariantes:** Somente contas `ATIVO` autenticam; `BLOQUEADO` e `INATIVO` não autenticam (DEC-013). Credencial não é exposta por consultas nem auditoria. Alteração de dados não concede perfil adicional. A identificação do solicitante deve provir de autenticação confiável, não de uma identidade arbitrária fornecida pelo cliente.
 
 **Pendências:** PC-01, PC-02, PC-09, PC-12.
 
@@ -173,14 +173,14 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `situacaoCadastral` | PENDENTE | Situação prevista em RF-020; domínio de valores e transições pendentes em PC-05. Não se confunde com situacaoConta. |
+| `situacaoCadastral` | Tipo conceitual não nomeado | `ATIVO`, `SUSPENSO`, `INATIVO` (DEC-014). Não se confunde com situacaoConta. Alinhar o nome da enumeração com Caio/dicionário. |
 
 **Operações públicas e contratos:**
 
 | Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
 |---|---|---|---|---|
 | `atualizarCadastro(dadosPermitidos, solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-05/PC-12: campos e tipos. | RF-019; CA-RF-019 | Exige Administrador autenticado e autorizado. Atualiza apenas dados administrativos aprovados, sem notas profissionais, credenciais ou mudança de situação por contorno. Campos/tipo: PC-05. |
-| `alterarSituacao(novaSituacao, solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-05/PC-12: estados, transições e auditoria. | RF-020; RN-009 | Contrato condicionado: exige Administrador autenticado e autorizado e transição válida segundo estados ainda a aprovar. Registra nova situação junto à rastreabilidade da alteração. Não é setter irrestrito e não aceita estado arbitrário. Valores e tipo: PC-05. |
+| `alterarSituacao(novaSituacao, solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-12: auditoria e colaboração de aplicação. | RF-020; RN-009; DEC-014 | Exige Administrador autenticado e autorizado; os valores `ATIVO`, `SUSPENSO` e `INATIVO` podem transitar entre si. Registra a alteração para auditoria. Não é setter irrestrito e não aceita estado arbitrário. |
 | `consultarCadastroPermitido(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-05/PC-12: campos liberados e retorno. | RF-022; RN-004; CA-RF-022 | Consulta de autoatendimento: exige conta autenticada correspondente a este paciente. Expõe somente informações próprias liberadas, sem dados de terceiros ou notas restritas. Projeção/retorno: PC-05/PC-12. |
 
 **Relacionamentos:** A04, A07, A12 e A14.
@@ -197,20 +197,25 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 **Atributos privados:**
 
-Nenhum atributo escalar fixado sem sustentação suficiente. As associações compõem a estrutura; ausência de campos escalares não significa ausência de identidade conceitual ou responsabilidades.
+| Atributo | Tipo | Semântica e fundamento |
+|---|---|---|
+| `situacao` | Tipo conceitual não nomeado | `ATIVO` ou `ENCERRADO` (DEC-015); somente `ATIVO` autoriza acesso. Alinhar o nome da enumeração com Caio/dicionário. |
+| `dataInicio` | `Data` | Início do vínculo (DEC-015). |
+| `dataFim` | `Data` | Fim do vínculo, preenchido no encerramento (DEC-015). |
 
 **Operações públicas e contratos:**
 
 | Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
 |---|---|---|---|---|
 | `formalizar(psicologo: Psicologo, paciente: Paciente, solicitante: Usuario) Vinculo$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-06/PC-09/PC-12: limites e colaboração. | RF-021; CA-RF-021 | Operação de criação: exige Administrador autenticado e autorizado e cadastros válidos. Produz vínculo para o par informado e o torna considerado nas autorizações profissionais. Não altera participantes de vínculo preexistente. Limites/duplicidade dependem de PC-06. |
-| `estaAutorizado() Booleano` | Refinamento OO derivado | Contrato condicionado a definição pendente — PC-06/PC-12: representação e critério completos. | RN-003, RN-007; RF-021 | Proposta de consulta sem mutação derivada de RN-003, RN-007 e RF-021. Os documentos não definem função booleana específica. Representação da condição, critério completo de autorização e efeito de encerramento dependem de PC-06/PC-12. Não substitui autenticação/permissão e não equivale a um estado inventado ATIVO. |
+| `estaAutorizado() Booleano` | Refinamento OO derivado | Contrato condicionado a definição pendente — PC-06/PC-12: critério completo e colaboração. | RN-003, RN-007; RF-021; DEC-015 | Consulta sem mutação derivada das regras; vínculo em situação `ATIVO` autoriza acesso, enquanto `ENCERRADO` não. Não substitui autenticação/permissão nem define sozinho todos os critérios de acesso. |
+| `encerrar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-12: auditoria e colaboração de aplicação. | DEC-015; RN-003/RN-007 | Encerra o vínculo, define `situacao = ENCERRADO` e `dataFim`; depois disso o vínculo não autoriza acesso. Agendamentos futuros não são cancelados automaticamente. |
 
 **Relacionamentos:** A06 e A07. As referências aos dois participantes são propriedades de associação, não cópias de seus dados.
 
-**Restrições/invariantes:** A existência de dois cadastros, sozinha, não constitui vínculo autorizado. Não oferecer reassociação genérica de participantes.
+**Restrições/invariantes:** A existência de dois cadastros, sozinha, não constitui vínculo autorizado. Somente situação `ATIVO` autoriza acesso. Não oferecer reassociação genérica de participantes.
 
-**Pendências:** PC-06: não foram incluídos encerrar(), estaAtivo(), datas ou enumeração de estados sem regras documentadas.
+**Pendências:** PC-06: limites/duplicidade e critério completo de autorização; PC-12: colaboração de auditoria.
 
 ### Agenda
 
@@ -231,13 +236,13 @@ Nenhum atributo escalar fixado sem sustentação suficiente. As associações co
 
 **Relacionamentos:** A08, A09 e A10.
 
-**Restrições/invariantes:** Horários de outro profissional não podem ser administrados como próprios. A consulta de horários exposta ao paciente exige vínculo autorizado (RF-024); verificarDisponibilidade é uma verificação de regra, não um endpoint público de autoatendimento.
+**Restrições/invariantes:** Horários de outro profissional não podem ser administrados como próprios. A consulta de horários exposta ao paciente exige vínculo autorizado (RF-024); verificarDisponibilidade é uma verificação de regra, não um endpoint público de autoatendimento. A08 e A09 seguem as cardinalidades fechadas na tabela abaixo.
 
 **Pendências:** PC-07, PC-09 e PC-12. Não foram escolhidos algoritmos de concorrência, recorrência ou fuso.
 
 ### Disponibilidade
 
-**Finalidade e responsabilidade:** Representar o período oferecido pelo profissional na própria agenda.
+**Finalidade e responsabilidade:** Representar o slot discreto oferecido pelo profissional na própria agenda (DEC-018).
 
 **Fundamentação:** RF-023–025; RN-005, RN-010–011; glossário.
 
@@ -245,7 +250,7 @@ Nenhum atributo escalar fixado sem sustentação suficiente. As associações co
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `periodo` | PENDENTE | Intervalo de tempo/dias oferecido, conforme glossário e RF-023. Estrutura, duração, recorrência e fuso: PC-07. |
+| `periodo` | `DataHora` | Slot discreto oferecido (DEC-018); precisão/fuso e valor da duração fixa permanecem não especificados. |
 
 **Operações públicas e contratos:**
 
@@ -253,34 +258,63 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 **Relacionamentos:** A09.
 
-**Restrições/invariantes:** Um período pertence à agenda do próprio profissional. A existência do período não garante horário livre, pois compromissos e conflitos precisam ser considerados.
+**Restrições/invariantes:** Um slot pertence à agenda do próprio profissional. Cada slot pode estar ligado a no máximo um Agendamento (A17); a existência do slot não significa que esteja livre.
 
 **Pendências:** PC-07 e PC-09. Não foram inventados setters, métodos de recorrência ou propriedades inicio/fim tipadas sem decisão temporal.
 
-### Agendamento
+### SolicitacaoEspera
 
-**Finalidade e responsabilidade:** Representar solicitação/reserva de horário e controlar confirmação/cancelamento sem confundir reserva com sessão realizada.
+**Finalidade e responsabilidade:** Representar a inscrição do paciente em uma fila de interesse para um horário do psicólogo, conforme DEC-027 e RF-034 a RF-036.
 
-**Fundamentação:** RF-025–029; RN-005–006, RN-009–010, RN-012–013.
+**Fundamentação:** DEC-027; RF-034; RN-021; UC-034 a UC-036.
 
 **Atributos privados:**
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `horario` | PENDENTE | Horário da solicitação em RF-025. Estrutura temporal pendente: PC-07. |
-| `situacao` | PENDENTE | Situação exigida por RF-025–027. Não há enumeração fechada aprovada: PC-07. |
+| `situacao` | Tipo conceitual não nomeado | `AGUARDANDO`, `OFERTADA`, `ACEITA`, `RECUSADA`, `EXPIRADA`, `DESISTIU` (DEC-027); `OFERTADA` representa a oferta vigente. Alinhar o nome da enumeração com Caio/dicionário. |
+| `dataHoraEntrada` | `DataHora` | Instante de entrada na fila, usado na ordenação aprovada em DEC-027. |
+| `prazoAceite` | `DataHora` | Prazo para aceitar a oferta, conforme DEC-027. |
 
 **Operações públicas e contratos:**
 
 | Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
 |---|---|---|---|---|
-| `solicitar(psicologo: Psicologo, paciente: Paciente, horario, solicitante: Usuario) Agendamento$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: situação inicial, reserva e tipos. | RF-025; RN-003, RN-005, RN-010 | Criação condicionada: exige conta autenticada do paciente indicado, vínculo autorizado com o profissional e horário disponível no momento da solicitação. Associa os participantes e horário. Estado inicial e bloqueio do horário: PC-07. Não publica agendamento conflitante. |
-| `confirmar()` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: assinatura incompleta, ator e estados. | RF-026; RN-005, RN-013; CA-RF-026 | Contrato condicionado: exige solicitação confirmável e ator/mecanismo autorizado ainda a definir. Passa à situação confirmada preservando par e horário sem criar conflito. Parâmetros/contexto da autorização e estados prévios: PC-07/PC-12; parênteses não significam operação sem autorização. |
-| `cancelar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: assinatura provisória, prazo, atores e estados. | RF-027; RN-006, RN-009, RN-012 | Contrato condicionado: paciente deve ser dono do agendamento, ou outro ator ter autorização aprovada. Exige estado e antecedência permitidos. Passa a cancelado, preserva rastreabilidade e impede posterior registro como atendimento realizado. Não concede cancelamento a Psicólogo/Administrador enquanto pendente. |
+| `registrarEntrada(psicologo: Psicologo, paciente: Paciente, horario: DataHora, solicitante: Usuario) SolicitacaoEspera$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: validações temporais e colaboração. | DEC-027; RF-034 | Cria a inscrição do paciente para um slot específico e registra a data/hora de entrada para ordenar a fila. |
+| `abrirOferta(horario: DataHora, prazoAceite: DataHora)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: colaboração de notificação. | DEC-027; RF-035 | Transita a solicitação para `OFERTADA` quando o slot fica disponível; não cria uma entidade de oferta separada. |
+| `aceitar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: aceitação e colaboração de agenda. | DEC-027; RF-036 | Converte a solicitação em agendamento somente com aceite válido e disponibilidade mantida. |
+| `recusar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: avanço da fila. | DEC-027; RF-036 | Registra a recusa e permite continuar o fluxo da fila conforme a decisão aprovada. |
+| `expirar()` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: processamento do prazo. | DEC-027; RF-036 | Encerra oferta não aceita dentro do prazo aprovado. |
+| `encerrar(motivo, solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: motivo e rastreabilidade. | RF-034–036; DEC-027 | Encerra a participação por desistência, recusa ou expiração; não gera agendamento sem aceite válido. |
+| `consultarPosicao() Inteiro` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: projeção da posição da fila. | RF-034; DEC-027 | Retorna posição numérica calculada pela ordem de entrada e estado atual da fila. |
 
-**Relacionamentos:** A10, A11, A12 e A15.
+**Relacionamentos:** A18, A19, A20 e A21.
 
-**Restrições/invariantes:** Não há setSituacao(). Confirmação/solicitação devem preservar ausência de conflitos; consulta anterior não garante disponibilidade atual. Cancelamento não pode ser usado para contornar regras da realização.
+**Restrições/invariantes:** A fila não substitui o agendamento; uma solicitação em situação `OFERTADA` representa a oferta. A conversão em `Agendamento` exige aceite e disponibilidade mantida.
+
+### Agendamento
+
+**Finalidade e responsabilidade:** Representar a reserva de horário e controlar o cancelamento sem confundir a sessão agendada com a sessão realizada.
+
+**Fundamentação:** RF-025–029; RN-005–006, RN-009–010, RN-012–013; DEC-016 e DEC-017.
+
+**Atributos privados:**
+
+| Atributo | Tipo | Semântica e fundamento |
+|---|---|---|
+| `horario` | `DataHora` | Slot solicitado, conforme RF-025 e DEC-018. |
+| `situacao` | `SituacaoAgendamento` | `CONFIRMADO`, `CANCELADO`, `REALIZADO`, `NAO_COMPARECEU` (DEC-016); nome presente nas demais especificações UML/dossiê. |
+
+**Operações públicas e contratos:**
+
+| Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
+|---|---|---|---|---|
+| `solicitar(psicologo: Psicologo, paciente: Paciente, horario: DataHora, solicitante: Usuario) Agendamento$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: reserva e colaboração. | RF-025; RN-003, RN-005, RN-010; DEC-016–018 | Criação condicionada: exige conta autenticada do paciente indicado, vínculo autorizado com o profissional e slot disponível no momento da solicitação. O agendamento é criado diretamente em `CONFIRMADO`, sem passo separado de confirmação. Associa os participantes, o slot e a agenda coerente. |
+| `cancelar(solicitante: Usuario)` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-07/PC-12: colaboração e auditoria. | RF-027; RN-006, RN-009, RN-012; DEC-011, DEC-028 | Pode ser feito pelo paciente titular ou pelo psicólogo responsável, antes do horário marcado; Administrador não cancela. Passa a `CANCELADO`, preserva rastreabilidade e impede posterior registro como atendimento realizado. |
+
+**Relacionamentos:** A10, A11, A12, A15, A17 e A21.
+
+**Restrições/invariantes:** `{agenda.psicologo = psicologo}`. Não há setSituacao(). A solicitação exige disponibilidade no instante da reserva. A relação A15 com `Atendimento` é associação simples: cada atendimento corresponde a um agendamento e cada agendamento tem `0..1` atendimento, sem composição. Cancelamento não pode ser usado para contornar regras da realização.
 
 **Pendências:** PC-07, PC-09, PC-12. Não se presumem remarcação, confirmação automática, falta ou expiração.
 
@@ -302,7 +336,7 @@ Nenhum atributo escalar fixado sem sustentação suficiente. As associações co
 
 **Relacionamentos:** A13, A14 e A15. O parâmetro contextoSessao não fixa cardinalidade de A15 nem cria outra entidade.
 
-**Restrições/invariantes:** Não existe Atendimento válido sem participantes e vínculo autorizado. Cancelamento impede posterior registro realizado. Não foram acrescentados prontuário completo, diagnóstico ou notas clínicas.
+**Restrições/invariantes:** `{agendamento.psicologo = psicologo e agendamento.paciente = paciente}`. Não existe Atendimento válido sem participantes e vínculo autorizado. Cancelamento impede posterior registro realizado. Não foram acrescentados prontuário completo, diagnóstico ou notas clínicas.
 
 **Pendências:** PC-08, PC-09 e PC-12: conteúdo mínimo, dados temporais próprios, relação exata com Agendamento e semântica de duplicidade não definidos.
 
@@ -318,13 +352,13 @@ Nenhum atributo escalar fixado sem sustentação suficiente. As associações co
 |---|---|---|
 | `data` | Data | Data da operação, explicitamente exigida por RF-032. Imutável após criação; precisão/contexto temporal: PC-10. |
 | `hora` | Hora | Hora da operação, explicitamente exigida por RF-032. Imutável após criação; precisão/fuso: PC-10. |
-| `operacao` | PENDENTE | Identificação da operação exigida por RF-032. Tipo, código ou vocabulário: PC-10. Imutável após criação. |
+| `operacao` | `Texto` | Identificação da operação exigida por RF-032. Vocabulário: PC-10. Imutável após criação. |
 
 **Operações públicas e contratos:**
 
 | Assinatura no diagrama | Natureza documental | Condicionamento | Base | Pré-condições, efeito e limites |
 |---|---|---|---|---|
-| `registrar(responsavel: Usuario, data: Data, hora: Hora, operacao) RegistroAuditoria$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-08/PC-10/PC-12, conforme classe: contexto, tipos e colaboração. | RF-032; RN-009, RN-014; CA-RF-032 | Criação de novo evento a partir de uma operação efetivamente auditável. Responsável e dados temporais devem provir do contexto confiável dessa operação, não de entrada livre do paciente. Acrescenta registro sem modificar anteriores, sem senhas/segredos. Não é edição de instância existente. |
+| `registrar(responsavel: Usuario, data: Data, hora: Hora, operacao: Texto) RegistroAuditoria$` | Comportamento diretamente sustentado | Contrato condicionado a definição pendente — PC-10/PC-12: vocabulário e colaboração. | RF-032; RN-009, RN-014; CA-RF-032 | Criação de novo evento a partir de uma operação efetivamente auditável. Responsável e dados temporais devem provir do contexto confiável dessa operação, não de entrada livre do paciente. Acrescenta registro sem modificar anteriores, sem senhas/segredos. Não é edição de instância existente. |
 
 **Relacionamentos:** A16 representa o responsável pela operação (imutável após criação), não o objeto afetado nem quem pode consultar.
 
@@ -334,32 +368,37 @@ Nenhum atributo escalar fixado sem sustentação suficiente. As associações co
 
 ## 5. Relacionamentos e multiplicidades
 
-Preservam-se as 16 associações simples A01–A16. Não há herança, agregação ou composição. “Esquerda por direita” indica quantidade de instâncias da classe esquerda para cada instância da direita.
+Preservam-se as 21 associações simples A01–A21. Não há herança, agregação ou composição. “Esquerda por direita” indica quantidade de instâncias da classe esquerda para cada instância da direita.
 
 | ID | Esquerda — direita | Esquerda por direita | Direita por esquerda | Fundamentação |
 |---|---|---|---|---|
-| A01 | Usuario — Perfil | PENDENTE | PENDENTE | RF-003, RF-007–008 |
-| A02 | Perfil — Permissao | PENDENTE | PENDENTE | RF-007–008 |
-| A03 | Usuario — Psicologo | PENDENTE | PENDENTE | RF-014 |
-| A04 | Usuario — Paciente | PENDENTE | PENDENTE | RF-018; DEC-006 |
-| A05 | Psicologo — AreaAtuacao | PENDENTE | PENDENTE | RF-016; PRE-002 |
-| A06 | Psicologo — Vinculo | 1 | PENDENTE | RF-021; RN-003 |
-| A07 | Paciente — Vinculo | 1 | PENDENTE | RF-021; RN-007 |
-| A08 | Psicologo — Agenda | 1 | PENDENTE | RF-023, RF-029; RN-011 |
-| A09 | Agenda — Disponibilidade | 1 | PENDENTE | RF-023; RN-011 |
-| A10 | Agenda — Agendamento | PENDENTE | PENDENTE | RF-029 |
-| A11 | Psicologo — Agendamento | 1 | PENDENTE | RF-025–026 |
-| A12 | Paciente — Agendamento | 1 | PENDENTE | RF-025, RF-028 |
-| A13 | Psicologo — Atendimento | 1 | PENDENTE | RF-030; RN-007 |
-| A14 | Paciente — Atendimento | 1 | PENDENTE | RF-030; RN-007 |
-| A15 | Agendamento — Atendimento | PENDENTE | PENDENTE | RF-030; RN-006 |
-| A16 | Usuario — RegistroAuditoria | 1 | PENDENTE | RF-032; RNF-004 |
+| A01 | Perfil — Usuario | 1 | 0..* | DEC-019 |
+| A02 | Perfil — Permissao | 1..* | 1..* | RF-007–008 |
+| A03 | Usuario — Psicologo | 0..1 | 0..1 | DEC-021 |
+| A04 | Usuario — Paciente | 0..1 | 0..1 | DEC-021 |
+| A05 | Psicologo — AreaAtuacao | PENDENTE | 0..* | RF-016 sustenta a associação; compartilhamento/mínimo não definido |
+| A06 | Psicologo — Vinculo | 1 | 0..* | RF-021; RN-003 |
+| A07 | Paciente — Vinculo | 1 | 0..* | RF-021; RN-007 |
+| A08 | Psicologo — Agenda | 1 | 1 | RF-023, RF-029; RN-011 |
+| A09 | Agenda — Disponibilidade | 1 | 0..* | RF-023; RN-011 |
+| A10 | Agenda — Agendamento | 1 | 0..* | RF-029 |
+| A11 | Psicologo — Agendamento | 1 | 0..* | RF-025–026 |
+| A12 | Paciente — Agendamento | 1 | 0..* | RF-025, RF-028 |
+| A13 | Psicologo — Atendimento | 1 | 0..* | RF-030; RN-007 |
+| A14 | Paciente — Atendimento | 1 | 0..* | RF-030; RN-007 |
+| A15 | Agendamento — Atendimento | 1 | 0..1 | RF-030; RN-006; DEC-030 |
+| A16 | Usuario — RegistroAuditoria | 1 | 0..* | RF-032; RNF-004 |
+| A17 | Disponibilidade — Agendamento | 1 | 0..1 | DEC-018; RN-005 |
+| A18 | Psicologo — SolicitacaoEspera | 1 | 0..* | DEC-027; RF-034 |
+| A19 | Paciente — SolicitacaoEspera | 1 | 0..* | DEC-027; RF-034 |
+| A20 | Disponibilidade — SolicitacaoEspera | 1 | 0..* | DEC-027; RF-035 |
+| A21 | SolicitacaoEspera — Agendamento | 0..1 | 0..1 | DEC-027; RF-035; RF-036 |
 
-Os valores 1 herdados decorrem da interpretação semântica documentada no domínio, não de cardinalidades numéricas literais nos RFs. A08 (titular por agenda) e A09 (agenda por disponibilidade) ainda merecem validação explícita do grupo; seus extremos foram preservados, sem aprovar novas cardinalidades.
+As cardinalidades A01, A03 e A04 refletem DEC-019 e DEC-021; A02 e A05 são justificadas pelos RFs indicados; A10 por RF-029. A08 e A09 estão fechadas como um titular por agenda e uma agenda por disponibilidade, com múltiplas disponibilidades por agenda, conforme a tabela do domínio.
 
-A16 não concede consulta ao responsável pelo evento. A05 admite múltiplas áreas, mas não fixa mínimo durante cadastro ou compartilhamento. A15 não é presumida 1:1 ou 1:0..1.
+A16 não concede consulta ao responsável pelo evento. A05 não fixa mínimo durante cadastro ou compartilhamento. A15 segue DEC-030: cada atendimento corresponde a um agendamento e cada agendamento tem zero ou um atendimento.
 
-São propriedades de associação com extremo 1: participantes de Vinculo, titular de Agenda, agenda de Disponibilidade, participantes de Agendamento e Atendimento e responsável por RegistroAuditoria. Não foram duplicadas em campos de IDs. Multiplicidades pendentes não foram convertidas em listas obrigatórias.
+São propriedades de associação com extremo 1: participantes de Vinculo, titular de Agenda, agenda de Disponibilidade, participantes de Agendamento e Atendimento e responsável por RegistroAuditoria. Não foram duplicadas em campos de IDs nem convertidas em listas obrigatórias.
 
 O profissional do compromisso deve ser coerente com o titular da agenda; participantes do atendimento correspondem à sessão válida e possuem vínculo autorizado. Parâmetros de métodos não criam associações estruturais adicionais nem decidem cardinalidades pendentes.
 
@@ -395,14 +434,14 @@ A situação predominante aparece por RF; as pendências da última coluna conti
 | RF-017 | representado no modelo | Objetivo em consultarPacientesVinculados; critério completo e projeção pendentes. | PC-04/PC-06/PC-12 |
 | RF-018 | parcialmente representado | Paciente separado da conta; criação completa do cadastro ainda não detalhada. | PC-05/PC-09/PC-12 |
 | RF-019 | representado no modelo | Objetivo em atualizarCadastro; campos administrativos pendentes. | PC-05/PC-12 |
-| RF-020 | aguardando definição | alterarSituacao contempla o objetivo; estados/transições não permitem fechar o contrato. | PC-05/PC-12 |
+| RF-020 | representado no modelo | alterarSituacao contempla o objetivo; estados `ATIVO`, `SUSPENSO` e `INATIVO` seguem DEC-014. Auditoria permanece condicionada. | PC-05/PC-12 |
 | RF-021 | representado no modelo | Objetivo em formalizar; duplicidade, limites e autorização completa pendentes. | PC-06/PC-09/PC-12 |
 | RF-022 | representado no modelo | Objetivo em consultarCadastroPermitido; projeção de campos pendente. | PC-05/PC-12 |
 | RF-023 | parcialmente representado | adicionarDisponibilidade recebe instância; criação, validação e representação temporal incompletas. | PC-07/PC-12 |
 | RF-024 | colaboração posterior | Verificação booleana interna não apresenta a lista/faixas de horários ao paciente vinculado. | PC-07/PC-12 |
-| RF-025 | aguardando definição | solicitar contempla o objetivo; estado inicial e bloqueio do horário ainda indefinidos. | PC-07/PC-12 |
-| RF-026 | aguardando definição | confirmar com assinatura incompleta; ator/mecanismo e fluxo não definidos. | PC-07/PC-12 |
-| RF-027 | aguardando definição | cancelar com assinatura provisória; atores adicionais, prazo e estados pendentes. | PC-07/PC-12 |
+| RF-025 | representado no modelo | solicitar cria o agendamento diretamente como `CONFIRMADO` quando o slot está disponível, conforme DEC-016–018. | PC-07/PC-12 |
+| RF-026 | parcialmente representado | A confirmação é automática na criação (DEC-017); não se modela operação separada `confirmar`. | PC-07/PC-12 |
+| RF-027 | representado no modelo | cancelar aplica atores e antecedência de DEC-011/028; colaboração de auditoria permanece condicionada. | PC-07/PC-12 |
 | RF-028 | colaboração posterior | Associação ao paciente e restrição de acesso existem; consulta dos próprios agendamentos não detalhada. | PC-12 |
 | RF-029 | colaboração posterior | Agenda e titular existem; consulta da agenda própria não detalhada. | PC-09/PC-12 |
 | RF-030 | parcialmente representado | registrar contempla vínculo e sessão válida; contexto e conteúdo mínimo incompletos. | PC-08/PC-09/PC-12 |
@@ -413,8 +452,12 @@ RF-001–032 são requisitos registrados, não requisitos declarados estáveis/a
 
 ## 7. Revisão cruzada
 
-- Diagrama × especificação: correspondência explícita de 12 classes, dez atributos escalares, 22 operações e 16 associações.
+- Diagrama × especificação: correspondência de 13 classes e 21 associações; as tabelas documentam atributos, operações, contratos e pendências.
 - Classes × requisitos: cada classe possui fontes, sem classes independentes de atores ou funcionalidades excluídas.
 - Métodos × regras: os contratos contemplam RN-003/RN-004 nas consultas/autorização, RN-005 na solicitação/confirmação, RN-006/RN-007 no atendimento, RN-009 nas alterações relevantes e RN-014 na auditoria. Isso declara a preservação pretendida; os mecanismos e colaborações ainda não modelados não foram demonstrados.
-- Relacionamentos × domínio: A01–A16 e seus extremos são preservados.
+- Relacionamentos × domínio: A01–A21 e seus extremos são preservados.
 - Limites: revisão textual/estrutural não significa aprovação do grupo, execução dos contratos ou validação visual por renderizador Mermaid.
+
+### Verificação P10
+
+No diagrama oficial [diagrama-classes.mmd](diagrama-classes.mmd), `adicionarDisponibilidade` e `estaAutorizado` aparecem uma única vez cada. As tabelas desta especificação descrevem os contratos dessas operações sem duplicar declarações no diagrama.

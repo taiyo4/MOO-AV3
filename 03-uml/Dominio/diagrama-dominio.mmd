@@ -18,6 +18,7 @@ classDiagram
     namespace AgendaEAtendimento["Agenda e atendimento"] {
         class Agenda:::agenda
         class Disponibilidade:::agenda
+        class SolicitacaoEspera:::agenda
         class Agendamento:::agenda
         class Atendimento:::agenda
     }
@@ -26,21 +27,36 @@ classDiagram
     classDef cadastro fill:#e5f3f1,stroke:#008a7a,stroke-width:1.5px,color:#202124
     classDef agenda fill:#f2f3f5,stroke:#59636e,stroke-width:1.5px,color:#202124
 
-    Usuario "PENDENTE" -- "PENDENTE" Perfil : A01 perfil de acesso
-    Perfil "PENDENTE" -- "PENDENTE" Permissao : A02 agrupa
-    Usuario "PENDENTE" -- "PENDENTE" Psicologo : A03 conta profissional
-    Usuario "PENDENTE" -- "PENDENTE" Paciente : A04 conta paciente
-    Psicologo "PENDENTE" -- "PENDENTE" AreaAtuacao : A05 atua em
-    Psicologo "1" -- "PENDENTE" Vinculo : A06 participa
-    Paciente "1" -- "PENDENTE" Vinculo : A07 participa
-    Psicologo "1" -- "PENDENTE" Agenda : A08 titular
-    Agenda "1" -- "PENDENTE" Disponibilidade : A09 organiza
-    Agenda "PENDENTE" -- "PENDENTE" Agendamento : A10 compromissos
-    Psicologo "1" -- "PENDENTE" Agendamento : A11 profissional
-    Paciente "1" -- "PENDENTE" Agendamento : A12 paciente
-    Psicologo "1" -- "PENDENTE" Atendimento : A13 responsavel
-    Paciente "1" -- "PENDENTE" Atendimento : A14 atendido
-    Agendamento "PENDENTE" -- "PENDENTE" Atendimento : A15 sessao
-    Usuario "1" -- "PENDENTE" RegistroAuditoria : A16 responsavel
+    Perfil "1" -- "0..*" Usuario : A01 define o perfil da conta
+    Perfil "1..*" -- "1..*" Permissao : A02 agrupa
+    Usuario "0..1" -- "0..1" Psicologo : A03 conta do cadastro profissional
+    Usuario "0..1" -- "0..1" Paciente : A04 conta do cadastro de paciente
+    Psicologo "PENDENTE" -- "0..*" AreaAtuacao : A05 atua em
+    Psicologo "1" -- "0..*" Vinculo : A06 participa
+    Paciente "1" -- "0..*" Vinculo : A07 participa
+    Psicologo "1" -- "1" Agenda : A08 titular
+    Agenda "1" -- "0..*" Disponibilidade : A09 organiza
+    Agenda "1" -- "0..*" Agendamento : A10 apresenta compromissos
+    Psicologo "1" -- "0..*" Agendamento : A11 profissional agendado
+    Paciente "1" -- "0..*" Agendamento : A12 paciente agendado
+    Psicologo "1" -- "0..*" Atendimento : A13 profissional responsavel
+    Paciente "1" -- "0..*" Atendimento : A14 paciente atendido
+    Agendamento "1" -- "0..1" Atendimento : A15 corresponde a sessao
+    Usuario "1" -- "0..*" RegistroAuditoria : A16 responsavel pela operacao
 
-    note "Multiplicidades pendentes e rastreabilidade: consultar modelo-dominio.md."
+    Disponibilidade "1" -- "0..1" Agendamento : A17 slot ocupado
+    Psicologo "1" -- "0..*" SolicitacaoEspera : A18 registra interesse
+    Paciente "1" -- "0..*" SolicitacaoEspera : A19 participa da fila
+    Disponibilidade "1" -- "0..*" SolicitacaoEspera : A20 vincula o slot
+    SolicitacaoEspera "0..1" -- "0..1" Agendamento : A21 converte em agendamento
+
+    note "A01: DEC-019; A02: RF-007; A03/A04: DEC-021; A05: RF-016 (RF-008 citado no checklist nao sustenta esta associacao); A10: RF-029."
+    note for Usuario "Conta de acesso distinta dos cadastros. Credencial protegida; nunca senha em texto puro."
+    note for Perfil "Perfil de acesso. Administrador e um papel, nao uma classe independente."
+    note for Psicologo "Cadastro profissional. Perfil profissional nao e Perfil de acesso."
+    note for AreaAtuacao "RF-016 admite uma ou mais areas; minimo durante o cadastro e compartilhamento ainda pendentes."
+    note for Vinculo "Cada vinculo identifica um psicologo e um paciente; situacao ATIVO/ENCERRADO, dataInicio e dataFim (DEC-015). Apenas ATIVO autoriza acesso."
+    note for SolicitacaoEspera "Situacoes AGUARDANDO, OFERTADA, ACEITA, RECUSADA, EXPIRADA e DESISTIU (DEC-027); OFERTADA representa a oferta."
+    note for Agendamento "Situacoes CONFIRMADO, CANCELADO, REALIZADO e NAO_COMPARECEU (DEC-016). Exige vinculo autorizado e horario disponivel."
+    note for Atendimento "Exige vinculo autorizado entre os mesmos participantes. Cancelamento impede realizacao (RN-006)."
+    note for RegistroAuditoria "Usuario responsavel, data, hora e operacao. Cronologico e logicamente imutavel."

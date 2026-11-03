@@ -1,6 +1,19 @@
+# Especificações dos casos de uso críticos
+
+**Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
+**Versão:** v1.1 (29/10/2026) — acrescentados **Objetivo** e **RFs cobertos** (P5 / DEC-026) e atualizadas as pendências das DEC-016, DEC-025, DEC-028 e DEC-029. Os fluxos, atores e regras originais foram preservados; só foram corrigidos os pontos que contrariavam decisão aprovada.
+**Numeração (DEC-026):** `UC-0RF` — o número do caso é o número do requisito.
+**Natureza:** artefato oficial do grupo (Fase 4), revisado pelo dono na Fase 9.
+
+---
+
 UC-001 — Autenticar usuário
 --------------------------------------------------------------------------------------------------------
 Atores: Administrador, Psicólogo, Paciente
+
+**Objetivo:** permitir que Administrador, Psicólogo e Paciente entrem no sistema com credenciais próprias e recebam apenas as permissões do seu perfil.
+
+**RFs cobertos:** RF-001, RF-002.
 
 Pré-condição: Usuário possui conta cadastrada e ativa.
 
@@ -28,6 +41,10 @@ UC-021 — Vincular psicólogo a paciente
 --------------------------------------------------------------------------------------------------------
 Ator: Administrador
 
+**Objetivo:** formalizar o vínculo autorizado entre Psicólogo e Paciente, que é a condição de acesso profissional aos dados do paciente (RN-003).
+
+**RFs cobertos:** RF-021.
+
 Pré-condição: Psicólogo e Paciente já cadastrados no sistema.
 
 Pós-condição (sucesso): Vínculo registrado; Psicólogo passa a ter acesso autorizado aos dados do Paciente.
@@ -53,9 +70,13 @@ UC-025 — Solicitar agendamento (com confirmação automática)
 --------------------------------------------------------------------------------------------------------
 Ator: Paciente
 
+**Objetivo:** permitir que o Paciente vinculado reserve um horário disponível, com confirmação automática e aviso por e-mail.
+
+**RFs cobertos:** RF-024, RF-025, RF-026, RF-032, RF-033, RF-034.
+
 Pré-condição: Paciente autenticado e vinculado a um Psicólogo; Psicólogo já cadastrou disponibilidade de horários (UC-023).
 
-Pós-condição (sucesso): Agendamento criado e automaticamente confirmado; notificação de confirmação enviada por e-mail.
+Pós-condição (sucesso): Agendamento criado e automaticamente confirmado (`CONFIRMADO`); envio do e-mail de confirmação **solicitado** — a falha de envio não desfaz o agendamento e é auditada (DEC-029).
 
 Fluxo principal:
 
@@ -63,15 +84,15 @@ Paciente consulta horários disponíveis do Psicólogo vinculado (UC-024).
 Paciente seleciona um horário disponível e solicita o agendamento.
 Sistema valida que o horário ainda está disponível (RN-005, RN-010).
 Sistema cria o agendamento com situação confirmada automaticamente — não há etapa de aprovação manual por outro ator, já que o horário só está visível por já ter sido liberado pelo Psicólogo.
-Sistema inclui o envio de notificação por e-mail ao Paciente (<<include>> UC "Notificar paciente por e-mail" — DEC-009).
+Sistema inclui o envio do e-mail de confirmação ao Paciente (`<<include>>` **UC-033** — RF-033; fronteira `ServicoEnvioMensagem`, DEC-009/DEC-022).
 
 Fluxos alternativos:
 
-A1: nenhum horário disponível para o Psicólogo vinculado — sistema informa e não permite prosseguir.
+A1 (RF-034): nenhum horário disponível para o Psicólogo vinculado — sistema informa e oferece a **lista de espera** (UC-034, DEC-027).
 
 Exceções:
 
-E1 — conflito de horário: paciente tenta solicitar um horário que deixou de estar disponível entre a consulta (passo 1) e a solicitação (passo 2). Pendente (DEC-4): o sistema deve recusar em silêncio ou sugerir outro horário? Fluxo de exceção a ser fechado antes do diagrama de sequência.
+E1 — conflito de horário: paciente tenta solicitar um horário que deixou de estar disponível entre a consulta (passo 1) e a solicitação (passo 2). **Resolvido:** o sistema recusa a reserva, informa "horário indisponível" com mensagem de negócio (não erro técnico) e sugere outro horário (CA-RF-025; SEQ-002, ramo E1).
 
 Regras de negócio aplicadas: RN-005 (exclusividade de horário ativo), RN-010 (solicitação em horário disponível).
 
@@ -79,9 +100,13 @@ UC-027 — Cancelar agendamento
 --------------------------------------------------------------------------------------------------------
 Atores: Paciente, Psicólogo (DEC-011)
 
-Pré-condição: Agendamento existente, em situação cancelável.
+**Objetivo:** permitir que o Paciente titular ou o Psicólogo responsável cancele um agendamento **antes do horário marcado**, liberando o horário e avisando por e-mail.
 
-Pós-condição (sucesso): Situação do agendamento alterada para cancelado; agendamento cancelado não pode depois ser registrado como atendimento realizado (RN-006).
+**RFs cobertos:** RF-027, RF-032, RF-033, RF-035, RF-037.
+
+Pré-condição: Agendamento existente, em situação cancelável (`CONFIRMADO` e horário ainda não iniciado).
+
+Pós-condição (sucesso): Situação do agendamento alterada para `CANCELADO`, horário liberado, operação auditada e envio do e-mail de cancelamento solicitado; agendamento cancelado não pode depois ser registrado como atendimento realizado (RN-006).
 
 Fluxo principal:
 
@@ -93,7 +118,9 @@ Sistema registra a operação na auditoria (RN-009).
 
 Justificativa do Psicólogo como ator (registrada pelo grupo): o psicólogo precisa poder cancelar para os casos em que algo impeça o atendimento da parte dele.
 
-Fluxos alternativos: nenhum identificado até o momento.
+Fluxos alternativos:
+
+A1 (RF-035): se houver fila de espera para o horário liberado, o sistema oferta a vaga ao primeiro da fila (UC-035, `<<extend>>`, DEC-027).
 
 Exceções:
 
@@ -101,7 +128,7 @@ E1: agendamento já realizado ou já cancelado — sistema recusa novo cancelame
 
 Regras de negócio aplicadas: RN-006 (agendamento cancelado), RN-012 (permissão para cancelamento).
 
-Pendências abertas:
+Pendências **resolvidas** em 29/10/2026:
 
-DEC-012 (sugestão de numeração): prazo de antecedência mínimo para cancelar — ainda sem definição do grupo.
-DEC-5: "não compareceu" é manual ou automático — afeta os estados possíveis de onde um cancelamento pode partir
+DEC-012 (prazo mínimo de 2 horas para cancelar) — **não adotada**: a guarda é apenas `[antes do horário marcado]`, sem antecedência mínima (DEC-011 + DEC-028). O Administrador **não** cancela (CA-RF-027).
+DEC-5 ("não compareceu" manual ou automático) — **manual**: o Psicólogo registra depois do horário marcado, e só a partir de `CONFIRMADO` (DEC-025; UC-037; EST-001, T3).

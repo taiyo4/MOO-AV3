@@ -1,0 +1,82 @@
+%% =====================================================================
+%% COM-001 - Diagrama de comunicacao: ciclo do agendamento - FASE 6
+%% PROPOSTA DO INTEGRANTE 2 (casos de uso e diagramas comportamentais).
+%% Natureza: PROPOSTA. Nao substitui artefato oficial do grupo.
+%% Fonte da verdade do CONTEUDO.
+%%
+%% Cenario: "Agendar, cancelar e concluir atendimento" (UC-024 + UC-025 +
+%% UC-027 + UC-035), o mesmo cenario coberto por ATV-001, para permitir a
+%% comparacao cruzada exigida pelo plano (secao 6.1).
+%%
+%% Objetos (colaboradores) e suas naturezas:
+%%   [ ] entidade de dominio    { } servico de aplicacao   ( ) fronteira
+%%   externo (ator ou servico externo).
+%% Hub: ServicoAgenda (AP-03) - coordena regra, auditoria e envio de mensagem.
+%%
+%% As mensagens sao numeradas de 1 a 17 na ordem de ocorrencia. Retornos
+%% usam o mesmo vinculo e por isso NAO geram nova seta: o retorno de
+%% Agendamento.solicitar ("agendamento CONFIRMADO") e o de
+%% ServicoEnvioMensagem ("entregue | falha") ficam implicitos no vinculo.
+%%
+%% Rastreabilidade das mensagens:
+%%   OP-04 Usuario.consultarPermitidos | OP-11 Agenda.consultarHorarios
+%%   OP-22 Vinculo.estaAtivo | Agendamento.solicitar/cancelar
+%%   OP-20 Atendimento.registrar | OP-24 SolicitacaoEspera.proximoDaFila
+%%   AP-02 ServicoAuditoria | AP-04 ServicoEnvioMensagem | AP-06 ServicoListaEspera
+%% Regras: RN-003, RN-005, RN-009, RN-010, RN-013; DEC-022, DEC-027
+%% Requisitos: RF-024, RF-025, RF-026, RF-027, RF-030, RF-032, RF-033,
+%%   RF-035  Casos: UC-024, UC-025, UC-027, UC-035
+%%
+%% Convencao de layout: "%% pos: ID x y" -> posicao do centro do no (px).
+%% =====================================================================
+%% label: COM-001 - Diagrama de comunicacao: ciclo do agendamento
+%% sub: Fonte editavel: 03-uml/Comunicacao/proposta-I2-comunicacao-com-001.mmd | PROPOSTA do Integrante 2 (Fase 6) | 14 colaboradores, 17 mensagens, hub ServicoAgenda (AP-03)
+
+%% pos: paciente 200 180
+%% pos: psicologo 200 620
+%% pos: usuario 200 980
+%% pos: servicoAgenda 760 560
+%% pos: vinculo 1040 160
+%% pos: agenda 1040 400
+%% pos: agendamento 1040 680
+%% pos: atendimento 1040 920
+%% pos: disponibilidade 1330 400
+%% pos: servicoAuditoria 1330 680
+%% pos: registroAuditoria 1330 860
+%% pos: servicoEnvioMensagem 1330 1080
+%% pos: servicoListaEspera 760 1020
+%% pos: solicitacaoEspera 430 1200
+
+flowchart LR
+    paciente([Paciente])
+    psicologo([Psicólogo])
+    usuario[Usuario]
+    servicoAgenda{{ServicoAgenda}}
+    vinculo[Vinculo]
+    agenda[Agenda]
+    agendamento[Agendamento]
+    atendimento[Atendimento]
+    disponibilidade[Disponibilidade]
+    servicoAuditoria{{ServicoAuditoria}}
+    registroAuditoria[RegistroAuditoria]
+    servicoEnvioMensagem([Servico de E-mail])
+    servicoListaEspera{{ServicoListaEspera}}
+    solicitacaoEspera[SolicitacaoEspera]
+
+    paciente -->|1 solicitar(horario) [RF-025]| servicoAgenda
+    servicoAgenda -->|2 consultarPermitidos() [OP-04]| usuario
+    servicoAgenda -->|3 estaAtivo() [OP-22]| vinculo
+    servicoAgenda -->|4 consultarHorarios() [OP-11]| agenda
+    agenda -->|5 slots livres [A09]| disponibilidade
+    servicoAgenda -->|6 verificarDisponibilidade() [RN-005]| agenda
+    servicoAgenda -->|7 solicitar(horario) [RF-025]| agendamento
+    servicoAgenda -->|8 registrar(criacao) [AP-02]| servicoAuditoria
+    servicoAuditoria -->|9 registrar(tabela) [RF-032]| registroAuditoria
+    servicoAgenda -->|10 notificar(confirmacao) [RF-033]| servicoEnvioMensagem
+    servicoAgenda -->|11 cancelar(motivo) [OP-14]| agendamento
+    servicoAgenda -->|12 notificar(cancelamento) [RF-033]| servicoEnvioMensagem
+    servicoAgenda -->|13 ofertarVaga() [RF-035]| servicoListaEspera
+    servicoListaEspera -->|14 proximoDaFila() [OP-24]| solicitacaoEspera
+    servicoListaEspera -->|15 notificar(ofertaVaga) [RF-033]| servicoEnvioMensagem
+    psicologo -->|16 concluir(agendamento) [RF-030]| servicoAgenda
+    servicoAgenda -->|17 registrar(atendimento) [OP-20]| atendimento

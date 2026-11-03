@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="pac-001-fase7" name="PAC-001">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1420" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" value="PAC-001 - Diagrama de pacotes" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=17;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="14" width="1200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitulo" value="Camadas com inversao de dependencia: apresentacao -&gt; aplicacao -&gt; dominio &lt;- infraestrutura. Fonte da verdade: diagrama-pacotes.mmd" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PK_APRES" value="package: apresentacao" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#7a7a7a;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="1320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WEB" value="package: web&lt;br&gt;controladores HTTP&lt;br&gt;validacao de entrada&lt;br&gt;DTO de requisicao e resposta" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="60" y="105" width="620" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="VIEW" value="package: view&lt;br&gt;telas e formularios&lt;br&gt;nenhuma regra de negocio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="710" y="105" width="630" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="PK_APLIC" value="package: aplicacao" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#7a7a7a;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="215" width="1320" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="AUTENTICACAO" value="ServicoAutenticacao&lt;br&gt;RF-001, RF-002" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="60" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CADASTRO" value="ServicoCadastro&lt;br&gt;RF-003 a RF-022" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="280" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AUTORIZACAO" value="ServicoAutorizacao&lt;br&gt;RNF-002, RNF-006" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="500" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AGENDA" value="ServicoAgenda&lt;br&gt;RF-023 a RF-029, RF-037" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="720" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="FILA" value="ServicoListaEspera&lt;br&gt;RF-034 a RF-036" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="940" y="250" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AUDITORIA" value="ServicoAuditoria&lt;br&gt;RF-013, RF-032, DEC-024" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="250" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TEMPO" value="ServicoTempo&lt;br&gt;RN-012, DEC-027" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="60" y="340" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UOW" value="UnidadeTrabalho&lt;br&gt;TRS-01 a TRS-07" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="280" y="340" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PK_DOM" value="package: dominio" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#7a7a7a;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="495" width="1320" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ENTIDADES" value="package: entidades&lt;br&gt;Usuario, Perfil, Permissao, Psicologo,&lt;br&gt;AreaAtuacao, Paciente, Vinculo, Agenda,&lt;br&gt;Disponibilidade, Agendamento, Atendimento,&lt;br&gt;SolicitacaoEspera, RegistroAuditoria" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="60" y="530" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="VALORES" value="package: objetos de valor&lt;br&gt;Periodo, CredencialProtegida,&lt;br&gt;SituacaoAgendamento, SituacaoConta" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="410" y="530" width="280" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="REPOS" value="package: repositorios (interfaces)&lt;br&gt;IRepositorioUsuario, IRepositorioPerfil,&lt;br&gt;IRepositorioPsicologo, IRepositorioPaciente,&lt;br&gt;IRepositorioVinculo, IRepositorioAgenda,&lt;br&gt;IRepositorioAgendamento, IRepositorioAtendimento,&lt;br&gt;IRepositorioSolicitacaoEspera, IRepositorioAuditoria" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="710" y="530" width="400" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="FRONTEIRA" value="package: fronteira&lt;br&gt;interface ServicoEnvioMensagem (DEC-022)&lt;br&gt;interface ServicoHashSenha" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="530" width="210" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="PK_INFRA" value="package: infraestrutura" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#7a7a7a;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="765" width="900" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="PERSISTENCIA" value="package: persistencia&lt;br&gt;implementacoes dos repositorios&lt;br&gt;mapeamento objeto-relacional" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="60" y="800" width="270" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="MENSAGERIA" value="package: mensageria&lt;br&gt;AdaptadorEmail&lt;br&gt;implementa ServicoEnvioMensagem" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="800" width="270" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="SEGURANCA" value="package: seguranca&lt;br&gt;hash de senha&lt;br&gt;emissao e validacao de token" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="640" y="800" width="280" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="PK_CONF" value="package: configuracao" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fillColor=#f5f5f5;strokeColor=#7a7a7a;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="980" y="765" width="380" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="BOOT" value="composition root&lt;br&gt;injecao de dependencia&lt;br&gt;leitura de parametros" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="800" width="340" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="BANCO" value="MySQL 8.0&lt;br&gt;SGBD externo" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="955" width="340" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="VIEW" target="WEB">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="WEB" target="AUTENTICACAO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="WEB" target="CADASTRO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="WEB" target="AGENDA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="WEB" target="FILA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUTENTICACAO" target="AUTORIZACAO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUTENTICACAO" target="AUDITORIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUTENTICACAO" target="FRONTEIRA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="AUTORIZACAO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="AUDITORIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="AUTORIZACAO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="AUDITORIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="TEMPO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="FRONTEIRA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="AUTORIZACAO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="AUDITORIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="TEMPO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="FRONTEIRA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUTENTICACAO" target="REPOS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUTENTICACAO" target="ENTIDADES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="REPOS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="ENTIDADES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="VALORES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="ENTIDADES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="VALORES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="ENTIDADES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="VALORES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUDITORIA" target="ENTIDADES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AUDITORIA" target="REPOS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="CADASTRO" target="UOW">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="UOW">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="UOW">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="PERSISTENCIA" target="REPOS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="MENSAGERIA" target="FRONTEIRA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;dashed=1;endSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="SEGURANCA" target="FRONTEIRA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="PERSISTENCIA" target="BANCO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="BOOT" target="WEB">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="BOOT" target="AGENDA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="BOOT" target="PERSISTENCIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#666666;" edge="1" parent="1" source="BOOT" target="MENSAGERIA">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e41" value="oferta apos cancelamento (UC-035)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="AGENDA" target="FILA">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="235" />
+              <mxPoint x="1040" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e42" value="aceite reaproveita agendar (UC-036)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="FILA" target="AGENDA">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="325" />
+              <mxPoint x="820" y="325" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

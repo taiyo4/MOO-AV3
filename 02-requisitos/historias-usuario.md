@@ -2,6 +2,8 @@
 
 As histórias representam objetivos dos atores confirmados e estão ligadas a requisitos funcionais da Fase 3.
 
+**Atualização de 25/10/2026:** revisadas HU-010, HU-011 e HU-012 conforme DEC-011 e DEC-017; acrescentadas HU-015 (lista de espera, DEC-010) e HU-016 (avisos por e-mail, DEC-009).
+
 ### HU-001 — Acesso à plataforma
 
 Como Administrador, Psicólogo ou Cliente/Paciente,  
@@ -77,28 +79,28 @@ para informar horários que podem ser solicitados.
 ### HU-010 — Solicitação de agendamento
 
 Como Cliente/Paciente,  
-quero consultar horários disponíveis e solicitar um agendamento,  
+quero consultar horários disponíveis e solicitar um agendamento que seja confirmado automaticamente quando o horário estiver livre,  
 para organizar meu atendimento de forma autônoma.
 
-**Requisitos relacionados:** RF-024, RF-025.
+**Requisitos relacionados:** RF-024, RF-025, RF-026.
 
 ### HU-011 — Acompanhamento de agendamentos
 
 Como Cliente/Paciente,  
-quero consultar meus agendamentos e cancelar aqueles que puder,  
-para acompanhar meus horários conforme as regras aprovadas.
+quero consultar meus agendamentos e cancelá-los antes do horário marcado,  
+para acompanhar e ajustar meus horários.
 
 **Requisitos relacionados:** RF-027, RF-028.
+
+**Decisão:** não há antecedência mínima além de "antes do horário" e o Administrador não cancela (DEC-028).
 
 ### HU-012 — Gestão da agenda profissional
 
 Como Psicólogo,  
-quero consultar minha agenda e o fluxo de confirmação definido pela plataforma,  
-para acompanhar os horários associados à minha atuação.
+quero consultar minha agenda, acompanhar os agendamentos confirmados automaticamente, cancelar agendamentos antes do horário marcado e registrar quando o paciente não comparecer,  
+para manter minha agenda atualizada.
 
-**Requisitos relacionados:** RF-026, RF-029.
-
-**Pendência:** A responsabilidade pela confirmação ainda depende de decisão do grupo.
+**Requisitos relacionados:** RF-026, RF-027, RF-029, RF-037.
 
 ### HU-013 — Registro de sessão realizada
 
@@ -115,3 +117,23 @@ quero consultar registros de auditoria,
 para acompanhar operações relevantes da plataforma.
 
 **Requisitos relacionados:** RF-013, RF-032.
+
+### HU-015 — Lista de espera inteligente
+
+Como Cliente/Paciente,  
+quero entrar na lista de espera do meu Psicólogo e receber a oferta de um horário que for liberado por cancelamento,  
+para conseguir atendimento mais cedo quando não houver horário disponível.
+
+**Requisitos relacionados:** RF-034, RF-035, RF-036.
+
+**Parâmetros da fila:** DEC-027.
+
+### HU-016 — Avisos por e-mail
+
+Como Cliente/Paciente ou Psicólogo,  
+quero receber por e-mail a confirmação, o cancelamento e as ofertas de vaga,  
+para saber das mudanças na agenda sem precisar acessar a plataforma.
+
+**Requisitos relacionados:** RF-033.
+
+**Falha no envio:** DEC-029.
