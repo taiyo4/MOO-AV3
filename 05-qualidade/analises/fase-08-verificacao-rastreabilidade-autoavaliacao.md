@@ -22,7 +22,8 @@
 | Q8-02 | 22 dos 37 testes conceituais `CT-0RF` ainda não foram escritos (15 escritos, todos do Integrante 2) | Integrantes 3 e 4 (domínio e persistência) | Aberto |
 | Q8-03 | Nenhuma ata de walkthrough realizada; a validação em grupo (processo "Validação") fica em P | Grupo | Aberto |
 | Q8-04 | A autoavaliação não tem revisão de um segundo integrante (DOD-Q08) | Integrante 2 ou 4 | Aberto |
-| Q8-05 | CQ-FLE-03 (pacotes sem ciclo) não foi conferido diagrama a diagrama | Integrante 5 | Aberto |
+| Q8-05 | CQ-FLE-03 (pacotes sem ciclo) conferido em 03/11/2026 no PAC-001 v1.1: há um ciclo, `AGENDA` ⇄ `FILA` (UC-035 e UC-036, linhas 95 e 96 do `.mmd`). Ver Q8-07 | Integrante 5 | Conferido; resultado em Q8-07 |
+| Q8-07 | O ciclo `AGENDA` ⇄ `FILA` faz CQ-FLE-03 **não atender**, e contradiz a fala do pitch do Integrante 4 ("sem ciclo arquitetural"). Opções: (a) quebrar o ciclo, p.ex. com uma interface ou evento de domínio que a `AGENDA` publica e a `FILA` consome; (b) manter e registrar como exceção justificada no PAC-001 e no plano de qualidade, ajustando a fala | Integrante 4 | Aberto |
 | Q8-06 | RNF-013 a RNF-024 foram incorporados à baseline em 30/10/2026 sem aprovação formal do grupo; o grupo precisa confirmar | Grupo | Aberto |
 
 ## 3. Situação

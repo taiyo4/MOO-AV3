@@ -78,7 +78,7 @@ Formato: cada critério diz **o que se mede**, **como**, **qual o alvo** e **ond
 |---|---|---|---|---|---|
 | CQ-FLE-01 | Adaptabilidade | Nova área de atuação entra por dado (catálogo), sem mudar classes | Sim/Não | `AreaAtuacao` como catálogo (A05) | **Atende** |
 | CQ-FLE-02 | Adaptabilidade | Novo papel de acesso entra por `Perfil`/`Permissao`, sem subclasse de `Usuario` | Sim/Não | OO-01, OO-02 | **Atende** |
-| CQ-FLE-03 | Escalabilidade | Módulos com dependências declaradas (RNF-009) | Diagrama de pacotes sem ciclo | Fase 7 | **Pendente** — PAC-001 declara a regra de dependência, mas a ausência de ciclo ainda não foi conferida pelo Integrante 5 (fica para a Fase 8) |
+| CQ-FLE-03 | Escalabilidade | Módulos com dependências declaradas (RNF-009) | Diagrama de pacotes sem ciclo | Fase 7 | **Pendente** — PAC-001 declara a regra de dependência, mas conferido em 03/11/2026: **há ciclo** `AGENDA` ⇄ `FILA` no PAC-001 v1.1 (achado Q8-07); passa a **não atende** até o Integrante 4 quebrar o ciclo ou registrar a exceção |
 
 ### 2.6 CQ-COM — Compatibilidade
 
