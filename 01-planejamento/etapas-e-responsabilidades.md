@@ -30,13 +30,13 @@ As decisões de 25 e 28/10/2026 ainda não chegaram aos diagramas. É a priorida
 | P4 | Casos de uso para RF-028 e RF-033 a RF-037; ator Serviço Externo de E-mail; `«extend»` da oferta ao cancelamento | 2 | Q4-03 a Q4-05, INT-07 | Feito nas especificações (UC-028, UC-033 a UC-037, proposta I2); falta o desenho oficial dos casos de uso |
 | P5 | Campo "Objetivo" e "RFs cobertos" nas especificações; IDs UC dos casos "demais" (DEC-026 pendente de aprovação) | 2, com 1 | Q4-01, Q4-02, Q4-08 | Feito (I2, 29/10): Objetivo, RFs cobertos e UC-0RF |
 | P6 | Diagrama comportamental da lista de espera (SEQ-004) com os parâmetros da DEC-027 | 2 | Q6-05 | Feito (I2): SEQ-004 criada |
-| P7 | Fechar `PENDENTE` nas multiplicidades do diagrama oficial de classes; tirar `SOLICITADO` do enumerado | 3 | Q5-01, Q5-02 | **Aberto** (I3): diagrama oficial ainda com `PENDENTE` |
-| P8 | Classes da lista de espera (`EntradaListaEspera`, `OfertaVaga`) e do registro de atendimento ligado ao agendamento (DEC-030) | 3 | Q5-05 | **Aberto** (I3): sem classes da lista de espera no diagrama oficial (a persistência já tem `solicitacao_espera`) |
-| P9 | Corrigir as justificativas OO/SOLID da seção 27 que não correspondem ao modelo; decidir a composição Agendamento–Atendimento; decidir se o cenário OBJ-002 entra no OBJ-001 | 3 | Q5-09, Q5-10 | **Aberto** (I3) |
-| P10 | Operações duplicadas (`adicionarDisponibilidade`/`cadastrarDisponibilidade`, `estaAutorizado`/`estaAtivo`) | 3 | Q5-09 | **Aberto** (I3) |
+| P7 | Fechar `PENDENTE` nas multiplicidades do diagrama oficial de classes; tirar `SOLICITADO` do enumerado | 3 | Q5-01, Q5-02 | **Parcial** (I3, 02/11): A06 a A15 fechadas; faltam A01 (conflita com a DEC-019), A17, A02 a A05 e A10 e os tipos dos atributos (Q5-08, Q5-13) |
+| P8 | Classes da lista de espera (`EntradaListaEspera`, `OfertaVaga`) e do registro de atendimento ligado ao agendamento (DEC-030) | 3 | Q5-05 | **Parcial** (I3, 02/11): `SolicitacaoEspera` e `OfertaVaga` entraram; decisão de 03/11: remover `OfertaVaga` e tratar a oferta como situação `OFERTADA` (Q5-11) |
+| P9 | Corrigir as justificativas OO/SOLID da seção 27 que não correspondem ao modelo; decidir a composição Agendamento–Atendimento; decidir se o cenário OBJ-002 entra no OBJ-001 | 3 | Q5-09, Q5-10 | **Aberto** (I3, 03/11): seção 27 ainda cita composição e ciclo antigo; OBJ-002 sem decisão |
+| P10 | Operações duplicadas (`adicionarDisponibilidade`/`cadastrarDisponibilidade`, `estaAutorizado`/`estaAtivo`) | 3 | Q5-09 | **Aberto** (I3, 03/11): confirmar na especificação que só existem `adicionarDisponibilidade` e `estaAutorizado` |
 | P11 | Alinhar a numeração de RF de `04-persistencia/impacto-requisitos.md` com a baseline; refletir lista de espera, `Não compareceu` e e-mail na persistência | 4 | Q3-11, INT-06 | Feito (I4, 29/10): numeração alinhada e Fase 7 entregue |
 | P12 | Corrigir os textos antigos (CTX-001, atores, README de requisitos) | 1 e 2 | INT-03 a INT-05 | **Aberto** (I1 e I2): textos antigos como CTX-001 |
-| P13 | Aplicar as DEC aprovadas em 28/10/2026: situações de conta, paciente e vínculo (013, 014, 015), slot de disponibilidade (018), cardinalidades (019, 021), sessão fora do domínio (020), `ServicoEnvioMensagem` como único nome (022), auditoria por serviço (024) e numeração UC-0RF/CT-0RF (026) | 2 (UC, nomes), 3 (classes), 4 (persistência), 1 (IDs) | — | Parcial: I4 aplicou DEC-013 a DEC-030 na persistência; I3 ainda não nas classes |
+| P13 | Aplicar as DEC aprovadas em 28/10/2026: situações de conta, paciente e vínculo (013, 014, 015), slot de disponibilidade (018), cardinalidades (019, 021), sessão fora do domínio (020), `ServicoEnvioMensagem` como único nome (022), auditoria por serviço (024) e numeração UC-0RF/CT-0RF (026) | 2 (UC, nomes), 3 (classes), 4 (persistência), 1 (IDs) | — | Parcial: I4 aplicou DEC-013 a DEC-030 na persistência; I3 aplicou parte em 02/11 (A15 e a fila); faltam A01 (DEC-019), A17 (DEC-018) e `Vinculo` (DEC-015) |
 
 Depois de cada correção, o Integrante 5 confirma na tabela de controle de achados (Aberto → Corrigido) e o Integrante 6 regera o dossiê.
 
@@ -44,7 +44,7 @@ Depois de cada correção, o Integrante 5 confirma na tabela de controle de acha
 
 - **Integrante 2:** concluiu P1 a P6, os testes conceituais CT-0RF (15 testes) e a revisão de coerência arquitetura × casos de uso (12 achados R7). Falta o desenho oficial dos casos de uso incorporar UC-028 e UC-033 a UC-037.
 - **Integrante 4:** entregou a Fase 7 (pacotes, componentes, implantação, DER, relacional, dicionário, mapeamento, normalização, DDL). Faltam o PDF dos três diagramas, o teste do DDL e as tabelas de correspondência da ISO/IEC/IEEE 42010 (Q7-01 a Q7-03).
-- **Integrante 3:** último envio em 25/09 (merge em 19/10); P7 a P10 abertos. É o item que mais atrasa o grupo, porque o DER-001 já tem relações (A18–A21) que dependem do diagrama de classes oficial.
+- **Integrante 3:** entregou em 02/11 (commits cfe7c2e, c316835 e 25c5ad9) classes, domínio e objetos com A15 e a fila de espera; faltam as exportações `.drawio.xml` e `.pdf`, a remoção de `OfertaVaga` e as correções Q5-11 a Q5-15. Segue como caminho crítico, porque o DER-001 (A17 a A21) depende do diagrama oficial.
 - **Integrante 5 (executado pelo Integrante 1):** análises das Fases 1 a 7 registradas.
 - **Integrante 6 (executado pelo Integrante 1):** dossiê v0.7; falta escrever o texto das seções 25 e 26 com o Integrante 4.
 
