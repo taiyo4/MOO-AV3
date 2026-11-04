@@ -15,10 +15,10 @@
             <mxGeometry height="264" width="520" x="580" y="521" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-4" parent="PtCkm9GOYpgDH6Ya1YM0-3" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-identificacao" vertex="1">
+        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-4" parent="PtCkm9GOYpgDH6Ya1YM0-3" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-identificacao: Texto" vertex="1">
           <mxGeometry height="24" width="520" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-5" parent="PtCkm9GOYpgDH6Ya1YM0-3" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-credencialProtegida" vertex="1">
+        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-5" parent="PtCkm9GOYpgDH6Ya1YM0-3" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-credencialProtegida: Texto" vertex="1">
           <mxGeometry height="24" width="520" y="84" as="geometry" />
         </mxCell>
         <mxCell id="PtCkm9GOYpgDH6Ya1YM0-6" parent="PtCkm9GOYpgDH6Ya1YM0-3" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacaoConta: SituacaoConta" vertex="1">
@@ -94,7 +94,7 @@
             <mxGeometry height="192" width="469" x="2204" y="1772" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-27" parent="PtCkm9GOYpgDH6Ya1YM0-26" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacaoCadastral" vertex="1">
+        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-27" parent="PtCkm9GOYpgDH6Ya1YM0-26" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacaoCadastral: SituacaoCadastral" vertex="1">
           <mxGeometry height="24" width="469" y="60" as="geometry" />
         </mxCell>
         <mxCell id="PtCkm9GOYpgDH6Ya1YM0-28" parent="PtCkm9GOYpgDH6Ya1YM0-26" style="line;strokeWidth=1.5;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=inherit;" vertex="1">
@@ -114,7 +114,7 @@
             <mxGeometry height="240" width="649" x="1583" y="2246" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-33" parent="PtCkm9GOYpgDH6Ya1YM0-32" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacao" vertex="1">
+        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-33" parent="PtCkm9GOYpgDH6Ya1YM0-32" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacao: SituacaoVinculo" vertex="1">
           <mxGeometry height="24" width="649" y="60" as="geometry" />
         </mxCell>
         <mxCell id="PtCkm9GOYpgDH6Ya1YM0-34" parent="PtCkm9GOYpgDH6Ya1YM0-32" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-dataInicio: Data" vertex="1">
@@ -165,7 +165,7 @@
             <mxGeometry height="336" width="941" x="422" y="2246" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-48" parent="PtCkm9GOYpgDH6Ya1YM0-47" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacao" vertex="1">
+        <mxCell id="PtCkm9GOYpgDH6Ya1YM0-48" parent="PtCkm9GOYpgDH6Ya1YM0-47" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-situacao: SituacaoFila" vertex="1">
           <mxGeometry height="24" width="941" y="60" as="geometry" />
         </mxCell>
         <mxCell id="PtCkm9GOYpgDH6Ya1YM0-49" parent="PtCkm9GOYpgDH6Ya1YM0-47" style="text;fontSize=16;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=12;spacingBottom=2;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=#202124;" value="-dataHoraEntrada: DataHora" vertex="1">
@@ -279,12 +279,12 @@
             <mxGeometry height="162" width="232" x="679" y="2044" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao." mermaidId="n:_note_6" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao." id="PtCkm9GOYpgDH6Ya1YM0-80">
+        <UserObject label="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao. Restricao: {agenda.psicologo = psicologo}" mermaidId="n:_note_6" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao. Restricao: {agenda.psicologo = psicologo}" id="PtCkm9GOYpgDH6Ya1YM0-80">
           <mxCell parent="PtCkm9GOYpgDH6Ya1YM0-2" style="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
             <mxGeometry height="181" width="232" x="1044" y="2622" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="{agenda.psicologo = psicologo}" mermaidId="n:_note_7" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="{agenda.psicologo = psicologo}" id="PtCkm9GOYpgDH6Ya1YM0-81">
+        <UserObject label="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao. Restricao: {agenda.psicologo = psicologo}" mermaidId="n:_note_7" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao. Restricao: {agenda.psicologo = psicologo}" id="PtCkm9GOYpgDH6Ya1YM0-81">
           <mxCell parent="PtCkm9GOYpgDH6Ya1YM0-2" style="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
             <mxGeometry height="46" width="232" x="1300" y="2757" as="geometry" />
           </mxCell>
@@ -294,7 +294,7 @@
             <mxGeometry height="66" width="232" x="2256" y="1666" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="{agendamento.psicologo = psicologo e agendamento.paciente = paciente}" mermaidId="n:_note_9" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="{agendamento.psicologo = psicologo e agendamento.paciente = paciente}" id="PtCkm9GOYpgDH6Ya1YM0-83">
+        <UserObject label="registrar: ASSINATURA PROVISORIA (conteudo e contextoSessao pendentes). Restricao: {agendamento.psicologo = psicologo e agendamento.paciente = paciente}" mermaidId="n:_note_9" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="registrar: ASSINATURA PROVISORIA (conteudo e contextoSessao pendentes). Restricao: {agendamento.psicologo = psicologo e agendamento.paciente = paciente}" id="PtCkm9GOYpgDH6Ya1YM0-83">
           <mxCell parent="PtCkm9GOYpgDH6Ya1YM0-2" style="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
             <mxGeometry height="85" width="232" x="2799" y="3154" as="geometry" />
           </mxCell>
@@ -304,7 +304,7 @@
             <mxGeometry height="104" width="232" x="1129" y="903" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="registrar: ASSINATURA PROVISORIA. Contrato contempla RN-003/RN-006/RN-007; conteudo e contextoSessao pendentes." mermaidId="n:_note_11" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="registrar: ASSINATURA PROVISORIA. Contrato contempla RN-003/RN-006/RN-007; conteudo e contextoSessao pendentes." id="PtCkm9GOYpgDH6Ya1YM0-85">
+        <UserObject label="registrar: ASSINATURA PROVISORIA (conteudo e contextoSessao pendentes). Restricao: {agendamento.psicologo = psicologo e agendamento.paciente = paciente}" mermaidId="n:_note_11" mermaidBaseStyle="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="registrar: ASSINATURA PROVISORIA (conteudo e contextoSessao pendentes). Restricao: {agendamento.psicologo = psicologo e agendamento.paciente = paciente}" id="PtCkm9GOYpgDH6Ya1YM0-85">
           <mxCell parent="PtCkm9GOYpgDH6Ya1YM0-2" style="rounded=0;whiteSpace=wrap;html=1;align=left;spacingLeft=8;spacingRight=8;fillColor=#fff5ad;strokeColor=#aaaa33;strokeWidth=1.3;fontColor=#202124;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" vertex="1">
             <mxGeometry height="104" width="232" x="2543" y="3135" as="geometry" />
           </mxCell>

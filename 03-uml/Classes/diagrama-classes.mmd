@@ -5,8 +5,8 @@ classDiagram
     %% PENDENTE nos extremos e anotacao editorial, nao multiplicidade UML.
     %% Contratos condicionados e assinaturas incompletas: ver especificacao.
     class Usuario:::acesso {
-        -identificacao
-        -credencialProtegida
+        -identificacao: Texto
+        -credencialProtegida: Texto
         -situacaoConta: SituacaoConta
         +ativar(solicitante: Usuario)
         +bloquear(solicitante: Usuario)
@@ -26,13 +26,13 @@ classDiagram
     }
     class AreaAtuacao:::cadastro
     class Paciente:::cadastro {
-        -situacaoCadastral
+        -situacaoCadastral: SituacaoCadastral
         +atualizarCadastro(dadosPermitidos, solicitante: Usuario)
         +alterarSituacao(novaSituacao, solicitante: Usuario)
         +consultarCadastroPermitido(solicitante: Usuario)
     }
     class Vinculo:::cadastro {
-        -situacao
+        -situacao: SituacaoVinculo
         -dataInicio: Data
         -dataFim: Data
         +formalizar(psicologo: Psicologo, paciente: Paciente, solicitante: Usuario) Vinculo$
@@ -47,7 +47,7 @@ classDiagram
         -periodo: DataHora
     }
     class SolicitacaoEspera:::agenda {
-        -situacao
+        -situacao: SituacaoFila
         -dataHoraEntrada: DataHora
         -prazoAceite: DataHora
         +registrarEntrada(psicologo: Psicologo, paciente: Paciente, horario: DataHora, solicitante: Usuario) SolicitacaoEspera$
@@ -107,10 +107,8 @@ classDiagram
     note for Vinculo "situacao: ATIVO ou ENCERRADO; dataInicio e dataFim (DEC-015). Apenas vinculos ATIVOS autorizam acesso (RN-003/RN-007)."
     note for Agenda "adicionarDisponibilidade: criacao/validacao temporal incompletas. verificarDisponibilidade: REFINAMENTO, nao substitui consulta RF-024."
     note for SolicitacaoEspera "situacao: AGUARDANDO, OFERTADA, ACEITA, RECUSADA, EXPIRADA ou DESISTIU (DEC-027). OFERTADA representa a oferta; a conversao exige aceite e disponibilidade mantida."
-    note for Agendamento "situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao."
-    note for Agendamento "{agenda.psicologo = psicologo}"
+    note for Agendamento "situacao: CONFIRMADO, CANCELADO, REALIZADO ou NAO_COMPARECEU (DEC-016). solicitar(): cria e confirma no mesmo ato; A15 relaciona 1 agendamento a 0..1 atendimento, sem composicao. Restricao: {agenda.psicologo = psicologo}"
     note for Paciente "situacaoCadastral: ATIVO, SUSPENSO ou INATIVO (DEC-014)."
-    note for Atendimento "{agendamento.psicologo = psicologo e agendamento.paciente = paciente}"
     note for Psicologo "Atualizacao e consultas: campos/retornos provisorios. Administrador e papel, sem subclasses por permissao."
-    note for Atendimento "registrar: ASSINATURA PROVISORIA. Contrato contempla RN-003/RN-006/RN-007; conteudo e contextoSessao pendentes."
+    note for Atendimento "registrar: ASSINATURA PROVISORIA (conteudo e contextoSessao pendentes). Restricao: {agendamento.psicologo = psicologo e agendamento.paciente = paciente}"
     note for RegistroAuditoria "Imutabilidade exigida: escopo 3.7/RF-032/RN-014. Campos/responsavel imutaveis sao concretizacao OO. registrar: tipos/colaboracao pendentes."

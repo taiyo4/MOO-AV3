@@ -28,6 +28,7 @@ Referências: [especificação de classes](especificacao-classes.md), [diagrama 
 | OO-14 | Exigência documental: imutabilidade da auditoria. Concretização OO: campos e responsável imutáveis após criação e ausência de métodos comuns de edição/exclusão/setters. | Escopo 3.7, RF-032, RN-014. Não define retenção, descarte ou administração extraordinária. Cronologia da trilha ainda exige colaboração não detalhada. |
 | OO-15 | Registrar rastreabilidade como pós-condição obrigatória dos casos auditáveis; não criar dependência estrutural de toda classe para RegistroAuditoria. | RN-009, RF-032. Integração das mudanças com auditoria será detalhada nas sequências; não se presume gravação em banco pela entidade. |
 | OO-16 | Não atribuir automaticamente operações de sistema (painel, login, sessão, busca global) a uma entidade ou criar classes técnicas para preencher cobertura. | RF-001–002, RF-009–013; RNF-008. Registrar colaboração ainda necessária com Integrante 2. |
+| OO-17 | A05 permanece `PENDENTE` e é registrado como pendência declarada: mínimo de áreas por psicólogo e compartilhamento de área entre psicólogos não definidos pelos requisitos (PC-09). | RF-016; PC-09. |
 
 ### Precisão da classificação
 

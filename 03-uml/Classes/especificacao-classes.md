@@ -16,7 +16,7 @@ Consultar [diagrama-classes.mmd](diagrama-classes.mmd) e [decisoes-modelagem.md]
 - Classes em PascalCase; atributos, parâmetros e operações em camelCase, em português.
 - Atributos privados (`-`); operações públicas no nível OO (`+`). Público não significa endpoint exposto ou acesso sem autorização.
 - Associações representam propriedades dos objetos, encapsuladas, sem duplicação em atributos de IDs, listas ou chaves estrangeiras.
-- `Data`, `Hora`, `DataHora`, `Texto`, `Inteiro`, `Booleano`, `SituacaoConta` e `SituacaoAgendamento` são tipos conceituais independentes de tecnologia. Precisão, fuso e armazenamento permanecem pendentes.
+- `Data`, `Hora`, `DataHora`, `Texto`, `Inteiro`, `Booleano`, `SituacaoConta`, `SituacaoAgendamento`, `SituacaoCadastral`, `SituacaoVinculo` e `SituacaoFila` são tipos conceituais independentes de tecnologia. Precisão, fuso e armazenamento permanecem pendentes.
 - Atributo ou parâmetro sem tipo tem **tipo PENDENTE**: não equivale a Texto, objeto genérico ou campo livre. Retorno omitido está **PENDENTE**, não significa void.
 - O marcador Mermaid `$` indica operação de classe. `formalizar`, `solicitar` e os dois `registrar` são criações que retornam a instância válida indicada, não reescritas de instâncias existentes. A criação de `Agendamento` já produz um agendamento `CONFIRMADO`, conforme DEC-016 e DEC-017.
 - A fila aprovada em DEC-027 é representada somente por `SolicitacaoEspera`; a situação `OFERTADA` representa uma oferta em andamento. A conversão em `Agendamento` depende da aceitação e da disponibilidade, sem classe independente `OfertaVaga`.
@@ -173,7 +173,7 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `situacaoCadastral` | Tipo conceitual não nomeado | `ATIVO`, `SUSPENSO`, `INATIVO` (DEC-014). Não se confunde com situacaoConta. Alinhar o nome da enumeração com Caio/dicionário. |
+| `situacaoCadastral` | `SituacaoCadastral` | `ATIVO`, `SUSPENSO`, `INATIVO` (DEC-014). Não se confunde com situacaoConta. |
 
 **Operações públicas e contratos:**
 
@@ -199,7 +199,7 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `situacao` | Tipo conceitual não nomeado | `ATIVO` ou `ENCERRADO` (DEC-015); somente `ATIVO` autoriza acesso. Alinhar o nome da enumeração com Caio/dicionário. |
+| `situacao` | `SituacaoVinculo` | `ATIVO` ou `ENCERRADO` (DEC-015); somente `ATIVO` autoriza acesso. |
 | `dataInicio` | `Data` | Início do vínculo (DEC-015). |
 | `dataFim` | `Data` | Fim do vínculo, preenchido no encerramento (DEC-015). |
 
@@ -272,7 +272,7 @@ Nenhuma operação própria acrescentada por conveniência. Não foram gerados g
 
 | Atributo | Tipo | Semântica e fundamento |
 |---|---|---|
-| `situacao` | Tipo conceitual não nomeado | `AGUARDANDO`, `OFERTADA`, `ACEITA`, `RECUSADA`, `EXPIRADA`, `DESISTIU` (DEC-027); `OFERTADA` representa a oferta vigente. Alinhar o nome da enumeração com Caio/dicionário. |
+| `situacao` | `SituacaoFila` | `AGUARDANDO`, `OFERTADA`, `ACEITA`, `RECUSADA`, `EXPIRADA`, `DESISTIU` (DEC-027); `OFERTADA` representa a oferta vigente. |
 | `dataHoraEntrada` | `DataHora` | Instante de entrada na fila, usado na ordenação aprovada em DEC-027. |
 | `prazoAceite` | `DataHora` | Prazo para aceitar a oferta, conforme DEC-027. |
 
@@ -376,7 +376,7 @@ Preservam-se as 21 associações simples A01–A21. Não há herança, agregaç�
 | A02 | Perfil — Permissao | 1..* | 1..* | RF-007–008 |
 | A03 | Usuario — Psicologo | 0..1 | 0..1 | DEC-021 |
 | A04 | Usuario — Paciente | 0..1 | 0..1 | DEC-021 |
-| A05 | Psicologo — AreaAtuacao | PENDENTE | 0..* | RF-016 sustenta a associação; compartilhamento/mínimo não definido |
+| A05 | Psicologo — AreaAtuacao | PENDENTE | 0..* | RF-016 sustenta a associação; mínimo de áreas por psicólogo e compartilhamento de área entre psicólogos não definidos pelos requisitos; fica como pendência do grupo (PC-09). |
 | A06 | Psicologo — Vinculo | 1 | 0..* | RF-021; RN-003 |
 | A07 | Paciente — Vinculo | 1 | 0..* | RF-021; RN-007 |
 | A08 | Psicologo — Agenda | 1 | 1 | RF-023, RF-029; RN-011 |
