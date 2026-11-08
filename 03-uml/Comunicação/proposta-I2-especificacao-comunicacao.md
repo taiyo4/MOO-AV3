@@ -55,7 +55,7 @@ Por ser o mesmo cenário de ATV-001/SEQ-002/SEQ-003/SEQ-004, o COM-001 funciona 
 |---|---|---|---|
 | 1 | `Paciente` → `ServicoAgenda` | `solicitar(horario)` | RF-025 / UC-024 |
 | 2 | `ServicoAgenda` → `Usuario` | `consultarPermitidos()` | OP-04 / RN-003 |
-| 3 | `ServicoAgenda` → `Vinculo` | `estaAtivo()` | OP-22 / RN-005 |
+| 3 | `ServicoAgenda` → `Vinculo` | `estaAutorizado()` | OP-22 / RN-005 |
 | 4 | `ServicoAgenda` → `Agenda` | `consultarHorarios()` | OP-11 / RF-024 |
 | 5 | `Agenda` → `Disponibilidade` | `slots livres` | A09 |
 | 6 | `ServicoAgenda` → `Agenda` | `verificarDisponibilidade()` | RN-005 / RN-010 |
@@ -91,7 +91,7 @@ A mesma topologia vale para `ServicoAuditoria`, que **chama** `RegistroAuditoria
 | 1, 4, 5, 6, 7, 8, 9, 10 | SEQ-002 (`solicitar`, `consultarHorariosDisponiveis`, `verificarDisponibilidade`, `Agendamento.solicitar` já confirmado, auditoria, e-mail) |
 | 11, 12, 16, 17 | SEQ-003 (`cancelar`, `notificar(cancelamento)`, `concluir`, `Atendimento.registrar`) |
 | 13, 14, 15 | SEQ-003 (`opt <<extend>> ofertarVaga`) e SEQ-004 (`ofertarVaga`, `proximoDaFila`, `notificar(ofertaVaga)`) |
-| 2, 3 | SEQ-002 (`Vinculo.estaAtivo`); a autorização por permissões aparece aqui como OP-04, o que explicita RN-003 |
+| 2, 3 | SEQ-002 (`Vinculo.estaAutorizado`); a autorização por permissões aparece aqui como OP-04, o que explicita RN-003 |
 
 **Divergência registrada:** SEQ-001 usa a infraestrutura `RepositorioAutorizacao.obterPermissoes` (IR-02) para carregar as permissões da sessão, enquanto o COM-001 usa `Usuario.consultarPermitidos` (OP-04) para **autorização por operação**. São coisas diferentes: IR-02 monta a sessão (infraestrutura), OP-04 verifica, a cada operação, o que o solicitante pode acessar (regra de domínio). O cotejo está na revisão FASE6-REV-I2.
 

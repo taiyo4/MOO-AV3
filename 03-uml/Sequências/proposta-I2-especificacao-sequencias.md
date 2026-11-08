@@ -40,7 +40,7 @@ Toda mensagem de um diagrama de sequência deve corresponder a **uma operação 
 | `registrarEntrada`, `proximoDaFila`, `abrirOferta`, `validarPrazo`, `encerrar` | OP-23…OP-27 (`SolicitacaoEspera`) — **novo na Fase 6** | SEQ-004 |
 | `posicaoNaFila` | **OP-28** (`SolicitacaoEspera`) — **novo no fechamento da Fase 6** (LAC-13) | SEQ-004 |
 | `podeAutenticar`, `confereCredencial` | OP-01, OP-02 | SEQ-001 |
-| `estaAtivo` (vínculo) | OP-22 | SEQ-002 |
+| `estaAutorizado` (vínculo) | OP-22 | SEQ-002 |
 | `consultarHorariosDisponiveis` | OP-11 | SEQ-002 |
 | `verificarDisponibilidade` | `Agenda.verificarDisponibilidade` (modelo do I3) | SEQ-002 |
 | `consultarMeus`, `podeSerCancelado`, `estaCancelada` | OP-19, OP-15, OP-16 | SEQ-003 |
@@ -111,7 +111,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 ### 4.4 Decisões de modelagem
 
 - **A consulta vai ao `ServicoAgenda`, não ao `Agendamento`.** O `ServicoAgenda` (AP-03) é o único coordenador do caso: ele consulta, decide, cria, audita e solicita o envio. É o que evita a classe onipotente vedada pelo plano §5.2.
-- **O vínculo é consultado antes da agenda** (`estaAtivo`, OP-22): sem vínculo ATIVO o paciente não tem agenda alheia — é a materialização de RN-003/RN-005.
+- **O vínculo é consultado antes da agenda** (`estaAutorizado`, OP-22): sem vínculo ATIVO o paciente não tem agenda alheia — é a materialização de RN-003/RN-005.
 - **Não há passo de confirmação.** `Agendamento.solicitar` devolve o agendamento **`CONFIRMADO`** (RF-026 / RN-013). A v1.0 tinha um passo `confirmar` separado; ele foi removido porque a situação `SOLICITADO` deixou de existir.
 - **A reserva do slot não aparece como mensagem.** O modelo do horário é **slot discreto** (DEC-018) e a associação A17 `Disponibilidade`—`Agendamento` está habilitada; a reserva é interna a `Agendamento.solicitar` e não gera mensagem própria (§8).
 - **O envio de e-mail é obrigatório e não bloqueante** (RF-033 / DEC-022): a resposta "entregue | falha de envio" deixa explícito que a falha **não desfaz** o agendamento. Na falha, o serviço registra `"FALHA_ENVIO_EMAIL"` na auditoria e o envio pode ser repetido (DEC-029 / LAC-14). Não existe mais o caráter "condicional" da v1.0.

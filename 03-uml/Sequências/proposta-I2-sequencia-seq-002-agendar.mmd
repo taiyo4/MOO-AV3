@@ -7,7 +7,7 @@
 %% Rastreabilidade das mensagens:
 %%   AP-03 ServicoAgenda (coordena regra, auditoria e envio de mensagem)
 %%   AP-02 ServicoAuditoria.registrar   |  AP-04 ServicoEnvioMensagem.notificar
-%%   OP-11 Agenda.consultarHorariosDisponiveis | OP-22 Vinculo.estaAtivo
+%%   OP-11 Agenda.consultarHorariosDisponiveis | OP-22 Vinculo.estaAutorizado
 %%   Agendamento.solicitar (cria JA CONFIRMADO) | OP-13 confirmar (efeito)
 %%   Falha de envio: registrar("FALHA_ENVIO_EMAIL") e repetivel (DEC-029)
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013
@@ -28,7 +28,7 @@ sequenceDiagram
     participant ServicoEnvioMensagem as ServicoEnvioMensagem
 
     Ator->>ServicoAgenda: consultarHorariosDisponiveis(periodo) [RF-024 / UC-024]
-    ServicoAgenda->>Vinculo: estaAtivo() [OP-22 / RN-003]
+    ServicoAgenda->>Vinculo: estaAutorizado() [OP-22 / RN-003]
     Vinculo-->>ServicoAgenda: true - vinculo autorizado
     ServicoAgenda->>Agenda: consultarHorariosDisponiveis(paciente, periodo) [OP-11]
     Agenda-->>ServicoAgenda: lista de Disponibilidade livres

@@ -23,7 +23,7 @@
         <mxCell id="atorPac" value="&lt;b&gt;Paciente&lt;/b&gt;" style="rounded=1;arcSize=12;html=1;whiteSpace=wrap;fillColor=#00c2a8;strokeColor=#008573;strokeWidth=3;fontColor=#ffffff;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="720" y="345.1" width="147.6" height="63.5" as="geometry" />
         </mxCell>
-        <mxCell id="servicoEmail" value="&lt;b&gt;Serviço de e-mail&lt;/b&gt;" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#3a414a;strokeWidth=3;fontColor=#111111;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="servicoEmail" value="&lt;b&gt;Serviço Externo de E-mail&lt;/b&gt;" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#3a414a;strokeWidth=3;fontColor=#111111;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="1230.3" y="345.1" width="147.6" height="63.5" as="geometry" />
         </mxCell>
         <mxCell id="pendente" value="Pendente" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=12;fontColor=#8a3b3b;" vertex="1" parent="1">

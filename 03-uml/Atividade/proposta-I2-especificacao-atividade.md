@@ -96,7 +96,7 @@ Além dos três blocos paralelos, há **duas etapas sequenciais** depois do `joi
 | Nó do ATV-001 | SEQ-002 | SEQ-003 | SEQ-004 | Operação/responsabilidade |
 |---|---|---|---|---|
 | Consultar horários (OP-11) | `consultarHorariosDisponiveis` | — | — | OP-11 |
-| Validar vínculo e horário | `estaAtivo` + `verificarDisponibilidade` | — | `estaAtivo` (aceite) | OP-22 + `Agenda.verificarDisponibilidade` |
+| Validar vínculo e horário | `estaAutorizado` + `verificarDisponibilidade` | — | `estaAutorizado` (aceite) | OP-22 + `Agenda.verificarDisponibilidade` |
 | Criar agendamento (CONFIRMADO) | `Agendamento.solicitar` | — | `solicitar` no aceite | `Agendamento.solicitar` / RF-025 + RF-026 |
 | Auditar criação | `registrar("AGENDAMENTO_CONFIRMADO")` | — | `registrar("AGENDAMENTO_CONFIRMADO")` | AP-02 / RN-009 |
 | Notificar confirmação (RF-033) | `notificar(confirmacao)` | — | `notificar(confirmacao)` | AP-04 / RF-033 |

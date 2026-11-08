@@ -20,7 +20,7 @@
 %%
 %% Rastreabilidade das mensagens:
 %%   OP-04 Usuario.consultarPermitidos | OP-11 Agenda.consultarHorarios
-%%   OP-22 Vinculo.estaAtivo | Agendamento.solicitar/cancelar
+%%   OP-22 Vinculo.estaAutorizado | Agendamento.solicitar/cancelar
 %%   OP-20 Atendimento.registrar | OP-24 SolicitacaoEspera.proximoDaFila
 %%   AP-02 ServicoAuditoria | AP-04 ServicoEnvioMensagem | AP-06 ServicoListaEspera
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013; DEC-022, DEC-027
@@ -65,7 +65,7 @@ flowchart LR
 
     paciente -->|1 solicitar(horario) [RF-025]| servicoAgenda
     servicoAgenda -->|2 consultarPermitidos() [OP-04]| usuario
-    servicoAgenda -->|3 estaAtivo() [OP-22]| vinculo
+    servicoAgenda -->|3 estaAutorizado() [OP-22]| vinculo
     servicoAgenda -->|4 consultarHorarios() [OP-11]| agenda
     agenda -->|5 slots livres [A09]| disponibilidade
     servicoAgenda -->|6 verificarDisponibilidade() [RN-005]| agenda

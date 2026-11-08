@@ -15,9 +15,9 @@ Restrições: não tem acesso a funções administrativas, informações de outr
 
 Justificativa do grupo: permitir autoatendimento básico relacionado à agenda, sem conceder privilégios administrativos ou profissionais.
 
-Serviço de e-mail/notificação — PENDENTE (DEC-009)
+Serviço Externo de E-mail (DEC-009, DEC-022, DEC-029)
 
-Ainda não decidido se o sistema vai disparar notificação real por e-mail (ator secundário) ou tratar tudo como aviso interno. A definição será feita em conjunto pelo grupo antes da consolidação dos casos de uso. Enquanto isso não fecha, o diagrama de contexto mostra esse ator como possível, não confirmado.
+O sistema dispara notificação real por e-mail por meio de um ator secundário, o Serviço Externo de E-mail (DEC-009). A falha de envio não desfaz a operação (DEC-029).
 
 Atendente — EXCLUÍDO (DEC-007)
 

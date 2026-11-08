@@ -34,10 +34,10 @@ erDiagram
     PSICOLOGO ||--o{ ATENDIMENTO : "A13 1:N"
     PACIENTE ||--o{ ATENDIMENTO : "A14 1:N"
     USUARIO |o--o{ REGISTRO_AUDITORIA : "A16 0..1:N"
-    PSICOLOGO ||--o{ SOLICITACAO_ESPERA : "A18 1:N (proposta)"
-    PACIENTE ||--o{ SOLICITACAO_ESPERA : "A19 1:N (proposta)"
-    DISPONIBILIDADE ||--o{ SOLICITACAO_ESPERA : "A20 1:N (proposta)"
-    SOLICITACAO_ESPERA |o--o| AGENDAMENTO : "A21 0..1:0..1 (proposta)"
+    PSICOLOGO ||--o{ SOLICITACAO_ESPERA : "A18 1:N (oficial)"
+    PACIENTE ||--o{ SOLICITACAO_ESPERA : "A19 1:N (oficial)"
+    DISPONIBILIDADE ||--o{ SOLICITACAO_ESPERA : "A20 1:N (oficial)"
+    SOLICITACAO_ESPERA |o--o| AGENDAMENTO : "A21 0..1:0..1 (oficial)"
 
     PERFIL {
         BIGINT id PK

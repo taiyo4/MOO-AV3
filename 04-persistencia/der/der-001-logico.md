@@ -101,10 +101,10 @@ Fixar a estrutura persistente que atende aos 37 requisitos funcionais da baselin
 | R17 | `atendimento` → `agendamento` | 0..1:1 | `(id_agendamento, id_psicologo, id_paciente)` | A15 + RN-017 + RN-019 — coerência do trio |
 | R18 | `atendimento` → `psicologo` | N:1 | `id_psicologo` | A13 |
 | R19 | `atendimento` → `paciente` | N:1 | `id_paciente` | A14 |
-| R20 | `solicitacao_espera` → `psicologo` | N:1 | `id_psicologo` | A18 (proposta) |
-| R21 | `solicitacao_espera` → `paciente` | N:1 | `id_paciente` | A19 (proposta) |
+| R20 | `solicitacao_espera` → `psicologo` | N:1 | `id_psicologo` | A18 (oficial, CLS-001 de 02/11) |
+| R21 | `solicitacao_espera` → `paciente` | N:1 | `id_paciente` | A19 (oficial, CLS-001 de 02/11) |
 | R22 | `solicitacao_espera` → `disponibilidade` | N:1 | `(id_disponibilidade, id_psicologo)` | A20 + RN-018 — a vaga ofertada é do mesmo psicólogo |
-| R23 | `solicitacao_espera` → `agendamento` | 0..1:0..1 | `id_agendamento` NULL + UNIQUE | A21 (proposta) — o aceite gera um único agendamento |
+| R23 | `solicitacao_espera` → `agendamento` | 0..1:0..1 | `id_agendamento` NULL + UNIQUE | A21 (oficial, CLS-001 de 02/11) — o aceite gera um único agendamento |
 | R24 | `registro_auditoria` → `usuario` | N:0..1 | `id_usuario` NULL | A16 + DEC-024 — responsável pode não existir (falha de autenticação) |
 
 ### 4.2 Associações que **não** viraram FK
@@ -138,7 +138,7 @@ Três regras de negócio exigem que duas colunas de tabelas diferentes "combinem
 
 ### 4.5 Diagrama
 
-O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As relações A18–A21 estão marcadas como proposta porque as classes correspondentes ainda não foram oficializadas pelo Integrante 3 (P8).
+O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As relações A18–A21 são oficiais desde o CLS-001 de 02/11/2026, com a fila integrada a `SolicitacaoEspera` (merge 0180c3b, 03/11/2026).
 
 ---
 
