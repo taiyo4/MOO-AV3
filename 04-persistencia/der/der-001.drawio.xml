@@ -110,16 +110,16 @@
         <mxCell id="r18" value="A16 0..1:N" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERzeroToOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="usuario" target="registro_auditoria">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="r19" value="A18 1:N (proposta)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="psicologo" target="solicitacao_espera">
+        <mxCell id="r19" value="A18 1:N (oficial)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="psicologo" target="solicitacao_espera">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="r20" value="A19 1:N (proposta)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="paciente" target="solicitacao_espera">
+        <mxCell id="r20" value="A19 1:N (oficial)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="paciente" target="solicitacao_espera">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="r21" value="A20 1:N (proposta)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="disponibilidade" target="solicitacao_espera">
+        <mxCell id="r21" value="A20 1:N (oficial)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="disponibilidade" target="solicitacao_espera">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="r22" value="A21 0..1:0..1 (proposta)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToOne;startArrow=ERzeroToOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="solicitacao_espera" target="agendamento">
+        <mxCell id="r22" value="A21 0..1:0..1 (oficial)" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=ERzeroToOne;startArrow=ERzeroToOne;endSize=12;startSize=12;fontSize=9;labelBackgroundColor=#ffffff;strokeColor=#333333;" edge="1" parent="1" source="solicitacao_espera" target="agendamento">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
