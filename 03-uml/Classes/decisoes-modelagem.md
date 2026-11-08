@@ -29,6 +29,8 @@ Referências: [especificação de classes](especificacao-classes.md), [diagrama 
 | OO-15 | Registrar rastreabilidade como pós-condição obrigatória dos casos auditáveis; não criar dependência estrutural de toda classe para RegistroAuditoria. | RN-009, RF-032. Integração das mudanças com auditoria será detalhada nas sequências; não se presume gravação em banco pela entidade. |
 | OO-16 | Não atribuir automaticamente operações de sistema (painel, login, sessão, busca global) a uma entidade ou criar classes técnicas para preencher cobertura. | RF-001–002, RF-009–013; RNF-008. Registrar colaboração ainda necessária com Integrante 2. |
 | OO-17 | A05 permanece `PENDENTE` e é registrado como pendência declarada: mínimo de áreas por psicólogo e compartilhamento de área entre psicólogos não definidos pelos requisitos (PC-09). | RF-016; PC-09. |
+| OO-18 | **Proposta (sujeita à aprovação do grupo):** OBJ-002 permanece separado de OBJ-001. OBJ-001 é fotografia estrutural com agendamento confirmado; OBJ-002 mostra o ciclo com situações `REALIZADO` e `CANCELADO`. Não se funde em uma única fotografia. | Pendência P9 (decisão sobre OBJ-002); `especificacao-objetos.md` §2. Não é DEC oficial. |
+| OO-19 | Nomes canônicos das operações duplicadas (P10): `adicionarDisponibilidade` (não `cadastrarDisponibilidade`) e `estaAutorizado` (não `estaAtivo`). Os nomes do diagrama oficial são mantidos. | Q5-09; DEC-015; DEC-018. Alinhamento dos artefatos do I2 e do dossiê pendente (ver §7). |
 
 ### Precisão da classificação
 
@@ -130,3 +132,24 @@ As cardinalidades fechadas estão registradas no [modelo de domínio](../Dominio
 | Escopo | Somente modelagem OO; nenhuma mudança no domínio ou nos documentos dos outros integrantes é necessária nesta etapa. |
 
 A cobertura funcional foi desdobrada por RF na especificação, sem acrescentar classes ou métodos. A conclusão desta etapa é um modelo documental parcial com contratos declarados, não demonstração dos mecanismos nem fechamento das pendências do grupo. A revisão estática não certifica renderização Mermaid nem execução dos contratos. A conformidade final requer resolver PC pertinentes e validar os fluxos com os Integrantes 1 e 2.
+
+## 7. Fechamento formal de associações e nomes (08/11/2026)
+
+| Item | Situação | Fundamento | Onde está |
+|---|---|---|---|
+| A01 `Perfil` — `Usuario` (1 : 0..*) | **Fechada** | DEC-019: cada conta tem no máximo um perfil. | diagrama-classes.mmd; especificacao-classes.md §5 |
+| A02 `Perfil` — `Permissao` (1..* : 1..*) | **Fechada** | RF-007, RF-008; N:N resolvida em `perfil_permissao` (I4). | idem |
+| A03 `Usuario` — `Psicologo` (0..1 : 0..1) | **Fechada** | DEC-021: conta de acesso opcional para cadastro. | idem |
+| A04 `Usuario` — `Paciente` (0..1 : 0..1) | **Fechada** | DEC-021 | idem |
+| A10 `Agenda` — `Agendamento` (1 : 0..*) | **Fechada** | RF-029; o slot ocupado é definido por A17 (DEC-018). A persistência deriva A10 por junção (I4). | idem |
+| A05 `Psicologo` — `AreaAtuacao` | **Não fechada (PENDENTE)** | PC-09: mínimo de áreas e compartilhamento não definidos pelos requisitos. Pendência do grupo, não do modelo. | idem |
+
+**Nomes (P10):**
+
+| Nome descartado | Nome adotado | Ocorrências já ajustadas nesta entrega | Ocorrências que permanecem |
+|---|---|---|---|
+| `cadastrarDisponibilidade` | `adicionarDisponibilidade` | `modelos-testes-conceituais-fase8.md` (CT-023); `matriz-rastreabilidade-final.md` (RF-023); `testes-conceituais-dominio.md` (espelho) | Revisões históricas Fase 5 e 6 (snapshots, não editadas); `07-dossie/dossie.md` (regerar após I3, I4 e I2 terminarem) |
+| `estaAtivo` | `estaAutorizado` | Nenhuma ocorrência no diagrama oficial, na especificação ou no modelo de domínio | `SEQ-002`, `COM-001`, `ATV-001` e as revisões comportamentais do I2 (`estaAtivo`, OP-22); a alinhar pelo Integrante 2 |
+
+**Limites desta etapa.** O fechamento de A01–A04 e A10 não resolve PC-01 a PC-12 nem altera os requisitos. Não houve regeneração dos `.drawio.xml` nem dos `.pdf` do diagrama de classes: a exportação depende do diagrams.net, e o PDF atual (21/10) segue desatualizado até nova exportação.
+

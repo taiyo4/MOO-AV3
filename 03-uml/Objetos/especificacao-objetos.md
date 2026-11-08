@@ -31,6 +31,8 @@ Perfil, Permissao e AreaAtuacao também não são projetados. Isso não signific
 
 OBJ-002 permanece separado de OBJ-001. OBJ-001 é uma fotografia estrutural com um agendamento confirmado; OBJ-002 descreve o ciclo com agendamentos em situações distintas (`REALIZADO` e `CANCELADO`), atendimento e auditoria. Manter os recortes separados evita representar duas histórias de ciclo de vida como se fossem uma única fotografia do diagrama atual. A decisão e a justificativa devem permanecer alinhadas à seção 20 do dossiê.
 
+**Status:** proposta OO-18 de `decisoes-modelagem.md`, sujeita à validação do grupo (não é decisão oficial DEC).
+
 ## 3. Notação e limites do Mermaid
 
 Fonte editável: [diagrama-objetos.mmd](diagrama-objetos.mmd).

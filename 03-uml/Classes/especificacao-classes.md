@@ -396,6 +396,8 @@ Preservam-se as 21 associações simples A01–A21. Não há herança, agregaç�
 
 As cardinalidades A01, A03 e A04 refletem DEC-019 e DEC-021; A02 e A05 são justificadas pelos RFs indicados; A10 por RF-029. A08 e A09 estão fechadas como um titular por agenda e uma agenda por disponibilidade, com múltiplas disponibilidades por agenda, conforme a tabela do domínio.
 
+Fechamento formal de A01 a A04 e A10 consta em [decisoes-modelagem.md](decisoes-modelagem.md) §7. A05 segue `PENDENTE` (PC-09).
+
 A16 não concede consulta ao responsável pelo evento. A05 não fixa mínimo durante cadastro ou compartilhamento. A15 segue DEC-030: cada atendimento corresponde a um agendamento e cada agendamento tem zero ou um atendimento.
 
 São propriedades de associação com extremo 1: participantes de Vinculo, titular de Agenda, agenda de Disponibilidade, participantes de Agendamento e Atendimento e responsável por RegistroAuditoria. Não foram duplicadas em campos de IDs nem convertidas em listas obrigatórias.
@@ -461,3 +463,6 @@ RF-001–032 são requisitos registrados, não requisitos declarados estáveis/a
 ### Verificação P10
 
 No diagrama oficial [diagrama-classes.mmd](diagrama-classes.mmd), `adicionarDisponibilidade` e `estaAutorizado` aparecem uma única vez cada. As tabelas desta especificação descrevem os contratos dessas operações sem duplicar declarações no diagrama.
+
+**Adendo (08/11/2026):** os nomes duplicados foram unificados em `adicionarDisponibilidade` e `estaAutorizado` (OO-19). Nos artefatos do I3, `cadastrarDisponibilidade` e `estaAtivo` não são mais usados como nomes de operação.
+
