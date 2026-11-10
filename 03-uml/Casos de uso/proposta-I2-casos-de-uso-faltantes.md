@@ -1,7 +1,7 @@
 # Casos de uso faltantes e revisão de UC-025/UC-027 — Fase 6
 
 **Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
-**Data:** 22/10/2026 · **Versão:** v1.1 (proposta para o grupo; lote de ajustes da Fase 6 + consulta/saída da fila — LAC-13).
+**Data:** 08/11/2026 · **Versão:** v1.2 (proposta para o grupo; lote de ajustes da Fase 6 + consulta/saída da fila — LAC-13 — e alinhamento das operações da fila ao CLS-001 — **P10** / **Q5-09**).
 **Natureza:** **PROPOSTA.** Não substitui os artefatos oficiais (`especificacoes-casos-de-uso-criticos.md` e `especificacoes-casos-de-uso-demais.md`); complementa-os com os casos que faltavam e com a revisão das decisões novas.
 
 > **Convenção de numeração (DEC-026):** cada caso de uso recebe o número do requisito que ele realiza — **`UC-0` + número do RF**. Assim, RF-028 → **UC-028**, RF-033 → **UC-033**, e assim por diante. Todo caso abre com **Objetivo** e **RFs cobertos**, como exige a revisão.
@@ -121,14 +121,14 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 **Fluxo de consulta e saída (a qualquer momento, enquanto a solicitação estiver ativa):**
 
 1. O paciente solicita consultar a posição (`consultarPosicao`, AP-06).
-2. O sistema calcula a posição pela ordem de `dataHoraEntrada` (`posicaoNaFila`, **OP-28**).
+2. O sistema calcula a posição pela ordem de `dataHoraEntrada` (`consultarPosicao()`, **OP-28**).
 3. O paciente pode sair da fila (`sairDaFila`, AP-06).
-4. O sistema encerra a solicitação como `DESISTIU` (`encerrar`, OP-27) e audita `"ESPERA_ENCERRADA"` (AP-02).
+4. O sistema encerra a solicitação como `DESISTIU` (`encerrar("DESISTIU", solicitante)`, OP-27) e audita `"ESPERA_ENCERRADA"` (AP-02).
 
 **Fluxos alternativos:**
 
 - **A1 — Já existe entrada ativa:** o sistema informa a posição atual e não cria duplicata.
-- **A2 — Consulta da posição ou desistência:** a posição é devolvida por `posicaoNaFila` (OP-28); a desistência encerra como `DESISTIU` (OP-27) e audita o encerramento. O paciente pode entrar de novo depois — a desistência não gera punição.
+- **A2 — Consulta da posição ou desistência:** a posição é devolvida por `consultarPosicao()` (OP-28); a desistência usa `encerrar("DESISTIU", solicitante)` (OP-27) e audita o encerramento. O paciente pode entrar de novo depois — a desistência não gera punição.
 
 **Exceções:**
 
@@ -160,7 +160,7 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 1. UC-027 termina com o agendamento `CANCELADO` e o horário liberado.
 2. `ServicoAgenda` chama `ServicoListaEspera.ofertarVaga(horarioLiberado)` (AP-06).
 3. O serviço verifica se **já existe oferta aberta** para o psicólogo; se houver, encerra sem abrir outra.
-4. O serviço obtém a solicitação `AGUARDANDO` mais antiga (`proximoDaFila`, OP-24).
+4. O serviço obtém a solicitação `AGUARDANDO` mais antiga (`proximoDaFila(psicologo)`, AP-06 — consulta da coleção, **decisão P10**).
 5. O serviço abre a oferta com o prazo de aceite (`abrirOferta`, OP-25) → `OFERTADA`.
 6. O serviço audita `OFERTA_VAGA_ABERTA` (AP-02) e solicita o e-mail de oferta (UC-033).
 7. O paciente decide em UC-036.
@@ -202,15 +202,15 @@ Além disso, este documento **revisa UC-025 e UC-027** (§7 e §8) para refletir
 
 1. O paciente acessa a oferta recebida por e-mail.
 2. O paciente escolhe "aceitar".
-3. O sistema valida o prazo (`validarPrazo`, OP-26).
+3. O sistema valida o prazo (`validarPrazo()`, OP-26 — consulta da entidade, **decisão P10**).
 4. O sistema chama `ServicoAgenda.agendar(...)`, que cria o agendamento **já confirmado** (RF-025/RF-026).
-5. O sistema audita o agendamento e encerra a solicitação como `ACEITA` (`encerrar`, OP-27).
+5. O sistema audita o agendamento e encerra a solicitação como `ACEITA` (`aceitar(solicitante)`, OP-27).
 6. O sistema solicita o e-mail de confirmação (UC-033).
 
 **Fluxos alternativos:**
 
-- **A1 — Recusa:** o sistema encerra como `RECUSADA`, audita e chama UC-035 para o próximo da fila.
-- **A2 — Prazo vencido:** o sistema encerra como `EXPIRADA`, audita e chama UC-035 para o próximo da fila.
+- **A1 — Recusa:** o sistema encerra como `RECUSADA` (`recusar(solicitante)`, OP-27), audita e chama UC-035 para o próximo da fila.
+- **A2 — Prazo vencido:** o sistema encerra como `EXPIRADA` (`expirar()`, OP-27), audita e chama UC-035 para o próximo da fila.
 
 **Exceções:**
 

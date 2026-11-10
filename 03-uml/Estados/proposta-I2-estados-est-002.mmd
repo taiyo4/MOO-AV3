@@ -1,0 +1,46 @@
+%% =====================================================================
+%% EST-002 - Maquina de estados da SolicitacaoEspera - FASE 6
+%% PROPOSTA DO INTEGRANTE 2 (casos de uso e diagramas comportamentais).
+%% Natureza: PROPOSTA. Nao substitui artefato oficial do grupo.
+%% Fonte da verdade do CONTEUDO.
+%%
+%% Rastreabilidade (P10 / Q5-09):
+%%   CLS-001 SolicitacaoEspera: registrarEntrada(psicologo, paciente,
+%%     horario, solicitante) | abrirOferta(horario, prazoAceite) |
+%%     aceitar(solicitante) | recusar(solicitante) | expirar() |
+%%     encerrar(motivo, solicitante) | consultarPosicao() Inteiro
+%%   SEQ-004 desenha exatamente estas transicoes (abrirOferta, aceitar,
+%%     recusar, expirar, encerrar) e a consulta nao muda a situacao.
+%%   DDL 04-persistencia/ddl/schema-mysql.sql (solicitacao_espera):
+%%     CHECK situacao IN ('AGUARDANDO','OFERTADA','ACEITA',
+%%                        'RECUSADA','EXPIRADA','DESISTIU')
+%%   DEC-027: fila por ordem de entrada, uma oferta por vez, prazo de
+%%     aceite, recusa/vencimento passa ao proximo.
+%%
+%% Convencao de layout: "%% pos: ID x y" -> posicao do centro do estado (px).
+%% =====================================================================
+%% label: EST-002 - Maquina de estados da SolicitacaoEspera
+%% sub: Fonte editavel: 03-uml/Estados/proposta-I2-estados-est-002.mmd | PROPOSTA do Integrante 2 (Fase 6) | 6 situacoes da fila (P10/Q5-09) | DEC-027 | nomes identicos a CLS-001 e ao DDL
+
+%% pos: AGUARDANDO 480 240
+%% pos: OFERTADA 860 240
+%% pos: ACEITA 1225 130
+%% pos: RECUSADA 1225 290
+%% pos: EXPIRADA 1225 450
+%% pos: DESISTIU 480 500
+
+stateDiagram-v2
+    [*] --> AGUARDANDO : registrarEntrada(psicologo, paciente, horario, solicitante)
+    AGUARDANDO --> OFERTADA : abrirOferta(horario, prazoAceite) [ha vaga e nenhuma oferta aberta]
+    OFERTADA --> ACEITA : aceitar(solicitante) [dentro do prazoAceite]
+    OFERTADA --> RECUSADA : recusar(solicitante)
+    OFERTADA --> EXPIRADA : expirar() [prazoAceite vencido]
+    AGUARDANDO --> DESISTIU : encerrar(DESISTIU, solicitante)
+    OFERTADA --> DESISTIU : encerrar(DESISTIU, solicitante) [durante a oferta]
+    ACEITA --> [*]
+    RECUSADA --> [*]
+    EXPIRADA --> [*]
+    DESISTIU --> [*]
+
+    note left of AGUARDANDO : Situacao inicial: registrarEntrada cria a solicitacao em AGUARDANDO. A posicao e definida exclusivamente por dataHoraEntrada (DEC-027): nao ha prioridade manual nem reordenacao.
+    note right of EXPIRADA : OFERTADA exige prazoAceite preenchido (ck_se_prazo). ACEITA, RECUSADA, EXPIRADA e DESISTIU sao terminais; recusa, vencimento e desistencia nao punem o paciente, e a vaga e reofertada ao proximo quando houver fila.

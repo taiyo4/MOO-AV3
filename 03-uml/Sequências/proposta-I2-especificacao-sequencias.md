@@ -1,7 +1,7 @@
 # Especificação das sequências SEQ-001 a SEQ-004 — Fase 6
 
 **Responsável:** Integrante 2 — Casos de uso e diagramas comportamentais.
-**Data:** 22/10/2026 · **Versão:** v2.1 (proposta para o grupo; fechamento das ressalvas LAC-13, LAC-14 e LAC-15 da Fase 6).
+**Data:** 08/11/2026 · **Versão:** v2.2 (proposta para o grupo; alinhamento da SEQ-004 ao CLS-001 — decisões **P10** e **Q5-09**, com as ressalvas LAC-13, LAC-14 e LAC-15 da v2.1 mantidas).
 **Natureza:** **PROPOSTA.** Não substitui artefato oficial do grupo.
 
 | Diagrama | Fonte editável | Editável (draw.io) | Dossiê (PDF) | Caso de uso | RFs cobertos |
@@ -36,9 +36,11 @@ Toda mensagem de um diagrama de sequência deve corresponder a **uma operação 
 | `registrar(...)` (auditoria) | AP-02 (`ServicoAuditoria`) + `RegistroAuditoria.registrar` (RF-032) | SEQ-001/002/003/004 |
 | `solicitar`/`cancelar`/`concluir`/`registrarFalta` | AP-03 (`ServicoAgenda`) + OP-13…OP-18 | SEQ-002/003/004 |
 | `notificar(...)` | AP-04 (`ServicoEnvioMensagem`, fronteira externa) | SEQ-002/003/004 |
-| `entrarNaFila`, `consultarPosicao`, `sairDaFila`, `ofertarVaga`, `aceitarOferta`, `recusarOferta`, `expirarOferta` | AP-06 (`ServicoListaEspera`) — **novo na Fase 6** | SEQ-004 |
-| `registrarEntrada`, `proximoDaFila`, `abrirOferta`, `validarPrazo`, `encerrar` | OP-23…OP-27 (`SolicitacaoEspera`) — **novo na Fase 6** | SEQ-004 |
-| `posicaoNaFila` | **OP-28** (`SolicitacaoEspera`) — **novo no fechamento da Fase 6** (LAC-13) | SEQ-004 |
+| `entrarNaFila`, `consultarPosicao`, `sairDaFila`, `ofertarVaga`, `aceitarOferta`, `recusarOferta` | AP-06 (`ServicoListaEspera`) — **novo na Fase 6** | SEQ-004 |
+| `proximoDaFila(psicologo)` | AP-06 (`ServicoListaEspera`) — **consulta da coleção, decisão P10**: não é operação da instância `SolicitacaoEspera` | SEQ-004 |
+| `registrarEntrada`, `abrirOferta`, `aceitar`, `recusar`, `expirar`, `encerrar` | OP-23, OP-25 e OP-27 (`SolicitacaoEspera`) — **novo na Fase 6**, nomes alinhados ao CLS-001 (Q5-09) | SEQ-004 |
+| `validarPrazo()` | **OP-26** (`SolicitacaoEspera`) — **decisão P10**: mantida como operação de consulta da classe (`prazoAceite` já existe); inclusão formal no CLS-001 encaminhada ao I3 | SEQ-004 |
+| `consultarPosicao()` | **OP-28** (`SolicitacaoEspera`) — **novo no fechamento da Fase 6** (LAC-13); substitui `posicaoNaFila(psicologo, paciente)` pelo nome do CLS-001 | SEQ-004 |
 | `podeAutenticar`, `confereCredencial` | OP-01, OP-02 | SEQ-001 |
 | `estaAutorizado` (vínculo) | OP-22 | SEQ-002 |
 | `consultarHorariosDisponiveis` | OP-11 | SEQ-002 |
@@ -162,23 +164,24 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | Fragmento | Tipo | Condição / efeito |
 |---|---|---|
 | `<<extend>> do cancelamento` | `opt` | `ServicoAgenda.ofertarVaga(horarioLiberado)` → o serviço da fila é acionado (só existe quando há cancelamento e fila). |
-| `Consulta da posição e saída da fila` | `opt` | `consultarPosicao` → `posicaoNaFila` (OP-28) devolve posição e `dataHoraEntrada`; `sairDaFila` → `encerrar(DESISTIU)` (OP-27), com auditoria `"ESPERA_ENCERRADA"` (LAC-13). |
-| `Há solicitação na fila e nenhuma oferta aberta` | `alt` (1º ramo) | `proximoDaFila()` (OP-24) + `abrirOferta(horario, prazoAceite)` (OP-25) → `OFERTADA` com o **horário reservado até o prazo**, audita, solicita e-mail. |
+| `Consulta da posição e saída da fila` | `opt` | `consultarPosicao` (AP-06) → `consultarPosicao()` (OP-28) devolve posição e `dataHoraEntrada`; `sairDaFila` → `encerrar("DESISTIU", solicitante)` (OP-27), com auditoria `"ESPERA_ENCERRADA"` (LAC-13). |
+| `Há solicitação na fila e nenhuma oferta aberta` | `alt` (1º ramo) | `proximoDaFila(psicologo)` (AP-06, consulta da coleção — P10) + `abrirOferta(horario, prazoAceite)` (OP-25) → `OFERTADA` com o **horário reservado até o prazo**, audita, solicita e-mail. |
 | `Fila vazia ou oferta já aberta` | `alt` (2º ramo) | Nenhuma oferta é aberta; o horário permanece no catálogo. Materializa "uma oferta por vez". |
-| `Aceite dentro do prazo` | `alt` (1º ramo) | `validarPrazo()` (OP-26) → `ServicoAgenda.agendar(...)` cria o agendamento `CONFIRMADO`, audita, notifica e encerra a solicitação como `ACEITA` (OP-27). |
+| `Aceite dentro do prazo` | `alt` (1º ramo) | `validarPrazo()` (OP-26) → `ServicoAgenda.agendar(...)` cria o agendamento `CONFIRMADO`, audita, notifica e `aceitar(solicitante)` encerra a solicitação como `ACEITA` (OP-27), revalidando o `prazoAceite` na entidade. |
 | `Falha de envio na oferta ou no aceite` | `alt` aninhado | `notificar` devolve `falha de envio` → `registrar("FALHA_ENVIO_EMAIL")`; a oferta e o agendamento continuam válidos (DEC-029 / LAC-14). |
-| `Recusa` | `alt` (2º ramo) | `encerrar(RECUSADA)` (OP-27), audita e **reoferta ao próximo** (`ofertarVaga` recursivo). |
-| `Prazo de aceite vencido` | `alt` (3º ramo) | `expirarOferta(prazoAceite)` → `EXPIRADA`, audita e **reoferta ao próximo**. |
+| `Recusa` | `alt` (2º ramo) | `recusar(solicitante)` (OP-27), audita e **reoferta ao próximo** (`ofertarVaga` recursivo). |
+| `Prazo de aceite vencido` | `alt` (3º ramo) | `expirar()` (OP-27) → `EXPIRADA`, audita e **reoferta ao próximo**. |
 
 ### 6.4 Decisões de modelagem
 
-- **A fila é por `dataHoraEntrada`**, não por prioridade: `proximoDaFila` devolve sempre a solicitação `AGUARDANDO` mais antiga daquele psicólogo (DEC-027). Não há reordenação manual.
-- **`SolicitacaoEspera` é entidade, não serviço.** O estado da fila (`AGUARDANDO`/`OFERTADA`/`ACEITA`/`RECUSADA`/`EXPIRADA`), o prazo e a ordem precisam sobreviver ao processo; guardá-los no serviço seria estado em memória. O serviço `ServicoListaEspera` (AP-06) **coordena**, a entidade **guarda a regra**.
+- **A fila é por `dataHoraEntrada`**, não por prioridade: a consulta da coleção `proximoDaFila(psicologo)` (AP-06) devolve sempre a solicitação `AGUARDANDO` mais antiga daquele psicólogo (DEC-027). Não há reordenação manual. **Decisão P10:** `proximoDaFila` **não** é operação da instância `SolicitacaoEspera` — é consulta da coleção, portanto pertence ao serviço `ServicoListaEspera` (AP-06).
+- **`SolicitacaoEspera` é entidade, não serviço.** O estado da fila (`AGUARDANDO`/`OFERTADA`/`ACEITA`/`RECUSADA`/`EXPIRADA`/`DESISTIU`), o prazo e a ordem precisam sobreviver ao processo; guardá-los no serviço seria estado em memória. O serviço `ServicoListaEspera` (AP-06) **coordena**, a entidade **guarda a regra**.
 - **"Uma oferta por vez" é verificada antes de abrir** (`opção Fila vazia ou oferta já aberta`): abrir uma segunda oferta violaria a DEC-027 e criaria duas reservas para o mesmo horário (RN-010).
 - **O aceite reusa o caminho normal de agendamento** (`ServicoAgenda.agendar` → `Agendamento.solicitar`): não há criação "especial" de agendamento pela fila. Isso mantém RN-005/RN-010/RN-013 em um único lugar.
 - **A recusa não pune o paciente**: apenas encerra aquela solicitação. Uma nova entrada futura na fila é permitida (RF-036).
-- **Recusa e vencimento reusam a mesma operação** `encerrar(...)` (OP-27), variando a situação final; a reoferta é o mesmo `ofertarVaga`. Não há duplicação de regra.
-- **A posição é consultável e a desistência é definitiva.** `consultarPosicao` (AP-06) delega a `posicaoNaFila` (OP-28), que lê a ordem por `dataHoraEntrada`; `sairDaFila` encerra como `DESISTIU` (OP-27) e audita `"ESPERA_ENCERRADA"`. Quem desiste pode entrar de novo — a desistência não pune (LAC-13).
+- **Recusa e vencimento usam operações próprias da entidade** — `recusar(solicitante)` e `expirar()` (OP-27) —, não mais um `encerrar(situação)` genérico: os nomes seguem o CLS-001 (Q5-09). A desistência continua usando `encerrar("DESISTIU", solicitante)`, que é a assinatura da classe. A reoferta é o mesmo `ofertarVaga`. Não há duplicação de regra.
+- **A posição é consultável e a desistência é definitiva.** `consultarPosicao` (AP-06) delega a `consultarPosicao()` (OP-28), que lê a ordem por `dataHoraEntrada`; `sairDaFila` chama `encerrar("DESISTIU", solicitante)` (OP-27) e audita `"ESPERA_ENCERRADA"`. Quem desiste pode entrar de novo — a desistência não pune (LAC-13).
+- **O prazo é validado na entidade.** `validarPrazo()` (OP-26) é mantida como operação de consulta da classe — o atributo `prazoAceite` já existe no CLS-001 —, e `aceitar(solicitante)` a revalida antes de encerrar como `ACEITA` (**decisão P10**). A inclusão formal de `validarPrazo()` no CLS-001 está encaminhada ao I3.
 - **A oferta reserva o horário.** `abrirOferta(horario, prazoAceite)` devolve `OFERTADA` com o horário **reservado até o prazo**: enquanto a oferta existir, o slot não aparece como livre. Se a fila acabar (recusa/vencimento sem próximo), o horário volta ao catálogo (LAC-15).
 
 ## 7. Cobertura de requisitos e regras
@@ -195,7 +198,7 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 | RF-030 (registrar atendimento) | | | ✔ (`opt`) | |
 | RF-032 (auditoria) | ✔ | ✔ | ✔ | ✔ |
 | **RF-033 (e-mail)** | | ✔ | ✔ | ✔ |
-| **RF-034 (entrar na fila, consultar posição e sair)** | | ✔ (A1) | | ✔ (entrada, `posicaoNaFila`/OP-28 e `DESISTIU`) |
+| **RF-034 (entrar na fila, consultar posição e sair)** | | ✔ (A1) | | ✔ (entrada, `consultarPosicao()`/OP-28 e `DESISTIU`) |
 | **RF-035 (ofertar vaga)** | | | ✔ (`<<extend>>`) | ✔ |
 | **RF-036 (responder oferta)** | | | | ✔ |
 | **RF-037 (não comparecimento)** | | | ✔ | |
@@ -215,9 +218,10 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 
 | Pendência | Causa | Efeito no diagrama |
 |---|---|---|
-| **Incremento de domínio `SolicitacaoEspera` + AP-06** | DEC-027 aprovada na Fase 6 | a SEQ-004 já os usa; o Integrante 3 precisa incorporá-los ao CLS-001 (não existem na Fase 5). |
+| **Incremento de domínio `SolicitacaoEspera` + AP-06** | DEC-027 aprovada na Fase 6 | a entidade e as operações da fila já estão no CLS-001; falta ao Integrante 3 incorporar `validarPrazo()` (OP-26, **P10**) e registrar a fronteira `ServicoListaEspera` (AP-06). |
+| **Alinhamento SEQ-004 × CLS-001 (P10 / Q5-09)** | operações da SEQ-004 não batiam com a classe | a SEQ-004 passou a usar `consultarPosicao()`, `aceitar(solicitante)`, `recusar(solicitante)`, `expirar()`, `encerrar("DESISTIU", solicitante)` e `registrarEntrada(..., solicitante)`; `proximoDaFila(psicologo)` ficou em AP-06 (consulta da coleção) e `validarPrazo()` (OP-26) foi mantida como consulta da classe, a incorporar pelo I3. |
 | **Reserva do slot (A17)** | DEC-018 (slot discreto) — decisão do grupo | a reserva é interna a `Agendamento.solicitar`; na fila, `abrirOferta` devolve o horário **reservado até o prazo** (LAC-15 fechada). |
-| **Ressalvas LAC-13, LAC-14 e LAC-15** | **fechadas na v2.1** | a SEQ-004 desenha consulta/saída da fila (`posicaoNaFila`/OP-28, `DESISTIU`) e a reserva; as três sequências desenham `"FALHA_ENVIO_EMAIL"` e a repetição do envio. |
+| **Ressalvas LAC-13, LAC-14 e LAC-15** | **fechadas na v2.1** | a SEQ-004 desenha consulta/saída da fila (`consultarPosicao()`/OP-28, `encerrar("DESISTIU", solicitante)`) e a reserva; as três sequências desenham `"FALHA_ENVIO_EMAIL"` e a repetição do envio. |
 | **Prazo de aceite (valor)** | parâmetro de configuração (DEC-027) | a operação `abrirOferta(prazoAceite)` aparece sem valor numérico; o valor é configuração, não regra de negócio variável por caso. |
 | **Prazo de cancelamento** | resolvido: `[antes do horário marcado]` | a guarda não tem valor numérico **por decisão** (não existe prazo de 2 horas). |
 | **Canal de notificação** | resolvido: e-mail (RF-033) | `ServicoEnvioMensagem` é fronteira externa (interface), não entidade. |
@@ -237,4 +241,5 @@ A análise de persistência do Integrante 4 (`04-persistencia/analises/fase-06-i
 - **Segurança/autorização:** a autorização é consultada no serviço (`OP-04`, `OP-22`) e não é assumida pelo ator.
 - **Auditoria:** toda operação auditável do plano (RN-009) tem uma mensagem correspondente nos quatro diagramas.
 - **Consistência de nomes:** `ServicoEnvioMensagem` é o único nome da fronteira de envio (DEC-022); `ServicoNotificacao` não é mais usado em nenhum artefato da Fase 6.
-- **Fila:** a consulta de posição (OP-28), a desistência (`DESISTIU`) e a reserva do horário durante o prazo estão desenhadas; a falha de envio é auditada nos três eventos (DEC-029).
+- **Fila:** a consulta de posição (`consultarPosicao()`/OP-28), a desistência (`encerrar("DESISTIU", solicitante)`), o aceite/recusa/expiração (`aceitar`/`recusar`/`expirar`) e a reserva do horário durante o prazo estão desenhados; a falha de envio é auditada nos três eventos (DEC-029).
+- **Alinhamento ao CLS-001 (P10 / Q5-09):** os nomes das mensagens da SEQ-004 conferem com as operações da classe `SolicitacaoEspera`; `proximoDaFila(psicologo)` está registrada como consulta da coleção em AP-06 (**P10**) e `validarPrazo()` (OP-26) como operação de consulta da classe, pendente de incorporação formal pelo I3.

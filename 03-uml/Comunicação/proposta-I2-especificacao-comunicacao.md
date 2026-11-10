@@ -41,7 +41,7 @@ Por ser o mesmo cenário de ATV-001/SEQ-002/SEQ-003/SEQ-004, o COM-001 funciona 
 | `Agenda` | retângulo | entidade de domínio | Horários livres e verificação de slot (OP-11, RN-005/RN-010). |
 | `Disponibilidade` | retângulo | entidade de domínio | Períodos liberados pelo profissional (A09). |
 | `Agendamento` | retângulo | entidade de domínio | Criação **já confirmada** e cancelamento (OP-14). |
-| **`SolicitacaoEspera`** | retângulo | **entidade de domínio** (novo, DEC-027) | Guarda a fila, a ordem de entrada e o prazo de aceite (OP-24). |
+| **`SolicitacaoEspera`** | retângulo | **entidade de domínio** (novo, DEC-027) | Guarda a fila, a ordem de entrada e o prazo de aceite (OP-23/OP-25/OP-27). |
 | `Atendimento` | retângulo | entidade de domínio | Registro da sessão realizada (OP-20). |
 | `RegistroAuditoria` | retângulo | entidade de domínio | Trilha auditável (RF-032). |
 
@@ -66,7 +66,7 @@ Por ser o mesmo cenário de ATV-001/SEQ-002/SEQ-003/SEQ-004, o COM-001 funciona 
 | 11 | `ServicoAgenda` → `Agendamento` | `cancelar(motivo)` | OP-14 / RN-012 / antes do horário |
 | 12 | `ServicoAgenda` → `Serviço Externo de E-mail` | `notificar(cancelamento)` | AP-04 / RF-033 |
 | 13 | `ServicoAgenda` → `ServicoListaEspera` | `ofertarVaga()` | AP-06 / RF-035 / DEC-027 |
-| 14 | `ServicoListaEspera` → `SolicitacaoEspera` | `proximoDaFila()` | OP-24 / ordem de entrada |
+| 14 | `ServicoListaEspera` → `SolicitacaoEspera` | `proximoDaFila(psicologo)` | AP-06 / ordem de entrada (**decisão P10**: consulta da coleção, não operação da instância) |
 | 15 | `ServicoListaEspera` → `Serviço Externo de E-mail` | `notificar(ofertaVaga)` | AP-04 / RF-033 |
 | 16 | `Psicólogo` → `ServicoAgenda` | `concluir(agendamento)` | RF-030 / UC-027 |
 | 17 | `ServicoAgenda` → `Atendimento` | `registrar(atendimento)` | OP-20 / RF-030 |

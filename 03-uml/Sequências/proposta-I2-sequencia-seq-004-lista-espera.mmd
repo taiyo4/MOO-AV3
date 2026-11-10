@@ -10,13 +10,19 @@
 %%   3. a oferta tem PRAZO DE ACEITE;
 %%   4. recusa (ou vencimento) PASSA A OFERTA AO PROXIMO.
 %%
-%% Rastreabilidade das mensagens:
+%% Rastreabilidade das mensagens (alinhada ao CLS-001 - P10 / Q5-09):
 %%   AP-06 ServicoListaEspera: entrarNaFila | consultarPosicao | sairDaFila |
-%%        ofertarVaga | aceitarOferta | recusarOferta | expirarOferta
+%%        ofertarVaga | aceitarOferta | recusarOferta |
+%%        proximoDaFila (consulta da colecao - decisao P10, nao e operacao da
+%%        instancia SolicitacaoEspera)
 %%   AP-03 ServicoAgenda.agendar | AP-02 ServicoAuditoria.registrar
 %%   AP-04 ServicoEnvioMensagem.notificar
-%%   OP-23 SolicitacaoEspera.registrarEntrada | OP-24 proximoDaFila
-%%   OP-25 abrirOferta | OP-26 validarPrazo | OP-27 encerrar | OP-28 posicaoNaFila
+%%   OP-23 SolicitacaoEspera.registrarEntrada(psicologo, paciente, horario,
+%%        solicitante) | OP-25 abrirOferta(horario, prazoAceite)
+%%   OP-26 validarPrazo() - decisao P10: mantida como operacao de consulta da
+%%        classe (o atributo prazoAceite ja existe); encaminhada ao I3 no CLS-001
+%%   OP-27 aceitar(solicitante) | recusar(solicitante) | expirar() |
+%%        encerrar(motivo, solicitante) | OP-28 consultarPosicao() Inteiro
 %%   Agendamento.solicitar (cria JA CONFIRMADO)
 %%   Falha de envio: registrar("FALHA_ENVIO_EMAIL") e repetivel (DEC-029)
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013
@@ -24,7 +30,7 @@
 %% Casos: UC-034, UC-035 (<<extend>> de UC-027), UC-036
 %% =====================================================================
 %% label: SEQ-004 - Lista de espera e oferta de vaga (UC-034 a UC-036)
-%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-004-lista-espera.mmd | PROPOSTA do Integrante 2 (Fase 6) | DEC-027: fila por ordem de entrada, uma oferta por vez, prazo de aceite com horario reservado, recusa passa ao proximo
+%% sub: Fonte editavel: 03-uml/Sequencias/proposta-I2-sequencia-seq-004-lista-espera.mmd | PROPOSTA do Integrante 2 (Fase 6) | alinhada ao CLS-001 (P10/Q5-09) | DEC-027: fila por ordem de entrada, uma oferta por vez, prazo de aceite com horario reservado, recusa passa ao proximo
 
 sequenceDiagram
     actor Ator as Ator (Paciente)
@@ -36,8 +42,8 @@ sequenceDiagram
     participant RegistroAuditoria as RegistroAuditoria
     participant ServicoEnvioMensagem as ServicoEnvioMensagem
 
-    Ator->>ServicoListaEspera: entrarNaFila(psicologo, paciente, periodo) [RF-034 / UC-034]
-    ServicoListaEspera->>SolicitacaoEspera: registrarEntrada(psicologo, paciente, periodo) [OP-23]
+    Ator->>ServicoListaEspera: entrarNaFila(psicologo, paciente, horario) [RF-034 / UC-034]
+    ServicoListaEspera->>SolicitacaoEspera: registrarEntrada(psicologo, paciente, horario, solicitante) [OP-23]
     SolicitacaoEspera-->>ServicoListaEspera: solicitacao (AGUARDANDO, dataHoraEntrada)
     ServicoListaEspera->>ServicoAuditoria: registrar("ESPERA_REGISTRADA", responsavel, detalhes) [AP-02]
     ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
@@ -45,11 +51,11 @@ sequenceDiagram
 
     opt Consulta de posicao e saida da fila [RF-034 / DEC-027]
         Ator->>ServicoListaEspera: consultarPosicao(psicologo, paciente) [AP-06]
-        ServicoListaEspera->>SolicitacaoEspera: posicaoNaFila(psicologo, paciente) [OP-28]
+        ServicoListaEspera->>SolicitacaoEspera: consultarPosicao() [OP-28]
         SolicitacaoEspera-->>ServicoListaEspera: posicao e dataHoraEntrada
         ServicoListaEspera-->>Ator: posicao atual na fila e estimativa pela ordem de entrada
         Ator->>ServicoListaEspera: sairDaFila(solicitacao) [AP-06 / DEC-027]
-        ServicoListaEspera->>SolicitacaoEspera: encerrar(DESISTIU) [OP-27]
+        ServicoListaEspera->>SolicitacaoEspera: encerrar("DESISTIU", solicitante) [OP-27]
         SolicitacaoEspera-->>ServicoListaEspera: solicitacao (DESISTIU)
         ServicoListaEspera->>ServicoAuditoria: registrar("ESPERA_ENCERRADA", responsavel, detalhes) [AP-02]
         ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
@@ -58,7 +64,7 @@ sequenceDiagram
 
     opt <<extend>> do cancelamento - horario liberado [RF-035 / UC-035]
         ServicoAgenda->>ServicoListaEspera: ofertarVaga(horarioLiberado) [AP-06 / DEC-027]
-        ServicoListaEspera->>SolicitacaoEspera: proximoDaFila(psicologo) [OP-24 - ordem de entrada]
+        ServicoListaEspera->>SolicitacaoEspera: proximoDaFila(psicologo) [AP-06 - consulta da colecao / P10]
         SolicitacaoEspera-->>ServicoListaEspera: solicitacao mais antiga (AGUARDANDO)
         alt Ha solicitacao na fila e nenhuma oferta aberta
             ServicoListaEspera->>SolicitacaoEspera: abrirOferta(horario, prazoAceite) [OP-25 - uma oferta por vez]
@@ -80,7 +86,7 @@ sequenceDiagram
 
     alt Aceite dentro do prazo de aceite [RF-036]
         Ator->>ServicoListaEspera: aceitarOferta(solicitacao)
-        ServicoListaEspera->>SolicitacaoEspera: validarPrazo() [OP-26]
+        ServicoListaEspera->>SolicitacaoEspera: validarPrazo() [OP-26 / P10]
         SolicitacaoEspera-->>ServicoListaEspera: true - oferta ainda valida
         ServicoListaEspera->>ServicoAgenda: agendar(psicologo, paciente, horario) [RF-025]
         ServicoAgenda->>Agendamento: solicitar(psicologo, paciente, horario, solicitante) [RF-025]
@@ -95,15 +101,15 @@ sequenceDiagram
             ServicoAgenda->>ServicoAuditoria: registrar("FALHA_ENVIO_EMAIL", responsavel, detalhes) [AP-02]
             ServicoAuditoria->>RegistroAuditoria: registrar(responsavel, data, hora, operacao) [RF-032]
         end
-        ServicoListaEspera->>SolicitacaoEspera: encerrar(ACEITA) [OP-27]
-        ServicoListaEspera-->>Ator: vaga confirmada (UC-036)
+        ServicoListaEspera->>SolicitacaoEspera: aceitar(solicitante) [OP-27 - valida prazoAceite]
+        ServicoListaEspera-->>Ator: vaga confirmada (ACEITA, UC-036)
     else Recusa
         Ator->>ServicoListaEspera: recusarOferta(solicitacao)
-        ServicoListaEspera->>SolicitacaoEspera: encerrar(RECUSADA) [OP-27]
+        ServicoListaEspera->>SolicitacaoEspera: recusar(solicitante) [OP-27]
         ServicoListaEspera->>ServicoAuditoria: registrar("OFERTA_RECUSADA", responsavel, detalhes) [AP-02]
         ServicoListaEspera->>ServicoListaEspera: ofertarVaga(horarioLiberado) - passa ao proximo da fila [DEC-027]
     else Prazo de aceite vencido
-        ServicoListaEspera->>SolicitacaoEspera: expirarOferta(prazoAceite) [OP-27 - encerra como EXPIRADA]
+        ServicoListaEspera->>SolicitacaoEspera: expirar() [OP-27 - encerra como EXPIRADA]
         SolicitacaoEspera-->>ServicoListaEspera: solicitacao (EXPIRADA)
         ServicoListaEspera->>ServicoAuditoria: registrar("OFERTA_EXPIRADA", responsavel, detalhes) [AP-02]
         ServicoListaEspera->>ServicoListaEspera: ofertarVaga(horarioLiberado) - passa ao proximo da fila [DEC-027]

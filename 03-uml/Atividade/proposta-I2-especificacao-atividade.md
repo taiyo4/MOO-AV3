@@ -104,7 +104,7 @@ Além dos três blocos paralelos, há **duas etapas sequenciais** depois do `joi
 | Cancelar (OP-14) | — | `podeSerCancelado` + `cancelar` | — | OP-15 + OP-14 |
 | Auditar cancelamento | — | `registrar("AGENDAMENTO_CANCELADO")` | — | AP-02 |
 | Notificar cancelamento (RF-033) | — | `notificar(cancelamento)` | — | AP-04 / RF-033 |
-| Ofertar vaga (UC-035) | — | `opt <<extend>> ofertarVaga` | `ofertarVaga` + `proximoDaFila` + `abrirOferta` | AP-06 / OP-24 / OP-25 / RF-035 |
+| Ofertar vaga (UC-035) | — | `opt <<extend>> ofertarVaga` | `ofertarVaga` + `proximoDaFila(psicologo)` + `abrirOferta` | AP-06 / OP-25 / RF-035 (P10) |
 | Liberar horário | — | *(implícito em RN-012)* | *(horário liberado)* | regra do catálogo de disponibilidade |
 | Registrar atendimento (OP-20) | — | `Atendimento.registrar` | — | OP-20 / RF-030 |
 | Concluir (OP-17) | — | `concluir` | — | OP-17 |

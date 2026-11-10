@@ -44,7 +44,8 @@ Regras:
 | Sequência — lista de espera | SEQ-004 | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.mmd` | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.drawio.xml` | `Sequências/proposta-I2-sequencia-seq-004-lista-espera.pdf` | **proposta** do Integrante 2 (Fase 6) · UC-034 a UC-036 (DEC-027) |
 | Atividades | ATV-001 | `Atividade/proposta-I2-atividade-atv-001.mmd` | `Atividade/proposta-I2-atividade-atv-001.drawio.xml` | `Atividade/proposta-I2-atividade-atv-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
 | Comunicação | COM-001 | `Comunicação/proposta-I2-comunicacao-com-001.mmd` | `Comunicação/proposta-I2-comunicacao-com-001.drawio.xml` | `Comunicação/proposta-I2-comunicacao-com-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
-| Estados | EST-001 | `Estados/proposta-I2-estados-est-001.mmd` | `Estados/proposta-I2-estados-est-001.drawio.xml` | `Estados/proposta-I2-estados-est-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
+| Estados | EST-001 | `Estados/proposta-I2-estados-est-001.mmd` | `Estados/proposta-I2-estados-est-001.drawio.xml` | `Estados/proposta-I2-estados-est-001.pdf` | **proposta** do Integrante 2 (Fase 6) · `Agendamento` (4 situações) |
+| Estados | EST-002 | `Estados/proposta-I2-estados-est-002.mmd` | `Estados/proposta-I2-estados-est-002.drawio.xml` | `Estados/proposta-I2-estados-est-002.pdf` | **proposta** do Integrante 2 (Fase 6) · `SolicitacaoEspera` (6 situações, P10/Q5-09) |
 | **Pacotes** | **PAC-001** | `Pacotes/diagrama-pacotes.mmd` | `Pacotes/diagrama-pacotes.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
 | **Componentes** | **CMP-001** | `Componentes/diagrama-componentes.mmd` | `Componentes/diagrama-componentes.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
 | **Implantação** | **IMP-001** | `Implantacao/diagrama-implantacao.mmd` | `Implantacao/diagrama-implantacao.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
@@ -68,12 +69,13 @@ na mesma pasta:
 | Sequências (SEQ-001/002/003/**004**) | `Sequências/proposta-I2-especificacao-sequencias.md` |
 | Atividades (ATV-001) | `Atividade/proposta-I2-especificacao-atividade.md` |
 | Comunicação (COM-001) | `Comunicação/proposta-I2-especificacao-comunicacao.md` |
-| Estados (EST-001) | `Estados/proposta-I2-especificacao-estados.md` |
+| Estados (EST-001 e EST-002) | `Estados/proposta-I2-especificacao-estados.md` |
 
-Todas as especificações da Fase 6 estão em **v2.0/v2.1**: abrem com **Objetivo** e
+Todas as especificações da Fase 6 estão em **v2.0/v2.2**: abrem com **Objetivo** e
 **RFs cobertos** e seguem a ordem do plano §16.1. A especificação das sequências
-está em **v2.1**, com o fechamento de LAC-13/14/15 (consulta/saída da fila,
-falha de envio auditada e reserva do horário na oferta).
+está em **v2.2**, com o fechamento de LAC-13/14/15 e o alinhamento da SEQ-004 ao
+CLS-001 (**P10** / **Q5-09**); a especificação dos estados está em **v2.1**, com a
+EST-002 da `SolicitacaoEspera` (6 situações idênticas ao CLS-001 e ao DDL).
 
 Casos de uso novos e revisados (UC-028, UC-033 a UC-037, revisão de UC-025 e
 UC-027 e as relações `<<extend>>`/`<<include>>` para o diagrama de casos):
@@ -114,9 +116,9 @@ Texto pronto para as seções 21 a 24 do dossiê: `07-dossie/secoes/fase6-secao-
 ## Fases 5 e 6 — o que ainda está em aberto
 
 As pastas `Atividade`, `Comunicação`, `Estados` e `Sequências` **não estão mais
-vazias**: os **sete** diagramas comportamentais da Fase 6 já foram entregues
-(SEQ-001 a **SEQ-004**, ATV-001, COM-001 e EST-001), cada um com `.mmd`,
-`.drawio.xml` e `.pdf`.
+vazias**: os **oito** diagramas comportamentais da Fase 6 já foram entregues
+(SEQ-001 a **SEQ-004**, ATV-001, COM-001, EST-001 e **EST-002**), cada um com
+`.mmd`, `.drawio.xml` e `.pdf`.
 
 O grupo decidiu as pendências em 28/10/2026 (DEC-009 a DEC-030). Os itens que
 eram do **Integrante 2** — `SOLICITADO`, guarda de cancelamento, notificação
@@ -128,9 +130,9 @@ a lista completa, com dono, está em
 | Pendência | Efeito nos diagramas | Quem fecha |
 |---|---|---|
 | Multiplicidades `PENDENTE` e situações do `Agendamento` no diagrama de classes oficial | os diagramas da Fase 6 **não dependem** de multiplicidades; a máquina de estados já usa as 4 situações da DEC-016; a fila de espera e a relação `A15` foram alinhadas no diagrama oficial do I3 | Integrante 3 |
-| Operações `OP-01…OP-28`, entidade `SolicitacaoEspera` (com `DESISTIU`) e fronteira `ServicoListaEspera` (AP-06) fora do CLS-001 | enquanto não houver, os diagramas comportamentais estão apoiados no modelo proposto — ver **LAC-10** | Integrante 3 |
+| `validarPrazo()` (OP-26) e fronteira `ServicoListaEspera` (AP-06) | a entidade `SolicitacaoEspera` e as operações da fila já estão no CLS-001; falta incorporar `validarPrazo()` (decisão **P10**) e a fronteira de aplicação — ver **LAC-10** | Integrante 3 |
 | `Agendamento.confirmar()` foi removida do diagrama oficial de classes | alinhada com DEC-016/DEC-017: criação e confirmação ocorrem no mesmo ato | Integrante 3 |
-| Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | as relações estão especificadas, mas não desenhadas no artefato da Fase 3 — ver **LAC-12** | Integrante 3 |
+| Ator "Serviço Externo de E-mail" e relações `<<extend>>`/`<<include>>` no diagrama de casos oficial | **desenhados nesta entrega** (UC-028, UC-033 a UC-037, ator externo e relações) — LAC-12 fechada no artefato; o PDF reexportado é `Cópia de Diagrama casos de uso uc001 .pdf` | Integrante 3 (só valida) |
 | Tabela `solicitacao_espera` (ordem de entrada, situação, `prazoAceite`) no DER | a SEQ-004 pressupõe persistência da fila — ver **R6-10** | Integrante 4 |
 | `CT-033…CT-037` na matriz da Fase 5 | proposta entregue na Fase 8 (`01-planejamento/revisoes/FASE8-REV-I2-testes-conceituais.md`); falta homologar na matriz mestra — ver **LAC-11** | Integrante 5 |
 | Reserva do slot como mensagem explícita | a reserva é interna a `Agendamento.solicitar` e o **modelo do horário já está decidido** (slot discreto, DEC-018) — ver **LAC-02** | fechada na decisão; incorporação pelo I3 |
@@ -144,4 +146,19 @@ antecedência mínima e sem cancelamento pelo Administrador), DEC-016 e DEC-017
 (cardinalidade conta—perfil), DEC-020 (sessão fora do domínio), DEC-022
 (`ServicoEnvioMensagem`), DEC-025 (falta manual), DEC-026 (`UC-0RF`),
 DEC-030 (atendimento referencia o agendamento) e P-14.
+
+### Propostas do Integrante 2 aguardando aprovação (Passo 5)
+
+Continuam como **proposta** — não foram renomeadas para "oficial":
+
+| Artefato | Situação |
+|---|---|
+| SEQ-001 a SEQ-004 | **proposta** do Integrante 2 (Fase 6); SEQ-004 alinhada ao CLS-001 (P10/Q5-09) |
+| ATV-001 | **proposta** do Integrante 2 (Fase 6) |
+| COM-001 | **proposta** do Integrante 2 (Fase 6) |
+| EST-001 e EST-002 | **proposta** do Integrante 2 (Fase 6) |
+| Casos de uso UC-028/UC-033 a UC-037 | **proposta** em `Casos de uso/proposta-I2-casos-de-uso-faltantes.md`; o desenho oficial foi atualizado |
+
+A aprovação é do grupo (Pinho registra no I5). Só depois dela o status muda para
+"oficial" no README e nos cabeçalhos dos arquivos.
 

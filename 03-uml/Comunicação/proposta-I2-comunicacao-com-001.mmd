@@ -21,7 +21,8 @@
 %% Rastreabilidade das mensagens:
 %%   OP-04 Usuario.consultarPermitidos | OP-11 Agenda.consultarHorarios
 %%   OP-22 Vinculo.estaAutorizado | Agendamento.solicitar/cancelar
-%%   OP-20 Atendimento.registrar | OP-24 SolicitacaoEspera.proximoDaFila
+%%   OP-20 Atendimento.registrar | AP-06 ServicoListaEspera.proximoDaFila
+%%        (consulta da colecao - decisao P10, nao e operacao da instancia)
 %%   AP-02 ServicoAuditoria | AP-04 ServicoEnvioMensagem | AP-06 ServicoListaEspera
 %% Regras: RN-003, RN-005, RN-009, RN-010, RN-013; DEC-022, DEC-027
 %% Requisitos: RF-024, RF-025, RF-026, RF-027, RF-030, RF-032, RF-033,
@@ -76,7 +77,7 @@ flowchart LR
     servicoAgenda -->|11 cancelar(motivo) [OP-14]| agendamento
     servicoAgenda -->|12 notificar(cancelamento) [RF-033]| servicoEnvioMensagem
     servicoAgenda -->|13 ofertarVaga() [RF-035]| servicoListaEspera
-    servicoListaEspera -->|14 proximoDaFila() [OP-24]| solicitacaoEspera
+    servicoListaEspera -->|14 proximoDaFila(psicologo) [AP-06]| solicitacaoEspera
     servicoListaEspera -->|15 notificar(ofertaVaga) [RF-033]| servicoEnvioMensagem
     psicologo -->|16 concluir(agendamento) [RF-030]| servicoAgenda
     servicoAgenda -->|17 registrar(atendimento) [OP-20]| atendimento
