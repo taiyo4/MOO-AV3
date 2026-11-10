@@ -18,7 +18,8 @@
 %%   - ServicoAgenda e ServicoListaEspera chamam um ao outro nos dois
 %%     fluxos aprovados: oferta apos cancelamento (UC-035) e aceite que
 %%     reaproveita agendar (UC-036). O par fica DENTRO do pacote
-%%     aplicacao; nao existe ciclo entre pacotes (CQ-FLE-03).
+%%     aplicacao e declarado como excecao ao CQ-FLE-03 no PAC-001
+%%     (Q8-07); nao existe ciclo entre pacotes.
 %%   - BancoDados e ServicoExternoEmail sao sistemas externos.
 %%
 %% Notacao:

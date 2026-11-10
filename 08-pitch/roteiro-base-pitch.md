@@ -33,7 +33,7 @@
 |---|---|
 | que todos os diagramas oficiais incorporam OP-01 a OP-28 | só depois que o I3 fechar as classes |
 | que a oferta de vaga é uma classe | a oferta é a situação `OFERTADA` da `SolicitacaoEspera` (decisão de 03/11/2026) |
-| que a arquitetura está "sem ciclo" entre pacotes | há o par `AGENDA` ⇄ `FILA` (Q8-07); só dizer depois que o Integrante 4 resolver |
+| que a arquitetura está "sem ciclo" entre pacotes | o par `AGENDA` ⇄ `FILA` é um ciclo intencional dentro de `aplicacao`, declarado como exceção ao CQ-FLE-03 no PAC-001 (Q8-07); não há ciclo entre pacotes |
 | que os achados Q de uma fase estão fechados | só depois que o I5 marcar Corrigido |
 | nomes de tabela errados (`auditoria`, `fila`, campo `status`) | `registro_auditoria`, `solicitacao_espera`, `situacao` |
 | mostrar tela de sistema ou código | o produto é um dossiê de modelagem |

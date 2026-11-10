@@ -1,7 +1,8 @@
 %% =====================================================================
 %% PAC-001 - Diagrama de pacotes - FASE 7
 %% Responsavel: Integrante 4 - Caio Cunha (persistencia e arquitetura)
-%% Versao: v1.1 - 31/10/2026 (Fase 8: par AGENDA<->FILA em UC-035/UC-036)
+%% Versao: v1.2 - 10/11/2026 (Q8-07: excecao declarada do par AGENDA<->FILA)
+%% v1.1 - 31/10/2026 (Fase 8: par AGENDA<->FILA em UC-035/UC-036)
 %% Fonte da verdade do CONTEUDO. O .drawio.xml e o mesmo diagrama em
 %% formato editavel.
 %%
@@ -94,6 +95,10 @@ flowchart TB
 
     AGENDA -->|"oferta apos cancelamento (UC-035)"| FILA
     FILA -->|"aceite reaproveita agendar (UC-036)"| AGENDA
+
+    NOTA_CICLO["EXCECAO DECLARADA - Q8-07 / CQ-FLE-03<br/>O par AGENDA ↔ FILA e um ciclo intencional<br/>dentro do pacote aplicacao: o cancelamento dispara<br/>a oferta (UC-035) e o aceite reaproveita agendar<br/>(UC-036). Nao existe ciclo entre pacotes."]:::nota
+
+    classDef nota fill:#fff2cc,stroke:#d6b656,stroke-dasharray:5 5,fontSize:10;
 
     PERSISTENCIA ..> REPOS
     MENSAGERIA ..> FRONTEIRA

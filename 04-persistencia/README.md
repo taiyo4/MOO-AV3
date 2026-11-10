@@ -49,9 +49,9 @@ e seguem a convenção de entrega daquela pasta.
 
 - **Fase 7 concluída** em 29/10/2026: DER-001, modelo relacional, dicionário de dados, mapeamento objeto-relacional, normalização, DDL e os três diagramas de arquitetura.
 - **Fase 8 concluída** em 30/10/2026: censo do DDL, revisão de PK/FK/UNIQUE/NOT NULL/N:N/integridade, verificação de PAC/CMP/IMP contra os 12 achados R7, completude do dicionário e do mapeamento, TDB-01 a TDB-14 e evidências CQ. As correções estão em `analises/fase-08-verificacao-qualidade-persistencia.md` §7.1 (artefatos da Fase 7 em **v1.1**; `impacto-requisitos.md` em **v2.1**).
-- **Fase 9 concluída** em 31/10/2026: versões finais (PAC-001 e CMP-001 em **v1.1** com o par `ServicoAgenda ↔ ServicoListaEspera` e o componente `ServicoHash`), conferência final dicionário × mapeamento × DDL, texto-base das seções 25 e 26 e pontos técnicos do pitch em `analises/fase-09-encerramento-e-pitch.md`.
-- Os diagramas são entregues em `.mmd` (fonte da verdade) e `.drawio.xml` (editável). A **exportação em PDF está pendente**: depende do diagrams.net, que não estava disponível no ambiente e que o grupo decidiu não instalar. Ver a nota em [`../03-uml/README.md`](../03-uml/README.md).
-- O DDL **não foi executado**: não há MySQL no ambiente. A validação foi por revisão textual e por verificação de que o arquivo é sintaticamente consistente com MySQL 8.0.
+- **Fase 9 concluída** em 31/10/2026 e **atualizada em 10/11/2026 (v1.1)**: versões finais (PAC-001 em **v1.2** com a exceção do ciclo `AGENDA ↔ FILA`; CMP-001 em **v1.1** com o par `ServicoAgenda ↔ ServicoListaEspera` e o componente `ServicoHash`), conferência final dicionário × mapeamento × DDL, execução real do DDL, texto-base das seções 25 e 26 e pontos técnicos do pitch em `analises/fase-09-encerramento-e-pitch.md`.
+- Os diagramas são entregues em `.mmd` (fonte da verdade), `.drawio.xml` (editável) e **PDF** (cópia de leitura). Os PDFs de PAC-001, CMP-001, IMP-001 e DER-001 foram exportados em 10/11/2026 com o draw.io Desktop 32.6.10 portátil (sem instalação). Ver a nota em [`../03-uml/README.md`](../03-uml/README.md).
+- O DDL **foi executado** em MySQL 8.0.44 limpo em 10/11/2026, com **código 0 e nenhum erro**; o censo e a amostra TDB-01/07/08 estão em [`analises/teste-ddl.md`](analises/teste-ddl.md). Nenhuma correção no `.sql` foi necessária.
 
 ## Convenções
 

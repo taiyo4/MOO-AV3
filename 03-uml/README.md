@@ -46,17 +46,17 @@ Regras:
 | Comunicação | COM-001 | `Comunicação/proposta-I2-comunicacao-com-001.mmd` | `Comunicação/proposta-I2-comunicacao-com-001.drawio.xml` | `Comunicação/proposta-I2-comunicacao-com-001.pdf` | **proposta** do Integrante 2 (Fase 6) |
 | Estados | EST-001 | `Estados/proposta-I2-estados-est-001.mmd` | `Estados/proposta-I2-estados-est-001.drawio.xml` | `Estados/proposta-I2-estados-est-001.pdf` | **proposta** do Integrante 2 (Fase 6) · `Agendamento` (4 situações) |
 | Estados | EST-002 | `Estados/proposta-I2-estados-est-002.mmd` | `Estados/proposta-I2-estados-est-002.drawio.xml` | `Estados/proposta-I2-estados-est-002.pdf` | **proposta** do Integrante 2 (Fase 6) · `SolicitacaoEspera` (6 situações, P10/Q5-09) |
-| **Pacotes** | **PAC-001** | `Pacotes/diagrama-pacotes.mmd` | `Pacotes/diagrama-pacotes.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
-| **Componentes** | **CMP-001** | `Componentes/diagrama-componentes.mmd` | `Componentes/diagrama-componentes.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
-| **Implantação** | **IMP-001** | `Implantacao/diagrama-implantacao.mmd` | `Implantacao/diagrama-implantacao.drawio.xml` | *(pendente — ver nota)* | **oficial do Integrante 4** (Fase 7) |
+| **Pacotes** | **PAC-001** | `Pacotes/diagrama-pacotes.mmd` | `Pacotes/diagrama-pacotes.drawio.xml` | `Pacotes/diagrama-pacotes.pdf` | **oficial do Integrante 4** (Fase 7; v1.2 com a exceção do ciclo AGENDA↔FILA) |
+| **Componentes** | **CMP-001** | `Componentes/diagrama-componentes.mmd` | `Componentes/diagrama-componentes.drawio.xml` | `Componentes/diagrama-componentes.pdf` | **oficial do Integrante 4** (Fase 7) |
+| **Implantação** | **IMP-001** | `Implantacao/diagrama-implantacao.mmd` | `Implantacao/diagrama-implantacao.drawio.xml` | `Implantacao/diagrama-implantacao.pdf` | **oficial do Integrante 4** (Fase 7) |
 
 > **Nota sobre o PDF de PAC-001, CMP-001 e IMP-001.** Os três diagramas da Fase 7
-> foram entregues em `.mmd` (fonte da verdade) e `.drawio.xml` (editável). A
-> exportação em PDF depende do diagrams.net, que não estava disponível no
-> ambiente de produção e que o grupo decidiu **não instalar** só para exportar.
-> O PDF de cada um sai de *Arquivo → Exportar como → PDF* no diagrams.net, a
-> partir do `.drawio.xml` correspondente, com fonte Arial e página do tamanho do
-> desenho (regra 4 acima). O conteúdo não depende do PDF.
+> têm `.mmd` (fonte da verdade), `.drawio.xml` (editável) e o PDF exportado a
+> partir do `.drawio.xml` com o **draw.io Desktop 32.6.10** (ZIP portátil, CLI
+> `--export --format pdf`, executado em 10/11/2026; nenhuma instalação no
+> ambiente). A exportação preserva o desenho e a página definidos no
+> `.drawio.xml`; o `.mmd` continua sendo a fonte do conteúdo e o PDF é a cópia
+> de leitura.
 
 
 ### Especificações dos diagramas comportamentais (Fase 6)

@@ -1,7 +1,7 @@
 # Fase 9 — Encerramento da persistência e da arquitetura e apoio ao pitch (Integrante 4)
 
 **Responsável:** Integrante 4 — Caio Cunha (Persistência e arquitetura)
-**Data:** 31/10/2026 · **Versão:** v1.0
+**Data:** 31/10/2026 (atualizado em 10/11/2026) · **Versão:** v1.1
 **Tarefas do plano atendidas** (Fase 9, bloco "2 a 4" — `01-planejamento/etapas-e-responsabilidades.md` §3):
 
 1. corrigir os últimos achados dos meus artefatos;
@@ -32,13 +32,13 @@
 | Dicionário de dados | [`dicionario-de-dados.md`](../dicionario-de-dados.md) | **v1.1** (30/10/2026) | referência à normalização em §6; catálogo com `LOGIN_CONCEDIDO`, `LOGIN_NEGADO`, `PSICOLOGO_CRIADO` | **Congelado** |
 | Mapeamento objeto-relacional | [`mapeamento-objeto-relacional.md`](../mapeamento-objeto-relacional.md) | **v1.1** (30/10/2026) | `bloquearSlot` → `(TRS-01 e TRS-04)` | **Congelado** |
 | Normalização | [`normalizacao.md`](../normalizacao.md) | **v1.0** (29/10/2026) | — (nenhuma alteração estrutural na Fase 8) | **Congelado** |
-| DDL MySQL 8.0 | [`ddl/schema-mysql.sql`](../ddl/schema-mysql.sql) | **1.0** (29/10/2026) | — (o censo da Fase 8 confirma o arquivo; nenhuma linha alterada) | **Congelado** |
+| DDL MySQL 8.0 | [`ddl/schema-mysql.sql`](../ddl/schema-mysql.sql) | **1.0** (29/10/2026) | — (o censo da Fase 8 confirma o arquivo; nenhuma linha alterada) | **Congelado e testado** no MySQL 8.0.44 (10/11/2026, [`teste-ddl.md`](teste-ddl.md)) |
 | Impacto nos requisitos | [`impacto-requisitos.md`](../impacto-requisitos.md) | **v2.1** (30/10/2026) | TRS-01 em RF-025/RN-005/RN-010; e-mail em `email_contato` (INC-16); resumo 22/13/2; §4.13/§4.11; RN-019 com FK composta | **Congelado** |
-| PAC-001 (pacotes) | [`../../03-uml/Pacotes/diagrama-pacotes.mmd`](../../03-uml/Pacotes/diagrama-pacotes.mmd) + `.drawio.xml` | **v1.1** (31/10/2026) | par `AGENDA ↔ FILA` (UC-035/UC-036) dentro do pacote `aplicacao` | **Congelado** |
+| PAC-001 (pacotes) | [`../../03-uml/Pacotes/diagrama-pacotes.mmd`](../../03-uml/Pacotes/diagrama-pacotes.mmd) + `.drawio.xml` | **v1.2** (10/11/2026) | par `AGENDA ↔ FILA` (UC-035/UC-036) dentro do pacote `aplicacao` + nota de exceção ao CQ-FLE-03 (Q8-07) | **Congelado** |
 | CMP-001 (componentes) | [`../../03-uml/Componentes/diagrama-componentes.mmd`](../../03-uml/Componentes/diagrama-componentes.mmd) + `.drawio.xml` | **v1.1** (31/10/2026) | componente `ServicoHash` + realização de `ServicoHashSenha`; par `AGENDA ↔ FILA` | **Congelado** |
 | IMP-001 (implantação) | [`../../03-uml/Implantacao/diagrama-implantacao.mmd`](../../03-uml/Implantacao/diagrama-implantacao.mmd) + `.drawio.xml` | **1.0** (29/10/2026) | — (nenhuma alteração na Fase 8) | **Congelado** |
 
-**Por que não há v2.0:** nenhuma decisão de modelagem mudou desde a Fase 7. As versões 1.1 são **correções de coerência** (referência cruzada, declaração de restrição que já existia no DDL, par de chamada e componente que faltavam no desenho), não redesenho. O esquema de 15 tabelas é o mesmo da entrega da Fase 7 — o censo da Fase 8 não encontrou restrição ausente, órfã ou divergente.
+**Por que não há v2.0:** nenhuma decisão de modelagem mudou desde a Fase 7. As versões 1.1 (e a 1.2 do PAC-001, que apenas declara a exceção do ciclo `AGENDA ↔ FILA`) são **correções de coerência** (referência cruzada, declaração de restrição que já existia no DDL, par de chamada e componente que faltavam no desenho), não redesenho. O esquema de 15 tabelas é o mesmo da entrega da Fase 7 — o censo da Fase 8 não encontrou restrição ausente, órfã ou divergente.
 
 **Numeração das versões dos diagramas:** PAC-001 e CMP-001 trazem a versão no cabeçalho do `.mmd` (fonte da verdade). O `.drawio.xml` correspondente é o mesmo desenho e não repete a versão; o inventário de `03-uml/README.md` continua sendo o índice oficial.
 
@@ -65,7 +65,9 @@ Recontagem feita diretamente no `ddl/schema-mysql.sql` e conferida contra os doi
 
 **Conferência de integridade.** 24 FKs, todas `ON DELETE RESTRICT ON UPDATE RESTRICT`; exclusão física só nas duas associativas puras (`perfil_permissao`, `psicologo_area_atuacao`); nas demais, inativação por `situacao` (RNF-009/RNF-013). A trilha é *append-only* por trigger e por privilégio (RN-014/RNF-017).
 
-**Limite declarado.** O DDL **não foi executado**: não há MySQL no ambiente. A conferência é textual (o arquivo é sintaticamente consistente com MySQL 8.0) e os testes TDB-01…TDB-14 da Fase 8 definem o que rodar quando houver SGBD.
+**Enumerações (Q7-05).** Os cinco conjuntos de valores oficiais do CLS-001 foram conferidos em 10/11/2026 nos quatro arquivos (`dicionario-de-dados.md`, `modelo-relacional.md`, `ddl/schema-mysql.sql` e `der-001-logico.md`): `SituacaoConta` (ATIVO, BLOQUEADO, INATIVO), `Paciente.situacaoCadastral` (ATIVO, SUSPENSO, INATIVO), `Vinculo.situacao` (ATIVO, ENCERRADO), `SolicitacaoEspera.situacao` (AGUARDANDO, OFERTADA, ACEITA, RECUSADA, EXPIRADA, DESISTIU) e `Agendamento.situacao` (CONFIRMADO, CANCELADO, REALIZADO, NAO_COMPARECEU). **Não houve divergência**; nenhuma correção foi necessária.
+
+**Execução do DDL (Q7-02).** Em 10/11/2026 o `schema-mysql.sql` foi executado em um **MySQL 8.0.44** limpo (ZIP portátil, porta 3307, sem instalação) e terminou com **código 0 e nenhum erro**. O censo do esquema criado bate com esta tabela: 15 tabelas, 97 colunas, 15 PK, 17 UNIQUE, 24 FK, 26 CHECK, 4 colunas geradas `STORED`, 3 triggers, 17 índices `ix_` e carga de 3 perfis + 29 permissões. A amostra dos TDB-01, TDB-07 e TDB-08 confirmou as recusas esperadas. Comando, saída real e ambiente estão em [`teste-ddl.md`](teste-ddl.md); nenhuma correção no `.sql` foi necessária.
 
 ---
 
@@ -87,7 +89,7 @@ Estrutura prometida em `07-dossie/secoes/fases7-9-secao-25-36.md`: identificaç�
 
 - seta cheia `-->` = dependência de compilação/uso; seta tracejada `..>` = realização de interface (o componente implementa o contrato); seta tracejada com ponta aberta `-.->` = dependência de injeção montada em tempo de execução;
 - o *lollipop* `([...])` é uma interface fornecida: quem aponta para ela depende do contrato, não da implementação — é o que permite trocar `AdaptadorEmail` ou o SGBD sem tocar em `ServicoAgenda`;
-- o par `ServicoAgenda ↔ ServicoListaEspera` é **bidirecional de propósito**: o cancelamento dispara a oferta ao próximo da fila (UC-035) e o aceite da oferta reaproveita `agendar` (UC-036). As duas chamadas ficam **dentro** do pacote `aplicacao`, portanto não existe ciclo entre pacotes (CQ-FLE-03);
+- o par `ServicoAgenda ↔ ServicoListaEspera` é **bidirecional de propósito**: o cancelamento dispara a oferta ao próximo da fila (UC-035) e o aceite da oferta reaproveita `agendar` (UC-036). As duas chamadas ficam **dentro** do pacote `aplicacao`; o par é um ciclo **intencional**, declarado como exceção ao CQ-FLE-03 na nota do PAC-001 (Q8-07), e **não existe ciclo entre pacotes**;
 - no CMP-001, `Persistencia` realiza os dez `IRepositorio*`, `AdaptadorEmail` realiza `ServicoEnvioMensagem` e `ServicoHash` realiza `ServicoHashSenha`; nenhum componente de infraestrutura é chamado diretamente pela apresentação.
 
 **Decisões que o desenho materializa.**
@@ -155,7 +157,7 @@ Resposta ao item pendente **"Arquitetura e persistência (Fase 7)"** de `08-pitc
 |---|---|---|---|
 | 1 | "A arquitetura é em camadas com **inversão de dependência**: a aplicação depende de interfaces do domínio, não do banco. Quem liga as pontas é o pacote `configuracao`." | PAC-001 | `apresentacao → aplicacao → dominio ← infraestrutura`; `BOOT -.->` nas três camadas |
 | 2 | "E-mail é **uma interface, um adaptador e nenhuma tabela**. Se o provedor cair, o agendamento continua: a falha vira uma linha de auditoria depois do `COMMIT`." | CMP-001 | `ServicoEnvioMensagem` + `AdaptadorEmail`; `AGD -.-> AUD` com `FALHA_ENVIO_EMAIL`; TRS-07 |
-| 3 | "A **lista de espera** conversa com a agenda nos dois sentidos — cancelou, oferta ao próximo; aceitou, reagenda — e as duas chamadas ficam dentro do mesmo pacote, sem ciclo arquitetural." | CMP-001 | par `ServicoAgenda ↔ ServicoListaEspera` (UC-035/UC-036) |
+| 3 | "A **lista de espera** conversa com a agenda nos dois sentidos — cancelou, oferta ao próximo; aceitou, reagenda. O par é um ciclo **intencional dentro do pacote `aplicacao`**, declarado como exceção ao CQ-FLE-03 no PAC-001; não há ciclo entre pacotes." | PAC-001 + CMP-001 | par `ServicoAgenda ↔ ServicoListaEspera` (UC-035/UC-036); nota `NOTA_CICLO` no PAC-001 (Q8-07) |
 | 4 | "O banco **não confia no código**: 24 FKs, 4 compostas, 26 CHECK e colunas geradas garantem slot único, vínculo único e fila única; a auditoria é imutável por trigger." | DER-001 + trecho do DDL | `uk_agendamento_slot_ativo`, `uk_vinculo_vigente`, `uk_se_fila`, `uk_se_oferta`; DDL §17 |
 
 Fechamento (15 s): "São 15 tabelas, 97 colunas, 10 repositórios e 7 transações — o suficiente para implementar sem reabrir a modelagem."
@@ -164,8 +166,8 @@ Fechamento (15 s): "São 15 tabelas, 97 colunas, 10 repositórios e 7 transaçõ
 
 | Não dizer | Por quê | O que dizer no lugar |
 |---|---|---|
-| "os PDFs dos diagramas estão no dossiê" | PAC/CMP/IMP estão em `.mmd` + `.drawio.xml`; **o PDF não foi exportado** (sem diagrams.net no ambiente) | "as fontes e os editáveis estão no repositório; o PDF sai do `.drawio.xml` em um clique" |
-| "o DDL foi executado/validado no MySQL" | não há MySQL no ambiente; a validação é textual | "o DDL foi revisado linha a linha; os testes TDB-01…TDB-14 dizem o que rodar quando houver SGBD" |
+| "o PDF é a fonte da verdade do diagrama" | o PDF é cópia de leitura; a fonte é o `.mmd` e o editável é o `.drawio.xml` | "PAC-001, CMP-001, IMP-001 e DER-001 têm `.mmd`, `.drawio.xml` e PDF; o `.mmd` é a fonte da verdade" |
+| "todos os TDB-01…TDB-14 foram executados no MySQL" | o DDL foi executado em MySQL 8.0.44 limpo em 10/11/2026, mas só a amostra TDB-01/07/08 foi rodada | "o DDL executa sem erro no MySQL 8.0.44; o censo bate e a amostra de restrições foi testada (ver `teste-ddl.md`)" |
 | "as multiplicidades do diagrama de classes estão fechadas" | o CLS-001 (I3) ainda tem `PENDENTE` | "o DER usa a leitura aprovada em DEC-019/021; o fechamento formal é do I3" |
 | "CQ-COM-02 está 100%" | a recontagem é do I5 e o CTX-001 ainda é pendência de I1/I2 | "CMP, IMP e UC-033 já cobrem o serviço externo; a recontagem é da qualidade" |
 | "a tabela `auditoria`" / "o campo `status`" / "a tabela `fila`" | nomes errados | `registro_auditoria`, `situacao`, `solicitacao_espera` |
@@ -188,14 +190,14 @@ Fechamento (15 s): "São 15 tabelas, 97 colunas, 10 repositórios e 7 transaçõ
 
 | Artefato | `.mmd` (fonte) | `.drawio.xml` (editável) | PDF | Observação |
 |---|---|---|---|---|
-| PAC-001 | ✔ | ✔ | **pendente** | exportar de *Arquivo → Exportar como → PDF* (Arial, página do tamanho do desenho) |
-| CMP-001 | ✔ | ✔ | **pendente** | idem |
-| IMP-001 | ✔ | ✔ | **pendente** | idem |
-| DER-001 | ✔ | ✔ | **pendente** | idem; o `.mmd` é a fonte da verdade do conteúdo |
+| PAC-001 | ✔ | ✔ | ✔ | exportado em 10/11/2026 do `.drawio.xml` (draw.io Desktop portátil); nota de exceção do ciclo |
+| CMP-001 | ✔ | ✔ | ✔ | exportado em 10/11/2026 do `.drawio.xml` |
+| IMP-001 | ✔ | ✔ | ✔ | exportado em 10/11/2026 do `.drawio.xml` |
+| DER-001 | ✔ | ✔ | ✔ | exportado em 10/11/2026 do `.drawio.xml`; o `.mmd` é a fonte da verdade do conteúdo |
 
 - Os dois `.drawio.xml` alterados na Fase 8 (PAC e CMP) foram validados como **XML bem formado** após a edição; as arestas novas usam o mesmo formato das existentes (`mxCell edge="1"` + `mxGeometry relative="1"` com pontos de roteamento).
 - O `.mmd` continua sendo a fonte da verdade: as arestas `AGENDA ↔ FILA`, o componente `ServicoHash` e a realização `SEG ..> IHASH` existem **nos dois formatos**.
-- A exportação em PDF depende do diagrams.net, que não estava disponível no ambiente e que o grupo decidiu não instalar (nota de `03-uml/README.md`). **O conteúdo não depende do PDF**; a pendência é de formato, não de artefato.
+- Em 10/11/2026 os quatro PDFs foram exportados com o **draw.io Desktop 32.6.10** em modo portátil (ZIP, sem instalação), pela CLI `--export --format pdf`; nenhum arquivo foi instalado no ambiente. A exportação preserva o desenho e a página definidos no `.drawio.xml`. Ver `03-uml/README.md` e `der/der-001-logico.md` §9.
 - O DDL é texto puro e abre em qualquer editor; não há binário nem arquivo proprietário na persistência.
 
 ---
@@ -225,9 +227,9 @@ As 14 correções estão tabeladas em `fase-08-verificacao-qualidade-persistenci
 
 ### 6.3 O que eu **não** fiz (e por quê)
 
-- não alterei `05-qualidade/plano-qualidade-iso25010.md`, `06-rastreabilidade/*`, `03-uml/README.md` nem o CLS-001 — são de I5, I1/I2, I6 e I3;
-- não executei o DDL — não há MySQL no ambiente;
-- não exportei PDFs — não há diagrams.net no ambiente;
+- não alterei `05-qualidade/plano-qualidade-iso25010.md`, `06-rastreabilidade/*` nem o CLS-001 — são de I5, I1/I2 e I3; em `03-uml/README.md` atualizei apenas o inventário de PDFs (exceção autorizada pelo checklist);
+- executei o DDL em **MySQL 8.0.44 portátil** (Q7-02) e rodei a amostra TDB-01/07/08; os demais TDB continuam como roteiro da Fase 8;
+- exportei os PDFs de PAC-001, CMP-001, IMP-001 e DER-001 com o draw.io Desktop portátil;
 - não reabri a modelagem: a Fase 9 é de consolidação.
 
 ---
@@ -237,17 +239,17 @@ As 14 correções estão tabeladas em `fase-08-verificacao-qualidade-persistenci
 | Item | Estado | Evidência |
 |---|---|---|
 | Versões finais de DER, modelo relacional, dicionário e mapeamento | ✔ | §1 (v1.1, 30/10/2026) |
-| Versões finais de PAC-001, CMP-001 e IMP-001 | ✔ | §1 (PAC/CMP v1.1, 31/10/2026; IMP 1.0, 29/10/2026) |
+| Versões finais de PAC-001, CMP-001 e IMP-001 | ✔ | §1 (PAC v1.2, 10/11/2026; CMP v1.1, 31/10/2026; IMP 1.0, 29/10/2026) |
 | Dicionário completo (97/97 colunas) | ✔ | §2; Fase 8 §4.1 |
 | Mapeamento completo (12/12 classes + proposta) | ✔ | §2; Fase 8 §4.2 |
-| DDL conferido (15/97/15/17/24/26/17/4/3) | ✔ | §2; Fase 8 §1 |
+| DDL executado e conferido (15/97/15/17/24/26/17/4/3) | ✔ | §2; [`teste-ddl.md`](teste-ddl.md) |
 | Integridade referencial e inativação | ✔ | §2; Fase 8 §2.3 |
 | N:N, normalização e desnormalizações controladas | ✔ | Fase 8 §2.1/§2.2; `normalizacao.md` |
-| Testes conceituais TDB-01…TDB-14 | ✔ | Fase 8 §6 |
+| Testes conceituais TDB-01…TDB-14 | ✔ | Fase 8 §6; amostra executada em `teste-ddl.md` §5 |
 | Evidências CQ para o I5 | ✔ | Fase 8 §7.4 |
 | Texto das seções 25 e 26 | ✔ | §3 |
 | Pontos técnicos do pitch | ✔ | §4 |
-| Editáveis e fontes dos diagramas | ✔ (PDF pendente) | §5 |
+| Editáveis e fontes dos diagramas | ✔ (PDF exportado em 10/11/2026) | §5 |
 | Achados de outros integrantes registrados | ✔ | §6.2 (R8-01…R8-04) |
 
 ---

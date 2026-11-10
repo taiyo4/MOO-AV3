@@ -335,6 +335,8 @@ Custo: uma tabela a mais, um `JOIN` a mais na consulta de posição e duas fonte
 
 **Decisão do DER:** adotar a **situação** (`OFERTADA`) em `solicitacao_espera`, porque (a) a SEQ-004 já modela `abrirOferta` como operação da própria `SolicitacaoEspera`, (b) DEC-027 fixa uma oferta por vez, e (c) a recusa seguida de nova oferta ao próximo paciente gera uma **nova linha** para o próximo, preservando o histórico sem tabela extra.
 
+**Situação em 10/11/2026 (INC-17 resolvida).** A alternativa acima permanece apenas como **registro de projeto**, caso o Integrante 3 oficialize `OfertaVaga` (P8). O DER, o mapeamento e o DDL adotam a situação `OFERTADA` (MD-18); nenhuma das sete operações do CLS-001 (`registrarEntrada`, `abrirOferta`, `aceitar`, `recusar`, `expirar`, `encerrar`, `consultarPosicao`) exige a tabela `oferta_vaga`.
+
 ---
 
 ## 6. Estratégia de exclusão e inativação

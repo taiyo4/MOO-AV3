@@ -150,7 +150,21 @@ O objeto de valor `Periodo` continua existindo **em memória** (MD-11): a classe
 | **MD-15** | auditoria **não** é coleção de entidade | DEC-024: serviço de aplicação grava | nenhuma entidade tem `List<RegistroAuditoria>` |
 | **MD-16** | `id_entidade` é polimórfico e sem FK | a trilha cobre entidades de catálogo que podem ser excluídas | integridade semântica, não declarada — decisão consciente |
 | **MD-17** | campos descritivos provisórios ficam isolados em um objeto de cadastro | P-21: o CLS-001 não fixa os atributos de `Psicologo`/`Paciente` | troca localizada quando o Integrante 3 fechar o modelo |
-| **MD-18** | a oferta de vaga é a situação `OFERTADA` de `SolicitacaoEspera`, não uma entidade | INC-17: SEQ-004 modela `abrirOferta` na própria solicitação | sem tabela `oferta_vaga`; alternativa em `modelo-relacional.md` §5.3 |
+| **MD-18** | a oferta de vaga é a situação `OFERTADA` de `SolicitacaoEspera`, não uma entidade | INC-17 (resolvida em 10/11/2026): SEQ-004 e o CLS-001 modelam `abrirOferta` na própria solicitação | sem tabela `oferta_vaga`; alternativa em `modelo-relacional.md` §5.3, mantida só como registro |
+
+**Operações de `SolicitacaoEspera` conferidas com o CLS-001 (10/11/2026).** As sete operações da especificação oficial têm efeito direto no mapeamento; nenhuma exige entidade ou tabela nova.
+
+| Operação (CLS-001) | Efeito no estado persistido | Colunas/consultas envolvidas |
+|---|---|---|
+| `registrarEntrada(psicologo, paciente, horario, solicitante)` | `INSERT` com `situacao = 'AGUARDANDO'` e `data_hora_entrada` | `id_psicologo`, `id_paciente`, `id_disponibilidade`, `data_hora_entrada`; `uk_se_fila` |
+| `abrirOferta(horario, prazoAceite)` | `UPDATE` para `situacao = 'OFERTADA'` e grava o prazo | `situacao`, `prazo_aceite`; `oferta_aberta` + `uk_se_oferta`; `ck_se_prazo` |
+| `aceitar(solicitante)` | `UPDATE` para `situacao = 'ACEITA'` e liga o agendamento criado | `situacao`, `id_agendamento`; `ck_se_aceite`; TRS da UC-036 |
+| `recusar(solicitante)` | `UPDATE` para `situacao = 'RECUSADA'` e encerra a oferta | `situacao`, `data_hora_encerramento`; `ck_se_encerramento` |
+| `expirar()` | `UPDATE` para `situacao = 'EXPIRADA'` e encerra a oferta | `situacao`, `data_hora_encerramento`; `ck_se_encerramento` |
+| `encerrar(motivo, solicitante)` | `UPDATE` para `situacao = 'DESISTIU'` (desistência) | `situacao`, `data_hora_encerramento`; `ck_se_encerramento` |
+| `consultarPosicao()` | **não persiste**: posição calculada por ordem de entrada | consulta nomeada `posicaoNaFila` (MD-07) |
+
+**`OfertaVaga` não é necessária para nenhuma das sete operações.** `abrirOferta`/`aceitar`/`recusar`/`expirar`/`encerrar` são transições de `situacao` na própria linha; `consultarPosicao` é projeção. É essa a base da decisão MD-18.
 
 ---
 
@@ -249,7 +263,7 @@ Consultas que precisam de SQL específico (não derivável do mapeamento):
 | INC-14 | cardinalidade `Usuario`–`Perfil` na DEC-019 | MD-02 + `usuario.id_perfil NOT NULL` sem `UNIQUE` |
 | INC-15 | `Agendamento.horario` × slot discreto | MD-07 (derivado) + MD-10 |
 | INC-16 | ausência de e-mail de contato | coluna em `psicologo` e `paciente`; **não** em `usuario` |
-| INC-17 | `OfertaVaga` × situação `OFERTADA` | MD-18 (situação) com alternativa documentada em `modelo-relacional.md` §5.3 |
+| INC-17 | `OfertaVaga` × situação `OFERTADA` | **Resolvida em 10/11/2026:** MD-18 (situação); a alternativa de tabela própria fica em `modelo-relacional.md` §5.3 apenas como registro |
 | — | `RegistroAuditoria.Data` + `Hora` | MD-09 |
 | — | `Disponibilidade.periodo` | MD-10 + MD-11 |
 
@@ -274,5 +288,6 @@ Consultas que precisam de SQL específico (não derivável do mapeamento):
 |---|---|---|
 | P-21 | atributos descritivos e e-mail de contato | MD-17: os campos provisórios ficam isolados em um objeto de cadastro, para troca localizada |
 | P-20 | fila por horário sem slot | `SolicitacaoEspera` ganharia um objeto de valor de preferência temporal |
-| INC-17 | `OfertaVaga` como classe | `SolicitacaoEspera` perderia `prazo_aceite`/`oferta_aberta` para uma nova entidade |
 | — | ferramenta ORM | o mapeamento é independente; a escolha é da implementação |
+
+**INC-17 resolvida em 10/11/2026.** A oferta de vaga é a situação `OFERTADA` de `solicitacao_espera` (MD-18). A alternativa de `OfertaVaga` como tabela própria deixou de ser pendência e permanece apenas como registro de projeto em [`modelo-relacional.md`](modelo-relacional.md) §5.3, caso o Integrante 3 venha a oficializar a classe (P8).

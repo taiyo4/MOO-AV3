@@ -10,9 +10,9 @@
 |---|---|---|
 | Mermaid | [`der-001.mmd`](der-001.mmd) | fonte da verdade do conteúdo |
 | draw.io | [`der-001.drawio.xml`](der-001.drawio.xml) | fonte editável gráfica |
-| PDF | *(pendente de exportação)* | ver §9 |
+| PDF | [`der-001.pdf`](der-001.pdf) | cópia de leitura exportada do `.drawio.xml` em 10/11/2026 |
 
-> **Por que não há PDF nesta entrega.** A exportação para PDF exige diagrams.net (web ou desktop) ou um renderizador Mermaid. Nenhum dos dois está disponível no ambiente em que este documento foi produzido, e a preferência registrada do grupo é **não instalar ferramentas novas** para gerar diagramas. O `.mmd` é a fonte da verdade e abre direto no GitHub; o `.drawio.xml` abre no diagrams.net, de onde o PDF é exportado com *Arquivo → Exportar como → PDF*. O mesmo vale para PAC-001, CMP-001 e IMP-001.
+> **Como o PDF foi gerado.** A exportação usa o **draw.io Desktop 32.6.10** em modo portátil (ZIP, sem instalação), pela CLI `draw.io.exe --export --format pdf --output der-001.pdf der-001.drawio.xml`, executada em 10/11/2026. O `.mmd` continua sendo a fonte da verdade e abre direto no GitHub; o `.drawio.xml` é a fonte editável gráfica e o PDF é a cópia de leitura. O mesmo procedimento foi aplicado a PAC-001, CMP-001 e IMP-001 (ver `03-uml/README.md`).
 
 ---
 
@@ -191,7 +191,7 @@ O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As 
 | INC-14 | DEC-019 escreve `Usuario "0..1" — Perfil "1"`, que pela convenção do repositório significaria "um perfil atende no máximo uma conta" | o DER adota a leitura semântica da própria DEC-019 ("um perfil pode ser compartilhado por várias contas"): `usuario.id_perfil NOT NULL`, sem `UNIQUE` em `id_perfil` |
 | INC-15 | `Agendamento.horario` é atributo no CLS-001; com DEC-018 o tempo é do slot | `horario` é **projeção derivada** de `disponibilidade (data, hora_inicio)`; não há coluna de horário em `agendamento` |
 | INC-16 | O CLS-001 não tem atributo de e-mail de contato, necessário a RF-033 | o DER cria `psicologo.email_contato` e `paciente.email_contato` (não em `usuario`: o destinatário é a pessoa do cadastro, que pode existir sem conta — DEC-021) |
-| INC-17 | `OfertaVaga` como classe (P8) × `OFERTADA` como situação (SEQ-004) | o DER adota a situação, com a alternativa documentada |
+| INC-17 | `OfertaVaga` como classe (P8) × `OFERTADA` como situação (SEQ-004) | **Resolvida em 10/11/2026:** o DER adota a situação `OFERTADA` (MD-18); a alternativa de tabela própria fica mantida apenas como registro em [`modelo-relacional.md`](../modelo-relacional.md) §5.3 |
 | — | `RegistroAuditoria` tem `Data` e `Hora` separados | o DER usa `data_hora DATETIME` único, para ordenação cronológica e comparação de instantes (RN-014, RNF-004) |
 | — | `Disponibilidade.periodo` (intervalo) | substituído por `data`, `hora_inicio` e `duracao_minutos` (DEC-018) |
 
@@ -203,7 +203,8 @@ O arquivo [`der-001.mmd`](der-001.mmd) contém 15 entidades e 22 relações. As 
 |---|---|---|
 | P-20 | fila por horário sem slot cadastrado | se confirmada, `solicitacao_espera` precisa de colunas de preferência temporal e `id_disponibilidade` passa a aceitar `NULL` |
 | P-21 | atributos descritivos mínimos e e-mail de contato | o DER usa o mínimo (`nome`, `registro_profissional`, `email_contato`) e registra a origem em [`dicionario-de-dados.md`](../dicionario-de-dados.md) §7 |
-| INC-14 a INC-17 | ver §8 | resolvidas no DER, pendentes de validação pelos donos dos artefatos |
-| PDF | exportação dos diagramas | depende de diagrams.net; não bloqueia o conteúdo |
+| INC-14 a INC-16 | ver §8 | resolvidas no DER, pendentes de validação pelos donos dos artefatos |
+| INC-17 | ver §8 | **resolvida em 10/11/2026** (situação `OFERTADA`); a alternativa de tabela própria permanece só como registro em `modelo-relacional.md` §5.3 |
+| PDF | exportação dos diagramas | **concluída em 10/11/2026** com o draw.io Desktop portátil; ver tabela de formatos acima |
 
 **Próximo artefato:** [`modelo-relacional.md`](../modelo-relacional.md), que detalha PK, FK, UNIQUE, CHECK, NOT NULL e a estratégia de exclusão.
